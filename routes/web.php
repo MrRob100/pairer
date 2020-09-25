@@ -20,8 +20,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 Route::get('/balance/{coin}',[App\Http\Controllers\HomeController::class, 'balance'])->name('balance');
 Route::get('/price/{ticker}',[App\Http\Controllers\HomeController::class, 'price'])->name('price');
 
