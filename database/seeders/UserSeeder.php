@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use Log;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Log;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
