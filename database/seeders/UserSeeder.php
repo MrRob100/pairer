@@ -1,6 +1,10 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Log;
 
 class UserSeeder extends Seeder
 {
