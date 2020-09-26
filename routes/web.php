@@ -27,3 +27,6 @@ Route::get('/price/{ticker}',[App\Http\Controllers\HomeController::class, 'price
 Route::post('/addtrigger',[App\Http\Controllers\HomeController::class, 'addtrigger'])->name('addtrigger');
 Route::get('/triggers', [App\Http\Controllers\HomeController::class, 'triggers'])->name('triggers');
 Route::delete('/trigger/{id}',[App\Http\Controllers\HomeController::class, 'delete'])->name('delete');
+
+/* cron script */
+Route::get('/cron', [App\Http\Controllers\CronController::class, 'run'])->name('run');
