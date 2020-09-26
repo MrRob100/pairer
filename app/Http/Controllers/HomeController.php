@@ -21,6 +21,19 @@ class HomeController extends Controller
     }
 
     /**
+     * shows outstanding orders
+     */
+    public function orders()
+    {
+        $kucoin = App::make('App\Services\OrderService');
+
+        /* orders */
+        $orders = $kucoin->getOrders();
+
+        return $orders;
+    }
+
+    /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -31,14 +44,24 @@ class HomeController extends Controller
 
         /* orders */
         $orders = $kucoin->getOrders();
-        // dump('orders \/');
+        dump('orders \/');
+        dump($orders);
 
         /* positions */
-        $positions = $kucoin->getPositions();
+        // $positions = $kucoin->getPositions();
         // dump('positions \/');
         // dump($positions);
 
-        return view('home', compact('orders', 'positions'));
+        return view('home');
+    }
+
+    public function cancel($order_id)
+    {
+        $kucoin = App::make('App\Services\OrderService');
+
+        $response = $kucoin->cancel($order_id);
+
+        return $response;
     }
 
     public function balance($coin)
@@ -75,7 +98,16 @@ class HomeController extends Controller
         $trigger->pair = $request->get('pair');
         $trigger->type = $request->get('type');
         $trigger->side = $request->get('side');
-        $trigger->save();
+        $trigger->price = $request->get('price');
+
+        // if immediately then go straigt to action
+        if ($request->get('now')) {
+            $order = App::make('App\Services\OrderService');
+            $order->action($trigger);
+        } else {
+            //saving if not later
+            $trigger->save();
+        }
 
         return true;
     }

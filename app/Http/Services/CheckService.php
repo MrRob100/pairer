@@ -30,7 +30,7 @@ class CheckService
 
         $order_service = App::make('App\Services\OrderService');
 
-        $order_service->action($to_action);
+        $order_service->action($to_action->first());
 
         return 0;
     }

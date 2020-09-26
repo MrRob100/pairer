@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
             DB::table('users')->insert([
                 'name' => 'ap',
                 'email' => $email,
-                'password' => Hash::make('cornharvest777'),
+                'password' => Hash::make('cornharvest666'),
             ]);
         } else {
             $message = 'user record for ' . $email . ' already in db';

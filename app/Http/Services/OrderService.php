@@ -11,6 +11,7 @@ use KuCoin\SDK\PublicApi\Symbol;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use App\Models\OrderModel;
+use App\Models\Open_order;
 
 use KuCoin\SDK\Exceptions\HttpException;
 use KuCoin\SDK\Exceptions\BusinessException;
@@ -178,12 +179,33 @@ class OrderService
         return $price;
     }
 
+    public function cancel($order_id)
+    {
+        $auth = $this->getAuth();
+        $orderApi = new Order($auth);
+
+        $cancel = $orderApi->cancel($order_id);
+
+        // IF CANCELLED REMOVE ITEM FROM DB TOO
+
+        return $cancel;
+    }
+
     public function getOrders()
     {
 
         $auth = $this->getAuth();
-        $order = new Order($auth);
-        $orders = $order->getList();
+        $orderApi = new Order($auth);
+
+        $Open_order = new Open_order();
+        $oos = $Open_order->all();
+
+        $orders = [];
+
+        foreach ($oos as $oo) {
+            $orders[] = $orderApi->getDetail($oo->order_id);
+        }
+
         return $orders;
     }
 
@@ -221,7 +243,7 @@ class OrderService
      * checks db for orders then
      * outputs collection 
      */
-    public function action($to_action)
+    public function action($to_action_first)
     {
         //SORT OUT LOGIC IF THERE ARE MORE THAN 1 IN DB!!!!
 
@@ -231,13 +253,11 @@ class OrderService
 
         //THEN DELETE TRIGGER RECORD IN DB
 
-
-
         // $amount = '20'; OF USDT
-        if ($to_action->first()->side === 'buy') {
-            $amount = floor($this->getAvailableBalance('USDT') * ($to_action->first()->amount / 100));
-        } elseif ($to_action->first()->side === 'sell') {
-            $amount = floor($this->getAvailableBalance('AMPL') * ($to_action->first()->amount / 100));
+        if ($to_action_first->side === 'buy') {
+            $amount = floor($this->getAvailableBalance('USDT') * ($to_action_first->amount / 100));
+        } elseif ($to_action_first->side === 'sell') {
+            $amount = floor($this->getAvailableBalance('AMPL') * ($to_action_first->amount / 100));
         }
 
         $auth = $this->getAuth();
@@ -247,48 +267,31 @@ class OrderService
 
             $params = [
                 'clientOid' => uniqid(),
-                'size' => $amount,
-                'symbol'    => $to_action->first()->pair,
-                'type'      => $to_action->first()->type,
-                'side'      => $to_action->first()->side,
-                'remark'    => $to_action->first()->remark,
+                'size' => strval($amount),
+                'symbol'    => $to_action_first->pair,
+                'type'      => $to_action_first->type,
+                'side'      => $to_action_first->side,
+                'remark'    => $to_action_first->remark,
             ];
 
-            if ($to_action->first()->price) {
-                $params['price'] = $to_action->first()->price;
+            if ($to_action_first->price) {
+                $params['price'] = $to_action_first->price;
             }
 
             $result = $order->create($params);
-        } catch (HttpException $e) {
-            dump($e->getMessage());
-            Log::info($e->getMessage());
-            return [];
-        } catch (BusinessException $e) {
+        } catch (\Exception $e) {
             dump($e->getMessage());
             Log::info($e->getMessage());
             return [];
         }
 
-
-
-        //MAYBE FETCH PRICE IF MARKET
-        /* Save record of order in db */
         $orderId = $result['orderId'];
 
         try {
-            $order_model = new OrderModel();
-            $order_model->order_id = $orderId;
-            $order_model->coin_ordered = $to_action->first()->pair;
-            $order_model->type = $to_action->first()->type;
-            $order_model->side = $to_action->first()->side;
-            $order_model->price = $price ? $price : '-';
-            $order_model->save();
-            return [];
-        } catch (HttpException $e) {
-            dump($e->getMessage());
-            Log::info($e->getMessage());
-            return [];
-        } catch (BusinessException $e) {
+            $Open_order = new Open_order();
+            $Open_order->order_id = $orderId;
+            $Open_order->save();
+        } catch (\Exception $e) {
             dump($e->getMessage());
             Log::info($e->getMessage());
             return [];

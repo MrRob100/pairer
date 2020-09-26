@@ -2045,6 +2045,47 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2052,22 +2093,29 @@ __webpack_require__.r(__webpack_exports__);
       usdt: "0",
       currentPrice: 0,
       orders: [],
+      exchange_orders: [],
       fields: {
         type: "market",
         side: "sell",
         pair: "AMPL-USDT",
         amount: 100,
-        when: 2
+        when: 2,
+        price: null,
+        now: false
       }
     };
   },
   mounted: function mounted() {
     this.getBal('ampl');
     this.getBal('usdt');
+    this.exchangeOrders();
     this.triggers();
     this.getPrice('AMPL-USDT');
   },
   methods: {
+    priceStatus: function priceStatus() {
+      this.fields.price = this.fields.type === "market" ? null : this.fields.price;
+    },
     del: function del(id) {
       var _this = this;
 
@@ -2103,6 +2151,8 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post('addtrigger', this.fields).then(function (response) {
         _this2.triggers();
+
+        _this2.exchangeOrders();
       })["catch"](function (error) {
         console.log('Error');
       });
@@ -2113,6 +2163,19 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('triggers').then(function (response) {
         _this3.orders = response.data;
       });
+    },
+    exchangeOrders: function exchangeOrders() {
+      var _this4 = this;
+
+      axios.get('orders').then(function (response) {
+        _this4.exchange_orders = response.data;
+      });
+    },
+    cancel: function cancel($orderId) {
+      axios.get('cancel/'.$orderId).then(function (response) {
+        console.log(response);
+      });
+      this.exchange_orders();
     },
     getBal: function getBal(coin) {
       var that = this;
@@ -38438,13 +38501,66 @@ var render = function() {
     _c("br"),
     _vm._v(" "),
     _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [_vm._v("Orders on exchange")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("table", { staticClass: "table table-condensed" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _vm.exchange_orders.length > 0
+            ? _c(
+                "tbody",
+                _vm._l(_vm.exchange_orders, function(exchange_order) {
+                  return _c("tr", { key: exchange_order.id }, [
+                    _c("td", [_vm._v(_vm._s(exchange_order.symbol))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(exchange_order.side))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(exchange_order.type))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(exchange_order.price))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(exchange_order.size))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(exchange_order.isActive))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(new Date(exchange_order.createdAt)))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "delete-button",
+                          on: {
+                            click: function($event) {
+                              return _vm.cancel(exchange_order.id)
+                            }
+                          }
+                        },
+                        [_vm._v("x")]
+                      )
+                    ])
+                  ])
+                }),
+                0
+              )
+            : _vm._e()
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-header" }, [
         _vm._v("Orders to be actioned")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
         _c("table", { staticClass: "table table-condensed" }, [
-          _vm._m(0),
+          _vm._m(1),
           _vm._v(" "),
           _vm.orders.length > 0
             ? _c(
@@ -38489,9 +38605,7 @@ var render = function() {
     _c("br"),
     _vm._v(" "),
     _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._v("Order (NEED TO MAKE A 'IMMEDIATELY BUTTON')")
-      ]),
+      _c("div", { staticClass: "card-header" }, [_vm._v("Order")]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
         _c(
@@ -38529,9 +38643,12 @@ var render = function() {
                   },
                   domProps: { checked: _vm._q(_vm.fields.type, "limit") },
                   on: {
-                    change: function($event) {
-                      return _vm.$set(_vm.fields, "type", "limit")
-                    }
+                    change: [
+                      function($event) {
+                        return _vm.$set(_vm.fields, "type", "limit")
+                      },
+                      _vm.priceStatus
+                    ]
                   }
                 }),
                 _vm._v(" "),
@@ -38557,9 +38674,12 @@ var render = function() {
                   },
                   domProps: { checked: _vm._q(_vm.fields.type, "market") },
                   on: {
-                    change: function($event) {
-                      return _vm.$set(_vm.fields, "type", "market")
-                    }
+                    change: [
+                      function($event) {
+                        return _vm.$set(_vm.fields, "type", "market")
+                      },
+                      _vm.priceStatus
+                    ]
                   }
                 }),
                 _vm._v(" "),
@@ -38670,6 +38790,38 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
+              _vm.fields.type === "limit"
+                ? _c("div", { staticClass: "field" }, [
+                    _c("label", { staticClass: "label" }, [_vm._v("Price $")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.fields.price,
+                          expression: "fields.price"
+                        }
+                      ],
+                      attrs: {
+                        type: "number",
+                        min: "0.5",
+                        max: "2",
+                        step: "0.01"
+                      },
+                      domProps: { value: _vm.fields.price },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.fields, "price", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "field" }, [
                 _c("label", { attrs: { for: "time" } }, [
                   _vm._v("Trigger Time")
@@ -38686,7 +38838,12 @@ var render = function() {
                         expression: "fields.when"
                       }
                     ],
-                    attrs: { id: "time", name: "time", form: "order-form" },
+                    attrs: {
+                      disabled: _vm.fields.now,
+                      id: "time",
+                      name: "time",
+                      form: "order-form"
+                    },
                     on: {
                       change: function($event) {
                         var $$selectedVal = Array.prototype.filter
@@ -38716,12 +38873,57 @@ var render = function() {
                   }),
                   0
                 )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "field" }, [
+                _c("label", { attrs: { for: "now" } }, [_vm._v("Immediately")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.fields.now,
+                      expression: "fields.now"
+                    }
+                  ],
+                  attrs: { type: "checkbox" },
+                  domProps: {
+                    checked: Array.isArray(_vm.fields.now)
+                      ? _vm._i(_vm.fields.now, null) > -1
+                      : _vm.fields.now
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$a = _vm.fields.now,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = null,
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 &&
+                            _vm.$set(_vm.fields, "now", $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            _vm.$set(
+                              _vm.fields,
+                              "now",
+                              $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                            )
+                        }
+                      } else {
+                        _vm.$set(_vm.fields, "now", $$c)
+                      }
+                    }
+                  }
+                })
               ])
             ]),
             _vm._v(" "),
             _c("br"),
             _vm._v(" "),
-            _vm._m(1)
+            _vm._m(2)
           ]
         )
       ])
@@ -38729,6 +38931,30 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Pair")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Side")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Price ($)")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Amount")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Open")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created at")]),
+        _vm._v(" "),
+        _c("th")
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

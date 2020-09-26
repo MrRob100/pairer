@@ -16,6 +16,38 @@
         </div>
         <br>
         <div class="card">
+            <div class="card-header">Orders on exchange</div>
+            <div class="card-body">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Pair</th>
+                            <th>Side</th>
+                            <th>Type</th>
+                            <th>Price ($)</th>
+                            <th>Amount</th>
+                            <th>Open</th>
+                            <th>Created at</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody v-if="exchange_orders.length > 0">
+                        <tr v-for="exchange_order in exchange_orders" :key="exchange_order.id">
+                            <td>{{ exchange_order.symbol }}</td>
+                            <td>{{ exchange_order.side }}</td>
+                            <td>{{ exchange_order.type }}</td>
+                            <td>{{ exchange_order.price }}</td>
+                            <td>{{ exchange_order.size }}</td>
+                            <td>{{ exchange_order.isActive }}</td>
+                            <td>{{ new Date(exchange_order.createdAt) }}</td>
+                            <td><span v-on:click="cancel(exchange_order.id)" class="delete-button">x</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+        <div class="card">
             <div class="card-header">Orders to be actioned</div>
             <div class="card-body">
                 <table class="table table-condensed">
@@ -47,14 +79,14 @@
         <!-- orders on db -->
         <br>
         <div class="card">
-            <div class="card-header">Order (NEED TO MAKE A 'IMMEDIATELY BUTTON')</div>
+            <div class="card-header">Order</div>
             <div class="card-body">
                 <form method="POST" @submit.prevent="processForm" id="order-form" enctype="multipart/form-data">
                     <div class="inputs-container">
                         <div class="field">
-                            <input v-model="fields.type" value="limit" type="radio" id="radio-limit" name="switch-type" />
+                            <input @change="priceStatus" v-model="fields.type" value="limit" type="radio" id="radio-limit" name="switch-type" />
 		                    <label for="radio-limit">Limit</label>
-		                    <input v-model="fields.type" value="market" type="radio" id="radio-market" name="switch-type" checked/>
+		                    <input @change="priceStatus" v-model="fields.type" value="market" type="radio" id="radio-market" name="switch-type" checked/>
 		                    <label for="radio-market">Market</label>
                         </div>
                         <div class="field">
@@ -71,16 +103,25 @@
                             <label class="label">Amount %</label>
                             <input v-model="fields.amount" type="number" min="10" max="100">
                         </div>
+                        <div v-if="fields.type === 'limit'" class="field">
+                            <label class="label">Price $</label>
+                            <input v-model="fields.price" type="number" min="0.5" max="2" step="0.01">
+                        </div>
 
                         <!-- gettimelabel(num) -->
                         <!-- gettimevalue(num) -->
 
                         <div class="field">
                             <label for="time">Trigger Time</label>
-                            <select v-model="fields.when" id="time" name="time" form="order-form">
+                            <select :disabled="fields.now" v-model="fields.when" id="time" name="time" form="order-form">
                                 <option v-for="num in 24" v-bind:key="num" :value="getTimeValue(num)">{{ getTimeLabel(num) }}</option>
                             </select>
                         </div>
+                        <div class="field">
+                            <label for="now">Immediately</label>
+                            <input v-model="fields.now" type="checkbox">
+                        </div>
+
 
                         <!-- <div v-for="num in 10" v-bind:key="num">
                             <span>
@@ -104,29 +145,37 @@
 
 <script>
     export default {
-          data: function() {
+        data: function() {
             return {
                 ampl: "0",
                 usdt: "0",
                 currentPrice: 0,
                 orders: [],
+                exchange_orders: [],
                 fields: {
                     type: "market",
                     side: "sell",
                     pair: "AMPL-USDT",
                     amount: 100,
                     when: 2,
+                    price: null,
+                    now: false
                 }
             };
         },
         mounted() {
             this.getBal('ampl');
             this.getBal('usdt');
+            this.exchangeOrders();
             this.triggers();
             this.getPrice('AMPL-USDT');
         },
 
         methods: {
+
+            priceStatus: function() {
+                this.fields.price = this.fields.type === "market" ? null : this.fields.price;
+            },
 
             del: function(id) {
                 axios.delete("trigger/" + id).then(response => {
@@ -169,7 +218,7 @@
                 axios.post('addtrigger', this.fields).then(response => {
 
                 this.triggers();
-
+                this.exchangeOrders();
 
                 }).catch(error => {
                     console.log('Error');
@@ -181,6 +230,20 @@
                 axios.get('triggers').then(response => {
                     this.orders = response.data;
                 });
+            },
+
+            exchangeOrders: function() {
+                axios.get('orders').then(response => {
+                    this.exchange_orders = response.data;
+                });
+            },
+
+            cancel: function($orderId) {
+                axios.get('cancel/'.$orderId).then(response => {
+                    console.log(response);
+                }); 
+
+                this.exchange_orders();
             },
 
             getBal: function(coin) {

@@ -22,6 +22,8 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/balance/{coin}',[App\Http\Controllers\HomeController::class, 'balance'])->name('balance');
 Route::get('/price/{ticker}',[App\Http\Controllers\HomeController::class, 'price'])->name('price');
+Route::get('/orders',[App\Http\Controllers\HomeController::class, 'orders'])->name('orders');
+Route::get('/cancel/{order_id}',[App\Http\Controllers\HomeController::class, 'cancel'])->name('cancel');
 
 /* maybe needs to be API resource route */
 Route::post('/addtrigger',[App\Http\Controllers\HomeController::class, 'addtrigger'])->name('addtrigger');
@@ -30,3 +32,4 @@ Route::delete('/trigger/{id}',[App\Http\Controllers\HomeController::class, 'dele
 
 /* cron script */
 Route::get('/cron', [App\Http\Controllers\CronController::class, 'run'])->name('run');
+Route::get('/check', [App\Http\Controllers\CronController::class, 'check'])->name('check');
