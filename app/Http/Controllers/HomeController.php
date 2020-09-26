@@ -43,9 +43,9 @@ class HomeController extends Controller
         $kucoin = App::make('App\Services\OrderService');
 
         /* orders */
-        $orders = $kucoin->getOrders();
-        dump('orders \/');
-        dump($orders);
+        // $orders = $kucoin->getOrders();
+        // dump('orders \/');
+        // dump($orders);
 
         /* positions */
         // $positions = $kucoin->getPositions();

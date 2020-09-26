@@ -2171,11 +2171,16 @@ __webpack_require__.r(__webpack_exports__);
         _this4.exchange_orders = response.data;
       });
     },
-    cancel: function cancel($orderId) {
-      axios.get('cancel/'.$orderId).then(function (response) {
-        console.log(response);
+    cancel: function cancel(orderId) {
+      // axios.get('cancel/'.$orderId).then(response => {
+      //     console.log(response);
+      // }); 
+      axios.get('cancel/' + orderId).then(function (response) {
+        if (!response.status == 200) {
+          console.log('ERROR DELETING');
+        }
       });
-      this.exchange_orders();
+      this.exchangeOrders();
     },
     getBal: function getBal(coin) {
       var that = this;

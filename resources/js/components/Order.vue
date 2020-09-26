@@ -238,12 +238,19 @@
                 });
             },
 
-            cancel: function($orderId) {
-                axios.get('cancel/'.$orderId).then(response => {
-                    console.log(response);
-                }); 
+            cancel: function(orderId) {
 
-                this.exchange_orders();
+                // axios.get('cancel/'.$orderId).then(response => {
+                //     console.log(response);
+                // }); 
+
+                axios.get('cancel/' + orderId).then(response => {
+                    if (!response.status == 200) {
+                        console.log('ERROR DELETING');
+                    } 
+                });
+
+                this.exchangeOrders();
             },
 
             getBal: function(coin) {

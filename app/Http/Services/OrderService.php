@@ -203,7 +203,12 @@ class OrderService
         $orders = [];
 
         foreach ($oos as $oo) {
-            $orders[] = $orderApi->getDetail($oo->order_id);
+
+            $order = $orderApi->getDetail($oo->order_id);
+
+            if ($order['isActive']) {
+                $orders[] = $order;
+            }
         }
 
         return $orders;
