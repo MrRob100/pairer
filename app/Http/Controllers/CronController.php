@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\App;
 
 class CronController extends Controller
 {
+    //test
     public function run()
     {
         DB::table('test_bin')->insert([
@@ -20,7 +21,7 @@ class CronController extends Controller
 
     public function check()
     {
-        $check = App::make('App\Services\CheckService');
+        $check = App::make('App\Services\CheckService'); 
 
         $check->checkDB();
     }

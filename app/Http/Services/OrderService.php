@@ -254,8 +254,6 @@ class OrderService
 
         //PLACE ORDER
 
-        //CREATE RECORD OF ORDER IN DB
-
         //THEN DELETE TRIGGER RECORD IN DB
 
         // $amount = '20'; OF USDT
@@ -290,8 +288,12 @@ class OrderService
             return [];
         }
 
+        /* delete trigger record */
+        $trigger_service = App::make('App\Services\TriggerService');
+        $trigger_service->delete_trigger($to_action_first->id);
         $orderId = $result['orderId'];
 
+        //leave this record in here for now, maybe cron can delete
         try {
             $Open_order = new Open_order();
             $Open_order->order_id = $orderId;

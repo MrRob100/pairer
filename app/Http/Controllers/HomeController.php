@@ -85,7 +85,9 @@ class HomeController extends Controller
     public function triggers()
     {
         $trigger = new Trigger();
+
         $triggers = $trigger->all();
+
         return $triggers;
     }
 
@@ -114,7 +116,10 @@ class HomeController extends Controller
 
     public function delete($id)
     {
-        $trigger = new Trigger();
-        $res = $trigger::where('id', $id)->delete();
+        $trigger_service = App::make('App\Services\TriggerService');
+
+        $trigger_service->delete_trigger($id);
+
+        return 0;
     }
 }

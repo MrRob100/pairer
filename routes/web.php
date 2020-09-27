@@ -30,6 +30,8 @@ Route::post('/addtrigger',[App\Http\Controllers\HomeController::class, 'addtrigg
 Route::get('/triggers', [App\Http\Controllers\HomeController::class, 'triggers'])->name('triggers');
 Route::delete('/trigger/{id}',[App\Http\Controllers\HomeController::class, 'delete'])->name('delete');
 
-/* cron script */
+/* test cron script */
 Route::get('/cron', [App\Http\Controllers\CronController::class, 'run'])->name('run');
+
+/* real cron script */
 Route::get('/check', [App\Http\Controllers\CronController::class, 'check'])->name('check');
