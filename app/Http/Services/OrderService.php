@@ -24,11 +24,11 @@ use KuCoin\SDK\Exceptions\BusinessException;
 class OrderService
 {
 
-    private $key = '5f497f6545dec70007316733';
+    private $key = '000';
 
-    private $secret = '162fffc4-b77b-4cb8-aabd-7b80d40409c8';
+    private $secret = '000';
 
-    private $passphrase = 'Presspit';
+    private $passphrase = '000';
 
     /**
      * To be run each day before the correction time
@@ -246,7 +246,7 @@ class OrderService
 
     /**
      * checks db for orders then
-     * outputs collection 
+     * outputs collection
      */
     public function action($to_action_first)
     {
