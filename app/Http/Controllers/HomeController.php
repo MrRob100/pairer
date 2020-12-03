@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Target;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use App\Models\Trigger;
 
 class HomeController extends Controller
 {
