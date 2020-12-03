@@ -28,8 +28,5 @@ Route::put('/target/set', [TargetController::class, 'set'])->name('target.set');
 /* main page */
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-/* test cron script */
-Route::get('/cron', [CronController::class, 'run'])->name('run');
-
 /* real cron script */
 Route::get('/check', [CronController::class, 'check'])->name('check');
