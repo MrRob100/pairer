@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c3dc2ed6f629493e592e831eaff30c2",
+    "content-hash": "38ddaa9baa3058e3055ffac11e8e1014",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -786,6 +786,58 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "haruncpi/laravel-log-reader",
+            "version": "v1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/haruncpi/laravel-log-reader.git",
+                "reference": "60ec565207906d448c4c8ccd36ce9dc6ad5bc4e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/haruncpi/laravel-log-reader/zipball/60ec565207906d448c4c8ccd36ce9dc6ad5bc4e1",
+                "reference": "60ec565207906d448c4c8ccd36ce9dc6ad5bc4e1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Haruncpi\\LaravelLogReader\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Haruncpi\\LaravelLogReader\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "cc-by-4.0"
+            ],
+            "authors": [
+                {
+                    "name": "MD.HARUN-UR-RASHID",
+                    "email": "harun.cox@gmail.com"
+                }
+            ],
+            "description": "A simple and beautiful laravel log reader",
+            "keywords": [
+                "laravel",
+                "log",
+                "reader"
+            ],
+            "support": {
+                "issues": "https://github.com/haruncpi/laravel-log-reader/issues",
+                "source": "https://github.com/haruncpi/laravel-log-reader/tree/v1.0.6"
+            },
+            "time": "2020-11-07T06:06:33+00:00"
         },
         {
             "name": "kucoin/kucoin-php-sdk",
@@ -6869,7 +6921,9 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3"
+        "php": "^7.3",
+        "ext-json": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }
