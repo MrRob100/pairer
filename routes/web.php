@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CronController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,19 +22,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/balance/{coin}',[App\Http\Controllers\HomeController::class, 'balance'])->name('balance');
-Route::get('/price/{ticker}',[App\Http\Controllers\HomeController::class, 'price'])->name('price');
-Route::get('/orders',[App\Http\Controllers\HomeController::class, 'orders'])->name('orders');
-Route::get('/cancel/{order_id}',[App\Http\Controllers\HomeController::class, 'cancel'])->name('cancel');
+/* set trigger */
+Route::put('/target/set', [TargetController::class, 'set'])->name('target.set');
 
-/* maybe needs to be API resource route */
-Route::post('/addtrigger',[App\Http\Controllers\HomeController::class, 'addtrigger'])->name('addtrigger');
-Route::get('/triggers', [App\Http\Controllers\HomeController::class, 'triggers'])->name('triggers');
-Route::delete('/trigger/{id}',[App\Http\Controllers\HomeController::class, 'delete'])->name('delete');
+/* main page */
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 /* test cron script */
-Route::get('/cron', [App\Http\Controllers\CronController::class, 'run'])->name('run');
+Route::get('/cron', [CronController::class, 'run'])->name('run');
 
 /* real cron script */
-Route::get('/check', [App\Http\Controllers\CronController::class, 'check'])->name('check');
+Route::get('/check', [CronController::class, 'check'])->name('check');
