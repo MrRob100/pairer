@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Target;
+use Illuminate\Support\Facades\Log;
 
 class CronController extends Controller
 {
@@ -21,6 +22,6 @@ class CronController extends Controller
             Log::info("get BNB. Price is $price and range is $upper and $lower");
         } else {
             Log::info("checked and price within range. Price: $price, upper: $upper, lower: $lower");
-        }s
+        }
     }
 }
