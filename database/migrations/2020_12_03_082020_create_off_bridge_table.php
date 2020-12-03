@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOpenOrdersTable extends Migration
+class CreateOffBridgeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateOpenOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('open_orders', function (Blueprint $table) {
+        Schema::create('off_bridge', function (Blueprint $table) {
             $table->id();
-            $table->string('order_id');
+            $table->string('bridge_pair');
+            $table->string('bridge_side');
+            $table->string('bridge_amount');
+            $table->string('bridge_price');
+            $table->string('bridge_order_id');
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ class CreateOpenOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('open_orders');
+        Schema::dropIfExists('off_bridge');
     }
 }

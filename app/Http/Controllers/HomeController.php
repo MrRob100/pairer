@@ -40,45 +40,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $kucoin = App::make('App\Services\OrderService');
-
-        /* orders */
-        // $orders = $kucoin->getOrders();
-        // dump('orders \/');
-        // dump($orders);
-
-        /* positions */
-        // $positions = $kucoin->getPositions();
-        // dump('positions \/');
-        // dump($positions);
-
         return view('home');
     }
 
     public function cancel($order_id)
     {
-        $kucoin = App::make('App\Services\OrderService');
-
-        $response = $kucoin->cancel($order_id);
-
         return $response;
     }
 
     public function balance($coin)
     {
-        $kucoin = App::make('App\Services\OrderService');
-
-        $balance = $kucoin->getAvailableBalance(strtoupper($coin));
-
         return $balance;
     }
 
     public function price($coin)
     {
-        $kucoin = App::make('App\Services\OrderService');
-
-        $price = $kucoin->getPrice(strtoupper($coin));
-
         return $price;
     }
 
