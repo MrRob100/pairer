@@ -26,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        dump($this->getLogs(request()));
+        dd($this->getLogs(request()));
 
         $logs = $this->getLogs(request())->original['data']['logs'];
 
