@@ -44,7 +44,7 @@
             </form>
         </div>
 
-        <a href="/check" target="_blank">Manually check</a>
+        <a href="check" target="_blank">Manually check</a>
 
         <br>
 
