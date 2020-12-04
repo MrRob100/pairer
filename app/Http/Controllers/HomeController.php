@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\LaravelLogReader;
 use App\Models\Target;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class HomeController extends Controller
 {
@@ -23,22 +26,39 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $logs = $this->getLogs(request())->original['data']['logs'];
+
+
         return view('home')
-            ->with('target', Target::first());
+            ->with('target', Target::first())
+            ->with('logs', array_reverse($logs));
     }
 
-    public function cancel($order_id)
+    public function getLogs(Request $request)
     {
-        return $response;
+        if ($request->has('date')) {
+            return (new LaravelLogReader(['date' => $request->get('date')]))->get();
+        } else {
+            return (new LaravelLogReader())->get();
+        }
     }
 
-    public function balance($coin)
+    public function postDelete(Request $request)
     {
-        return $balance;
-    }
+        if ($request->has('filename')) {
+            $file = 'logs/' . $request->get('filename');
+            if (File::exists(storage_path($file))) {
+                File::delete(storage_path($file));
+                return ['success' => true, 'message' => 'Successfully deleted'];
+            }
+        }
+        if ($request->has('clear')) {
+            if ($request->get('clear') == true) {
+                $files = glob(storage_path('logs/*.log'));
 
-    public function price($coin)
-    {
-        return $price;
+                array_map('unlink', array_filter($files));
+                return ['success' => true, 'message' => 'All Successfully deleted'];
+            }
+        }
     }
 }

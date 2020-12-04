@@ -13,7 +13,6 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.5",
-        "haruncpi/laravel-log-reader": "^1.0",
         "kucoin/kucoin-php-sdk": "~1.1.0",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",

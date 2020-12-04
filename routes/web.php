@@ -3,7 +3,7 @@
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TargetController;
-use Haruncpi\LaravelLogReader\Controllers\LogReaderController;
+use App\Http\Controllers\LogReaderController;
 use Illuminate\Support\Facades\Route;
 
 /*

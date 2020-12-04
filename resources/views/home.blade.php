@@ -43,6 +43,30 @@
                 <button type="submit">Set</button>
             </form>
         </div>
+
+        <a href="/check" target="_blank">Manually check</a>
+
+        <br>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Message</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($logs as $log)
+            <tr>
+                <td>{{ $log['timestamp'] }}</td>
+                <td>{{ $log['type'] }}</td>
+                <td>{{ $log['message'] }}</td>
+            </tr>
+            @endforeach
+            </tbody>
+        </table>
+
     </div>
 </div>
 @endsection
