@@ -18,7 +18,7 @@ class TargetSeeder extends Seeder
         $admin = DB::table('targets')->first();
 
         if ($admin === null) {
-            DB::table('users')->insert([
+            DB::table('targets')->insert([
                 'lower' => '1',
                 'upper' => '5',
                 'pair' => 'XMRBNB',
