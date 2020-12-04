@@ -3,6 +3,7 @@
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TargetController;
+use Haruncpi\LaravelLogReader\Controllers\LogReaderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
+/* logs */
+Route::get('admin/log-reader', [LogReaderController::class, 'getIndex']);
 
 /* set trigger */
 Route::put('/target/set', [TargetController::class, 'set'])->name('target.set');

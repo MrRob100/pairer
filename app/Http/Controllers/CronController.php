@@ -17,9 +17,9 @@ class CronController extends Controller
         $lower = floatval(Target::first()->lower);
 
         if ($price >= $upper) {
-            Log::info("get XMR. Price is $price and range is $upper and $lower");
-        } elseif ($price <= $lower) {
             Log::info("get BNB. Price is $price and range is $upper and $lower");
+        } elseif ($price <= $lower) {
+            Log::info("get XMR. Price is $price and range is $upper and $lower");
         } else {
             Log::info("checked and price within range. Price: $price, upper: $upper, lower: $lower");
         }
