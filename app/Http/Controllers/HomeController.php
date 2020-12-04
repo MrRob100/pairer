@@ -26,8 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $logs = $this->getLogs(request())->original['data']['logs'];
+        dump($this->getLogs(request()));
 
+        $logs = $this->getLogs(request())->original['data']['logs'];
 
         return view('home')
             ->with('target', Target::first())
