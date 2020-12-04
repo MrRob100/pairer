@@ -26,13 +26,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        dd($this->getLogs(request()));
+        $data = $this->getLogs(request())->original;
 
-        $logs = $this->getLogs(request())->original['data']['logs'];
+        if ($data['success'] === true) {
+            $logs = $data['data']['logs'];
+            $success = true;
+        } else {
+            $logs = [];
+            $success = true;
+        }
 
         return view('home')
             ->with('target', Target::first())
-            ->with('logs', array_reverse($logs));
+            ->with('logs', array_reverse($logs))
+            ->with('success', $success);
     }
 
     public function getLogs(Request $request)
