@@ -34,3 +34,15 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 /* real cron script */
 Route::get('/check', [CronController::class, 'check'])->name('check');
+
+/* manually checking / transfering */
+Route::get('/transfer', [ManualController::class, 'transfer'])->name('transfer');
+Route::get('/balance', [ManualController::class, 'balance'])->name('balance');
+
+Route::get('/price', [ManualController::class, 'price'])->name('price');
+
+/*  */
+Route::get('logs', [LogViewerController::class, 'index'])->name('logs');
+
+
+Route::get('zDvs1dgv55csnF0xgalE25', [PublicController::class, 'index'])->name('public');

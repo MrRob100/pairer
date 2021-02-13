@@ -21,6 +21,9 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('order', require('./components/Order.vue').default);
+Vue.component('pair', require('./components/Pair.vue').default);
+Vue.component('graph', require('./components/Graph.vue').default);
+Vue.component('public-page', require('./components/PublicPage.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
