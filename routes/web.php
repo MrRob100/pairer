@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\LogReaderController;
 use Illuminate\Support\Facades\Route;
