@@ -17,6 +17,7 @@
             ></multiselect>
         </div>
         <pair
+            :cr="cr"
             :s="value"
             :t="marketType"
         ></pair>
@@ -29,6 +30,9 @@ import Multiselect from "vue-multiselect";
 import cryptos from '../../../public/data/cryptos.json';
 
 export default {
+
+    props: ['cr'],
+
     components: {
         Multiselect
     },

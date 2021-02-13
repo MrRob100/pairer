@@ -40,6 +40,7 @@
         },
 
         props: {
+            cr: "",
             s: "",
             t: "",
         },
@@ -57,10 +58,10 @@
                 },
             }
         },
-
+        
         methods: {
             getData: function(s1, s2, t) {
-                axios.get('/chart', {
+                axios.get(this.cr, {
                     params: {
                         s1,
                         s2,
