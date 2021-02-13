@@ -27,6 +27,9 @@ Auth::routes();
 /* logs */
 Route::get('admin/log-reader', [LogReaderController::class, 'getIndex']);
 
+/* chart data */
+Route::get('/chart', [ChartController::class, 'data'])->name('chart.data');
+
 /* set trigger */
 Route::put('/target/set', [TargetController::class, 'set'])->name('target.set');
 
