@@ -47,7 +47,7 @@ Route::get('/check', [CronController::class, 'check'])->name('check');
 
 /* manually checking / transfering */
 Route::get('/transfer', [ManualController::class, 'transfer'])->name('transfer');
-Route::get('/balance', [ManualController::class, 'balance'])->name('balance')->name('balance');
+Route::get('/balance', [ManualController::class, 'balance'])->name('balance');
 
 Route::get('/price', [ManualController::class, 'price'])->name('price')->name('price');
 
