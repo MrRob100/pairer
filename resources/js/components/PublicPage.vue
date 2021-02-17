@@ -31,7 +31,7 @@ import cryptos from '../../../public/data/cryptos.json';
 
 export default {
 
-    props: ['cr'],
+    props: ["cr"],
 
     components: {
         Multiselect

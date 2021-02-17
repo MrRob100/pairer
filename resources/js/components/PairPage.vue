@@ -23,7 +23,7 @@
         ></pair>
         <br>
         <div class="container">
-            <controls :symbol1="v1" :symbol2="v2" :id="id" :cr="cr"></controls>
+            <controls :symbol1="v1" :symbol2="v2" :cr="cr" :br="br"></controls>
 <!--            <limits></limits>-->
         </div>
     </div>
@@ -36,7 +36,7 @@ import cryptos from '../../../public/data/cryptos.json';
 
 export default {
 
-    props: ['cr', 'id'],
+    props: ['cr', 'br'],
 
     components: {
         Multiselect
