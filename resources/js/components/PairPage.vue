@@ -17,13 +17,20 @@
             ></multiselect>
         </div>
         <pair
+            :pr="pr"
             :cr="cr"
             :s="value"
             :t="marketType"
         ></pair>
         <br>
         <div class="container">
-            <controls :symbol1="v1" :symbol2="v2" :cr="cr" :br="br"></controls>
+            <controls
+                :symbol1="v1"
+                :symbol2="v2"
+                :cr="cr"
+                :br="br"
+                :pr="pr">
+            </controls>
 <!--            <limits></limits>-->
         </div>
     </div>

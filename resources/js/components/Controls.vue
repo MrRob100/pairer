@@ -66,7 +66,7 @@ export default {
         },
         inUSD: function(symbol, amount, which) {
             let _this = this;
-            axios.get("/price", {
+            axios.get(this.pr, {
                 params: {
                     symbol: symbol,
                 }
