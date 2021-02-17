@@ -38,6 +38,11 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('logs') }}" target="_blank">Logs</a>
+                        </li>
+
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -72,4 +77,5 @@
         </main>
     </div>
 </body>
+@yield('scripts')
 </html>

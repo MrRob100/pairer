@@ -3,10 +3,12 @@
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ManualController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TargetController;
-use App\Http\Controllers\LogReaderController;
 use Illuminate\Support\Facades\Route;
+use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,11 +27,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
-/* logs */
-Route::get('admin/log-reader', [LogReaderController::class, 'getIndex']);
+/* Balance report */
+Route::get('/report', [ReportController::class, 'report'])->name('report');
 
 /* chart data */
 Route::get('/chart', [ChartController::class, 'data'])->name('chart.data');
+
+/* chart page */
+Route::get('/pair', [ChartController::class, 'pair'])->name('pair');
 
 /* set trigger */
 Route::put('/target/set', [TargetController::class, 'set'])->name('target.set');
