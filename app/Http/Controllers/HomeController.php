@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -18,6 +19,6 @@ class HomeController extends Controller
 
     public function index(): View
     {
-        return view('home');
+        return view('home')->with('user', Auth::user());
     }
 }
