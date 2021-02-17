@@ -23,7 +23,7 @@
         ></pair>
         <br>
         <div class="container">
-            <controls :symbol1="v1" :symbol2="v2" :id="id"></controls>
+            <controls :symbol1="v1" :symbol2="v2" :id="id" :cr="cr"></controls>
 <!--            <limits></limits>-->
         </div>
     </div>

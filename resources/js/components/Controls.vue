@@ -16,6 +16,7 @@
 <script>
 export default {
     props: [
+        "cr",
         "symbol1",
         "symbol2"
     ],
@@ -36,7 +37,7 @@ export default {
     methods: {
         getBalance: function(symbol, which) {
             let _this = this;
-            axios.get("/balance", {
+            axios.get(this.cr, {
                 params: {
                     of: symbol,
                 }
