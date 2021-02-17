@@ -49,7 +49,7 @@ Route::get('/check', [CronController::class, 'check'])->name('check');
 Route::get('/transfer', [ManualController::class, 'transfer'])->name('transfer');
 Route::get('/balance', [ManualController::class, 'balance'])->name('balance');
 
-Route::get('/price', [ManualController::class, 'price'])->name('price')->name('price');
+Route::get('/price', [ManualController::class, 'price'])->name('price');
 
 /*  */
 Route::get('logs', [LogViewerController::class, 'index'])->name('logs');
