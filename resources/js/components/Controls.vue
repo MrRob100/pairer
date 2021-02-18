@@ -16,6 +16,7 @@
 <script>
 export default {
     props: [
+        "pr",
         "br",
         "cr",
         "symbol1",

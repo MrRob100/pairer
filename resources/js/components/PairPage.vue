@@ -17,7 +17,6 @@
             ></multiselect>
         </div>
         <pair
-            :pr="pr"
             :cr="cr"
             :s="value"
             :t="marketType"
@@ -43,7 +42,7 @@ import cryptos from '../../../public/data/cryptos.json';
 
 export default {
 
-    props: ['cr', 'br'],
+    props: ["cr", "br", "pr"],
 
     components: {
         Multiselect
