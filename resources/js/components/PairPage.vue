@@ -81,8 +81,8 @@ export default {
 
     mounted() {
         this.value = [
-            { "id": 1, "name": "ZEC"},
-            { "id": 2, "name": "ETC"},
+            { "id": 1, "name": "REN"},
+            { "id": 2, "name": "LINK"},
         ];
     },
 
