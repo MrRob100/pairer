@@ -5,6 +5,7 @@
         cr="{{ route('chart.data') }}"
         br="{{ route('balance') }}"
         pr="{{ route('price') }}"
+        tr="{{ route('transfer') }}"
     >
     </pair-page>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Balance;
 use App\Services\BinanceGetService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Services\AccountService;
 
@@ -23,17 +24,24 @@ class ManualController extends Controller
         $transfer = $this->accountService->sideToSide($_GET['from'], $_GET['to'], $_GET['portion']);
 
         if ($transfer) {
-            Log::info('transfer success data to log in db: '.$transfer);
+            Log::info('transfer success data to log in db: '.json_encode($transfer));
             //transfer is the order array
 
-//            Balance::create([
-//                'name' => 'London to Paris',
-//            ]);
+            //log bal of to
+            $balance = $this->accountService->balance()[$_GET['to']]['available'];
 
-            //FIND PAIR TRYING BOTH COMBINATIONS OR PASS IN FROM VUE AS A GET VARIABLE
-//            Balance::insert(['what' => 'ever']);
+            $b_record = Balance::create([
+                'symbol' => $_GET['to'],
+                'balance' => $balance,
+                'balance_usd' => $balance * $transfer['fills'][0]['price'],
+            ]);
+            $b_record->user()->associate(Auth::user())->save();
+
+            return true;
+
         } else {
             Log::error("transfer from {$_GET['from']} to {$_GET['to']} failed");
+            return false;
         }
     }
 

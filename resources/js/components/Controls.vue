@@ -16,6 +16,7 @@
 <script>
 export default {
     props: [
+        "tr",
         "pr",
         "br",
         "cr",
@@ -53,16 +54,16 @@ export default {
         transfer: function(from, to, portion) {
             this.disabled = true;
             let _this = this;
-            axios.get("/transfer", {
+            axios.get(this.tr, {
                 params: {
                     from: from,
                     to: to,
                     portion: portion,
                 }
-            }).then(function () {
+            }).then(function (response) {
                _this.getBalance(from);
                _this.getBalance(to);
-               _this.disabled = true;
+               _this.disabled = !response.data;
             });
         },
         inUSD: function(symbol, amount, which) {

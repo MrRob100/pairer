@@ -5,7 +5,6 @@ use App\Http\Controllers\CronController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\PublicController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
@@ -26,9 +25,6 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
-/* Balance report */
-Route::get('/report', [ReportController::class, 'report'])->name('report');
 
 /* chart data */
 Route::get('/chart', [ChartController::class, 'data'])->name('chart.data');
@@ -54,5 +50,5 @@ Route::get('/price', [ManualController::class, 'price'])->name('price');
 /*  */
 Route::get('logs', [LogViewerController::class, 'index'])->name('logs');
 
-
+/* public 3 charts */
 Route::get('zDvs1dgv55csnF0xgalE25', [PublicController::class, 'index'])->name('public');

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Balance;
 use App\Services;
 use Binance\API;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +39,6 @@ class AccountService
         $ticker = $api->prices();
 
         return $api->balances($ticker);
-
     }
 
     public function sideToSide($from, $to, $portion)
@@ -48,6 +48,15 @@ class AccountService
         $bals = $this->balance();
 
         $available = $bals[$from]['available'];
+
+        //log bal of from
+        $b_record = Balance::create([
+            'symbol' => $from,
+            'balance' => $available,
+            'balance_usd' => $available * $this->binanceGetService->price($from),
+        ]);
+        $b_record->user()->associate(Auth::user())->save();
+
         $to_init = $bals[$to]['available'];
 
         Log::info("(transfering from $from to $to ). Bals before transfer: $from: $available, $to: $to_init");
@@ -66,7 +75,7 @@ class AccountService
         }
 
         //leaving time for order to be filled
-        sleep(5);
+        sleep(4);
 
         if ($toBridge['status'] !== 'FILLED') {
             Log::info('From bridge order not filled');

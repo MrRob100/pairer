@@ -28,7 +28,8 @@
                 :symbol2="v2"
                 :cr="cr"
                 :br="br"
-                :pr="pr">
+                :pr="pr"
+                :tr="tr">
             </controls>
 <!--            <limits></limits>-->
         </div>
@@ -42,7 +43,7 @@ import cryptos from '../../../public/data/cryptos.json';
 
 export default {
 
-    props: ["cr", "br", "pr"],
+    props: ["cr", "br", "pr", "tr"],
 
     components: {
         Multiselect

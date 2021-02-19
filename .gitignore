@@ -13,3 +13,12 @@ yarn-error.log
 dep.sh
 UserSeeder.php
 KSSeeder.php
+amp.iml
+modules.xml
+php.xml
+phpunit.xml
+vcs.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/commandlinetools/Laravel_07_10_2020__10_42.xml
+frameworkDescriptionVersion1.1.4.xsd
+.gitignore
