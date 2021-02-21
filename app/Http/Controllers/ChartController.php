@@ -20,8 +20,8 @@ class ChartController extends Controller
 
     public function data(Request $request): array
     {
-        if ($request->t === 'cryptos') {
-            return $this->cryptos($request);
+        if ($request->t === 'binance') {
+            return $this->binance($request);
         }
 
         if ($request->t === 'oil') {
@@ -31,7 +31,7 @@ class ChartController extends Controller
         return [];
     }
 
-    public function cryptos(Request $request)
+    public function binance(Request $request)
     {
         $response1 = $this->binanceGetService->apiCall($request->s1);
         $response2 = $this->binanceGetService->apiCall($request->s2);

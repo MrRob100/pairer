@@ -3,18 +3,25 @@
         <div class="col-md-3 mb-3" style="z-index:10">
             <multiselect
                 v-model="marketType"
-                :options="['cryptos', 'oil', 'metals', 'others']"
+                :options="['binance', 'oil', 'metals', 'others']"
                 :multiple="false"
             ></multiselect>
             <br>
-            <multiselect
-                v-model="value"
-                :options="getOptions()"
-                :multiple="true"
-                :max="2"
-                label="name"
-                track-by="name"
-            ></multiselect>
+            <div v-if="marketType === 'binance'">
+                <input type="text" v-model="v1">
+                <input type="text" v-model="v2">
+                <button @click="go">Go</button>
+            </div>
+            <div v-else>
+                <multiselect
+                    v-model="value"
+                    :options="getOptions()"
+                    :multiple="true"
+                    :max="2"
+                    label="name"
+                    track-by="name"
+                ></multiselect>
+            </div>
         </div>
         <pair
             :cr="cr"
@@ -24,8 +31,8 @@
         <br>
         <div class="container">
             <controls
-                :symbol1="v1"
-                :symbol2="v2"
+                :symbol1="v1.toUpperCase()"
+                :symbol2="v2.toUpperCase()"
                 :cr="cr"
                 :br="br"
                 :pr="pr"
@@ -39,7 +46,6 @@
 <script>
 
 import Multiselect from "vue-multiselect";
-import cryptos from '../../../public/data/cryptos.json';
 
 export default {
 
@@ -53,7 +59,6 @@ export default {
         return {
             value: '',
             symbols: {
-                crypto: cryptos,
                 oil: [
                     { "id": 1, "name": "USO"},
                     { "id": 2, "name": "WTI"},
@@ -74,25 +79,18 @@ export default {
                     { "id": 4, "name": "GS"},
                 ]
             },
-            marketType: "cryptos",
-            v1: null,
-            v2: null,
+            marketType: "binance",
+            v1: "",
+            v2: "",
         }
     },
 
     mounted() {
-        this.value = [
-            { "id": 1, "name": "REN"},
-            { "id": 2, "name": "LINK"},
-        ];
+
     },
 
     methods: {
         getOptions: function() {
-            if (this.marketType === "cryptos") {
-                return this.symbols.crypto;
-            }
-
             if (this.marketType === "oil") {
                 return this.symbols.oil;
             }
@@ -100,19 +98,22 @@ export default {
             if (this.marketType === "metals") {
                 return this.symbols.metals;
             }
+        },
+        go: function() {
+            this.value = (this.v1 + this.v2).toUpperCase();
+
+            this.value = [
+                {"name": (this.v1).toUpperCase()},
+                {"name": (this.v2).toUpperCase()},
+            ]
+
         }
     },
 
     watch: {
         marketType: function(val) {
             this.options = this.symbols[val];
-        },
-        value: function(val) {
-            if (val.length == 2) {
-                this.v1 = val[0].name;
-                this.v2 = val[1].name;
-            }
-        },
+        }
     }
 }
 </script>
