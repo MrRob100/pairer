@@ -127,15 +127,12 @@ class AccountService
 
         $quantOfTo = $quantity / $priceOfTo;
 
-        //quantity of $to
-
         if ($quantOfTo > 100) {
-            $quantityRounded = strval(floor($quantOfTo * 1000)/1000);
+            $quantityRounded = strval(floor($quantOfTo));
         } else {
             $quantityRounded = strval(floor($quantOfTo * 100)/100);
         }
-
-
+        
         Log::info("quant: $quantityRounded of $to"); //showing 0
 
         try {
