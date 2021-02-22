@@ -4,6 +4,7 @@ use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManualController;
+use App\Http\Controllers\PairsController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
@@ -47,8 +48,13 @@ Route::get('/balance', [ManualController::class, 'balance'])->name('balance');
 
 Route::get('/price', [ManualController::class, 'price'])->name('price');
 
-/*  */
+/* logs */
 Route::get('logs', [LogViewerController::class, 'index'])->name('logs');
+
+/* pairs */
+Route::get('pairs', [PairsController::class, 'index'])->name('saved.pairs');
+Route::post('pairs', [PairsController::class, 'create'])->name('create.pair');
+Route::post('pairs/delete', [PairsController::class, 'delete'])->name('delete.pair');
 
 /* public 3 charts */
 Route::get('zDvs1dgv55csnF0xgalE25', [PublicController::class, 'index'])->name('public');

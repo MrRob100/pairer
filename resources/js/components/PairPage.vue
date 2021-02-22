@@ -1,26 +1,40 @@
 <template>
     <div>
-        <div class="col-md-3 mb-3" style="z-index:10">
-            <multiselect
-                v-model="marketType"
-                :options="['binance', 'oil', 'metals', 'others']"
-                :multiple="false"
-            ></multiselect>
-            <br>
-            <div v-if="marketType === 'binance'">
-                <input type="text" v-model="v1">
-                <input type="text" v-model="v2">
-                <button @click="go">Go</button>
-            </div>
-            <div v-else>
+        <div class="row m-2">
+            <div class="col-md-3 mb-3" style="z-index:10">
                 <multiselect
-                    v-model="value"
-                    :options="getOptions()"
-                    :multiple="true"
-                    :max="2"
-                    label="name"
-                    track-by="name"
+                    v-model="marketType"
+                    :options="['binance', 'oil', 'metals', 'others']"
+                    :multiple="false"
                 ></multiselect>
+                <br>
+                <div v-if="marketType === 'binance'">
+                    <div class="form-group">
+                        <input type="text" v-model="v1" class="form-control mb-1">
+                        <input type="text" v-model="v2" class="form-control">
+                    </div>
+                    <button @click="go" class="btn btn-success">Go</button>
+                    <button @click="add" class="btn btn-success">Add <i class="fa fa-plus"></i></button>
+
+                </div>
+                <div v-else>
+                    <multiselect
+                        v-model="value"
+                        :options="getOptions()"
+                        :multiple="true"
+                        :max="2"
+                        label="name"
+                        track-by="name"
+                    ></multiselect>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <list
+                    @populate="populate"
+                    :spr="spr"
+                    :added="added"
+                    :dlr="dlr"
+                ></list>
             </div>
         </div>
         <pair
@@ -49,7 +63,7 @@ import Multiselect from "vue-multiselect";
 
 export default {
 
-    props: ["cr", "br", "pr", "tr"],
+    props: ["cr", "br", "pr", "tr", "spr", "cpr", "dlr"],
 
     components: {
         Multiselect
@@ -82,6 +96,7 @@ export default {
             marketType: "binance",
             v1: "",
             v2: "",
+            added: [],
         }
     },
 
@@ -100,13 +115,34 @@ export default {
             }
         },
         go: function() {
-            this.value = (this.v1 + this.v2).toUpperCase();
-
             this.value = [
                 {"name": (this.v1).toUpperCase()},
                 {"name": (this.v2).toUpperCase()},
             ]
 
+        },
+        populate: function(s1, s2) {
+            this.v1 = s1;
+            this.v2 = s2;
+
+            this.go();
+        },
+
+        add: function() {
+            let _this = this;
+            axios
+                .post(this.cpr, {
+                    params: {
+                        s1: this.v1,
+                        s2: this.v2,
+                    },
+                })
+                .then(function() {
+                    _this.added = [
+                        {"s1": _this.v1},
+                        {"s2": _this.v2}
+                    ]
+                });
         }
     },
 

@@ -6,6 +6,9 @@
         br="{{ route('balance') }}"
         pr="{{ route('price') }}"
         tr="{{ route('transfer') }}"
+        spr="{{ route('saved.pairs') }}"
+        cpr="{{ route('create.pair') }}"
+        dlr="{{ route('delete.pair') }}"
     >
     </pair-page>
 @endsection
