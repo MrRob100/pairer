@@ -9,6 +9,7 @@
         spr="{{ route('saved.pairs') }}"
         cpr="{{ route('create.pair') }}"
         dlr="{{ route('delete.pair') }}"
+        bdr="{{ route('brecord') }}"
     >
     </pair-page>
 @endsection

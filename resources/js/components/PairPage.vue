@@ -4,7 +4,7 @@
             <div class="col-md-3 mb-3" style="z-index:10">
                 <multiselect
                     v-model="marketType"
-                    :options="['binance', 'oil', 'metals', 'others']"
+                    :options="['binance', 'oil', 'metals', 'others', 'iex']"
                     :multiple="false"
                 ></multiselect>
                 <br>
@@ -15,9 +15,17 @@
                     </div>
                     <button @click="go" class="btn btn-success">Go</button>
                     <button @click="add" class="btn btn-success">Add <i class="fa fa-plus"></i></button>
-
                 </div>
-                <div v-else>
+
+                <div v-if="marketType === 'iex'">
+                    <div class="form-group">
+                        <input type="text" v-model="v1" class="form-control mb-1">
+                        <input type="text" v-model="v2" class="form-control">
+                    </div>
+                    <button @click="go" class="btn btn-success">Go</button>
+                </div>
+
+                <div v-if="marketType === 'oil'">
                     <multiselect
                         v-model="value"
                         :options="getOptions()"
@@ -54,6 +62,8 @@
             </controls>
 <!--            <limits></limits>-->
         </div>
+        <record :bdr="bdr">
+        </record>
     </div>
 </template>
 
@@ -63,7 +73,7 @@ import Multiselect from "vue-multiselect";
 
 export default {
 
-    props: ["cr", "br", "pr", "tr", "spr", "cpr", "dlr"],
+    props: ["cr", "br", "pr", "tr", "spr", "cpr", "dlr", "bdr"],
 
     components: {
         Multiselect
@@ -98,10 +108,6 @@ export default {
             v2: "",
             added: [],
         }
-    },
-
-    mounted() {
-
     },
 
     methods: {

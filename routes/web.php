@@ -56,5 +56,7 @@ Route::get('pairs', [PairsController::class, 'index'])->name('saved.pairs');
 Route::post('pairs', [PairsController::class, 'create'])->name('create.pair');
 Route::post('pairs/delete', [PairsController::class, 'delete'])->name('delete.pair');
 
+/* balrecord */
+Route::get('/brecord', [ManualController::class, 'brecord'])->name('brecord');
 /* public 3 charts */
 Route::get('zDvs1dgv55csnF0xgalE25', [PublicController::class, 'index'])->name('public');

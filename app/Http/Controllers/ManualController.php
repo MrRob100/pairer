@@ -7,6 +7,7 @@ use App\Services\BinanceGetService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Services\AccountService;
+use Illuminate\Http\Request;
 
 class ManualController extends Controller
 {
@@ -53,5 +54,14 @@ class ManualController extends Controller
     public function price()
     {
         return $this->binanceGetService->price($_GET['symbol']);
+    }
+
+    public function brecord(Request $request)
+    {
+        return $request->user()->balances()
+            ->where('symbol', $request->c)
+            ->limit(20)
+            ->orderBy('created_at', 'DESC')
+            ->get()->toArray();
     }
 }
