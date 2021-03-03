@@ -54,7 +54,6 @@ export default {
                     c: this.bof,
                 }
             }).then(response => {
-                console.log(response.data);
                 this.bc = response.data;
             });
         }
