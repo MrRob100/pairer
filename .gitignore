@@ -22,3 +22,4 @@ vcs.xml
 .idea/commandlinetools/Laravel_07_10_2020__10_42.xml
 frameworkDescriptionVersion1.1.4.xsd
 .gitignore
+*.csv
