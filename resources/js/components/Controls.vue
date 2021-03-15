@@ -40,20 +40,17 @@ export default {
 
     methods: {
         getBalance: function(symbol, which) {
-
-            if (confirm("Are you sure?")) {
-                let _this = this;
-                axios.get(this.br, {
-                    params: {
-                        of: symbol,
-                    }
-                }).then(function (response) {
-                    _this.bal[which] = response.data;
-                    if (which !== 'usdt') {
-                        _this.inUSD(symbol, response.data, which);
-                    }
-                });
-            }
+            let _this = this;
+            axios.get(this.br, {
+                params: {
+                    of: symbol,
+                }
+            }).then(function (response) {
+                _this.bal[which] = response.data;
+                if (which !== 'usdt') {
+                    _this.inUSD(symbol, response.data, which);
+                }
+            });
         },
         transfer: function(from, to, portion) {
             if (confirm("Are you sure you want to transfer " + from + " to " + to +"?")) {
