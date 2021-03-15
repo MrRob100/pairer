@@ -5,6 +5,7 @@
         <button @click="transfer(symbol2, symbol1, (1/split) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} {{ split }}%</button>
         <button @click="transfer(symbol2, symbol1, 1)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} 100%</button>
         <br>
+        <hr>
         <button @click="getBalance(symbol1, 'one')" class="btn btn-info mb-2">Balance {{ symbol1 }}: {{ bal.one }} (${{ Math.floor(bal.oneUSD) }})</button>
         <br>
         <button @click="getBalance(symbol2, 'two')" class="btn btn-info mb-2">Balance {{ symbol2 }}: {{ bal.two }} (${{ Math.floor(bal.twoUSD) }})</button>
@@ -39,32 +40,37 @@ export default {
 
     methods: {
         getBalance: function(symbol, which) {
-            let _this = this;
-            axios.get(this.br, {
-                params: {
-                    of: symbol,
-                }
-            }).then(function (response) {
-                _this.bal[which] = response.data;
-                if (which !== 'usdt') {
-                    _this.inUSD(symbol, response.data, which);
-                }
-            });
+
+            if (confirm("Are you sure?")) {
+                let _this = this;
+                axios.get(this.br, {
+                    params: {
+                        of: symbol,
+                    }
+                }).then(function (response) {
+                    _this.bal[which] = response.data;
+                    if (which !== 'usdt') {
+                        _this.inUSD(symbol, response.data, which);
+                    }
+                });
+            }
         },
         transfer: function(from, to, portion) {
-            this.disabled = true;
-            let _this = this;
-            axios.get(this.tr, {
-                params: {
-                    from: from,
-                    to: to,
-                    portion: portion,
-                }
-            }).then(function (response) {
-               _this.getBalance(from);
-               _this.getBalance(to);
-               _this.disabled = !response.data;
-            });
+            if (confirm("Are you sure you want to transfer " + from + " to " + to +"?")) {
+                this.disabled = true;
+                let _this = this;
+                axios.get(this.tr, {
+                    params: {
+                        from: from,
+                        to: to,
+                        portion: portion,
+                    }
+                }).then(function (response) {
+                   _this.getBalance(from);
+                   _this.getBalance(to);
+                   _this.disabled = !response.data;
+                });
+            }
         },
         inUSD: function(symbol, amount, which) {
             let _this = this;
