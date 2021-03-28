@@ -9,6 +9,8 @@
                     <th>Date</th>
                     <th>Balance</th>
                     <th>Balance ($)</th>
+                    <th>Price At Trade ($)</th>
+                    <th>Note</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -16,6 +18,8 @@
                         <td>{{ formatDate(b.created_at) }}</td>
                         <td>{{ b.balance }}</td>
                         <td>{{ b.balance_usd }}</td>
+                        <td>{{ b.price_at_trade }}</td>
+                        <td>{{ b.note }}</td>
                     </tr>
                 </tbody>
             </table>

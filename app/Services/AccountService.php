@@ -4,10 +4,8 @@ namespace App\Services;
 
 use App\Models\Balance;
 use App\Services;
-use Binance\API;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use App\Services\BinanceGetService;
 
 class AccountService
 {
@@ -48,24 +46,43 @@ class AccountService
         $bals = $this->balance();
 
         $available = $bals[$from]['available'];
+        $available_to = $bals[$to]['available'];
 
-        //log bal of from
-        $b_record = Balance::create([
+        $price = $this->binanceGetService->price($from);
+        $price_to = $this->binanceGetService->price($to);
+
+        //log bal of from before
+        $b_record_from = Balance::create([
             'symbol' => $from,
             'balance' => $available,
-            'balance_usd' => $available * $this->binanceGetService->price($from),
+            'balance_usd' => $available * $price,
+            'price_at_trade' => $price,
+            'note' => 'before trade',
         ]);
-        $b_record->user()->associate(Auth::user())->save();
+
+        //log bal of to before
+        $b_record_to = Balance::create([
+            'symbol' => $to,
+            'balance' => $available_to,
+            'balance_usd' => $available_to * $price,
+            'price_at_trade' => $price_to,
+            'note' => 'before trade',
+        ]);
+
+        $user = Auth::user();
+
+        $b_record_from->user()->associate($user)->save();
+        $b_record_to->user()->associate($user)->save();
 
         $to_init = $bals[$to]['available'];
 
-        Log::info("(transfering from $from to $to ). Bals before transfer: $from: $available, $to: $to_init");
+        Log::info("(transfering from $from to $to ). Bals before transfer: $from: $available, $to: $to_init . user id: {$user->id}");
         //also db
 
         $bridgeBalBefore = $bals['USDT']['available'];
         $quantityTB = $available / $portion;
 
-        Log::info("quant: $quantityTB of $from"); //works
+        Log::info("quant: $quantityTB of $from user: $user" ); //works
 
         $toBridge = $this->marketToUSDT($from, $quantityTB);
 
@@ -83,6 +100,19 @@ class AccountService
         }
 
         $bals_after = $this->balance();
+
+        $bal_from_after = $bals_after[$from]['available'];
+
+        //from after
+        $b_record_from_after = Balance::create([
+            'symbol' => $from,
+            'balance' => $bal_from_after,
+            'balance_usd' => $bal_from_after * $price,
+            'price_at_trade' => $price,
+            'note' => 'after trade',
+        ]);
+
+        $b_record_from_after->user()->associate($user)->save();
 
         $bridgeBalAfter = $bals_after['USDT']['available'];
 
@@ -132,7 +162,7 @@ class AccountService
         } else {
             $quantityRounded = strval(floor($quantOfTo * 100)/100);
         }
-        
+
         Log::info("quant: $quantityRounded of $to"); //showing 0
 
         try {

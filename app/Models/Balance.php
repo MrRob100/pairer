@@ -13,7 +13,9 @@ class Balance extends Model
     protected $fillable = [
         'symbol',
         'balance',
-        'balance_usd'
+        'balance_usd',
+        'price_at_trade',
+        'note'
     ];
 
     public function user(): BelongsTo
