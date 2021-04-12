@@ -29,6 +29,7 @@ Vue.component('limits', require('./components/Limits.vue').default);
 Vue.component('public-page', require('./components/PublicPage.vue').default);
 Vue.component('list', require('./components/List.vue').default);
 Vue.component('record', require('./components/Record.vue').default);
+Vue.component('box', require('./components/Box.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

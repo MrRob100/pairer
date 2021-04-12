@@ -6,6 +6,7 @@
                     v-model="marketType"
                     :options="['binance', 'oil', 'metals', 'others', 'iex']"
                     :multiple="false"
+                    disabled
                 ></multiselect>
                 <br>
                 <div v-if="marketType === 'binance'">
@@ -49,6 +50,7 @@
             :cr="cr"
             :s="value"
             :t="marketType"
+            :dr="dr"
         ></pair>
         <br>
         <div class="container">
@@ -73,7 +75,7 @@ import Multiselect from "vue-multiselect";
 
 export default {
 
-    props: ["cr", "br", "pr", "tr", "spr", "cpr", "dlr", "bdr"],
+    props: ["cr", "br", "pr", "tr", "spr", "cpr", "dlr", "bdr", "dr"],
 
     components: {
         Multiselect

@@ -8,6 +8,7 @@
                 :height="280"
                 :width="460"
             ></trading-vue>
+            <a v-if="this.s.length == 2" :href="this.dlref0" class="btn btn-sm btn-primary m-1"><i class="fa fa-download mr-1"></i>Download csv</a>
         </div>
         <div class="col-4">
             <trading-vue
@@ -26,6 +27,8 @@
                 :height="280"
                 :width="460"
             ></trading-vue>
+
+            <a v-if="this.s.length == 2" :href="this.dlref1" class="btn btn-sm btn-primary m-1"><i class="fa fa-download mr-1"></i>Download csv</a>
         </div>
     </div>
 </template>
@@ -43,6 +46,7 @@
             cr: "",
             s: "",
             t: "",
+            dr: "",
         },
 
         data: function() {
@@ -56,9 +60,11 @@
                 tradingVue2: {
                     ohlcv: [],
                 },
+                dlref0: "",
+                dlref1: "",
             }
         },
-        
+
         methods: {
             getData: function(s1, s2, t) {
                 axios.get(this.cr, {
@@ -92,6 +98,8 @@
                 if (val.length == 2) {
                     this.getData(val[0].name, val[1].name, this.t);
                     this.setChartHeading(val);
+                    this.dlref0 = this.dr + "?symbol=" + val[0].name.toUpperCase();
+                    this.dlref1 = this.dr + "?symbol=" + val[1].name.toUpperCase();
                 }
             },
         }

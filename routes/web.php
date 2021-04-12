@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\PairsController;
@@ -29,6 +30,9 @@ Auth::routes();
 
 /* chart data */
 Route::get('/chart', [ChartController::class, 'data'])->name('chart.data');
+
+/* Download csv */
+Route::get('/download', [DownloadController::class, 'download'])->name('download');
 
 /* chart page */
 Route::get('/pair', [ChartController::class, 'pair'])->name('pair');

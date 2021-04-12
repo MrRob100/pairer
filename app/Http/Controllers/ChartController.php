@@ -33,16 +33,30 @@ class ChartController extends Controller
 
     public function binance(Request $request)
     {
+        if (file_exists(public_path() . "/" . $request->s1 . ".csv")) {
+            unlink(public_path() . "/" . $request->s1 . ".csv");
+        }
+
+        if (file_exists(public_path() . "/" . $request->s2 . ".csv")) {
+            unlink(public_path() . "/" . $request->s2 . ".csv");
+        }
+
         $response1 = $this->binanceGetService->apiCall($request->s1);
         $response2 = $this->binanceGetService->apiCall($request->s2);
 
         $size_max = max(sizeof($response1), sizeof($response2) - 1);
         $size_min = min(sizeof($response1), sizeof($response2) - 1);
 
+        $file1 = fopen(public_path() . "/" . $request->s1 . ".csv", "w");
+        $file2 = fopen(public_path() . "/" . $request->s2 . ".csv", "w");
+
         $pair = [];
         for($i=0; $i<$size_max; $i++) {
 
             if ($i < $size_min) {
+
+                fputcsv($file1, $response1[$i]);
+                fputcsv($file2, $response2[$i]);
 
 //                dump('t1'.$i.' '.gmdate("d-m-y", $response1[$i][0] / 1000));
 //                dump('t2'.$i.' '.gmdate("d-m-y", $response2[$i][0] / 1000));
@@ -58,6 +72,9 @@ class ChartController extends Controller
                 ];
             }
         }
+
+        fclose($file1);
+        fclose($file2);
 
         return [
             'first' => $this->formatBinanceResponse($response1),

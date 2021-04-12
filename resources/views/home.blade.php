@@ -10,6 +10,8 @@
         cpr="{{ route('create.pair') }}"
         dlr="{{ route('delete.pair') }}"
         bdr="{{ route('brecord') }}"
+        dr="{{ route('download') }}"
     >
     </pair-page>
+    @include('box')
 @endsection
