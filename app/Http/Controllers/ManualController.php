@@ -69,6 +69,7 @@ class ManualController extends Controller
     public function brecord(Request $request)
     {
         return $request->user()->balances()
+            ->where('user_id', $request->user()->id)
             ->where('symbol', $request->c)
             ->limit(20)
             ->orderBy('created_at', 'DESC')
