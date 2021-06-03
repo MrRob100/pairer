@@ -4,9 +4,8 @@
             <div class="col-md-3 mb-3" style="z-index:10">
                 <multiselect
                     v-model="marketType"
-                    :options="['binance', 'oil', 'metals', 'others', 'iex']"
+                    :options="['binance', 'oil', 'metals', 'others', 'iex', 'goldpaxg']"
                     :multiple="false"
-                    disabled
                 ></multiselect>
                 <br>
                 <div v-if="marketType === 'binance'">
@@ -15,7 +14,9 @@
                         <input type="text" v-model="v2" class="form-control">
                     </div>
                     <button @click="go" class="btn btn-success">Go</button>
-                    <button @click="add" class="btn btn-success">Add <i class="fa fa-plus"></i></button>
+                    <button @click="add" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                    <button @click="randomize" class="btn btn-success"><i class="fa fa-random"></i></button>
+                    <button @click="trash" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                 </div>
 
                 <div v-if="marketType === 'iex'">
@@ -23,6 +24,10 @@
                         <input type="text" v-model="v1" class="form-control mb-1">
                         <input type="text" v-model="v2" class="form-control">
                     </div>
+                    <button @click="go" class="btn btn-success">Go</button>
+                </div>
+
+                <div v-if="marketType === 'goldpaxg'">
                     <button @click="go" class="btn btn-success">Go</button>
                 </div>
 
@@ -51,6 +56,7 @@
             :s="value"
             :t="marketType"
             :dr="dr"
+            @lasts="sendLasts"
         ></pair>
         <br>
         <div class="container">
@@ -64,8 +70,8 @@
             </controls>
 <!--            <limits></limits>-->
         </div>
-        <record :bdr="bdr">
-        </record>
+        <pair-record :value="value" :push-lasts="pushLasts"></pair-record>
+<!--        <record :bdr="bdr"></record>-->
     </div>
 </template>
 
@@ -75,7 +81,7 @@ import Multiselect from "vue-multiselect";
 
 export default {
 
-    props: ["cr", "br", "pr", "tr", "spr", "cpr", "dlr", "bdr", "dr"],
+    props: ["cr", "br", "pr", "tr", "spr", "cpr", "dlr", "bdr", "dr", "rand", "dp"],
 
     components: {
         Multiselect
@@ -109,10 +115,14 @@ export default {
             v1: "",
             v2: "",
             added: [],
+            pushLasts: [],
         }
     },
 
     methods: {
+        sendLasts: function(data) {
+            this.pushLasts = data;
+        },
         getOptions: function() {
             if (this.marketType === "oil") {
                 return this.symbols.oil;
@@ -123,6 +133,12 @@ export default {
             }
         },
         go: function() {
+
+            if (this.marketType === "goldpaxg") {
+                this.v1 = "gold";
+                this.v2 = "paxg";
+            }
+
             this.value = [
                 {"name": (this.v1).toUpperCase()},
                 {"name": (this.v2).toUpperCase()},
@@ -151,6 +167,31 @@ export default {
                         {"s2": _this.v2}
                     ]
                 });
+        },
+
+        randomize: function() {
+            let _this = this;
+            axios.get(this.rand).then(response => {
+                _this.v1 = response.data.v1;
+                _this.v2 = response.data.v2;
+
+                _this.value = [
+                    {"name": (response.data.v1).toUpperCase()},
+                    {"name": (response.data.v2).toUpperCase()},
+                ]
+            });
+        },
+        trash: function() {
+            let _this = this;
+            axios.post(this.dp, {
+                params: {
+                    s1: this.v1,
+                    s2: this.v2,
+                }
+            }).then(response => {
+                _this.v1 = '';
+                _this.v2 = '';
+            })
         }
     },
 

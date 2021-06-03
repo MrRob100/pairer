@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Balance;
+use App\Models\PairPrice;
 use App\Services;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -18,7 +19,7 @@ class AccountService
 
     protected function api()
     {
-        $data = Auth()->user()->key()->first();
+        $data = Auth()->user()->key;
 
         return new Services\BinanceService($data->k, $data->s);
     }
@@ -58,15 +59,17 @@ class AccountService
             'balance_usd' => $available * $price,
             'price_at_trade' => $price,
             'note' => 'before trade',
+            'side' => 'sell',
         ]);
 
         //log bal of to before
         $b_record_to = Balance::create([
             'symbol' => $to,
             'balance' => $available_to,
-            'balance_usd' => $available_to * $price,
+            'balance_usd' => $available_to * $price_to, //corrected hopefully
             'price_at_trade' => $price_to,
             'note' => 'before trade',
+            'side' => 'buy',
         ]);
 
         $user = Auth::user();
@@ -110,6 +113,7 @@ class AccountService
             'balance_usd' => $bal_from_after * $price,
             'price_at_trade' => $price,
             'note' => 'after trade',
+            'side' => 'sell',
         ]);
 
         $b_record_from_after->user()->associate($user)->save();

@@ -6,21 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Balance extends Model
+class Input extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'symbol',
-        'balance',
-        'balance_usd',
-        'price_at_trade',
-        'note',
-        'side'
+        'symbol1',
+        'amount1',
+        'amount1_usd',
+        'symbol2',
+        'amount2',
+        'amount2_usd',
     ];
 
-    public function user(): BelongsTo
+    public function pair(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Pair::class);
     }
 }

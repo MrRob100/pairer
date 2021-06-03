@@ -30,6 +30,13 @@
  */
 
 /*!
+ * TradingVue.JS - v0.6.1 - Mon Aug 17 2020
+ *     https://github.com/tvjsx/trading-vue-js
+ *     Copyright (c) 2019 C451 Code's All Right;
+ *     Licensed under the MIT license
+ */
+
+/*!
  * Vue.js v2.6.12
  * (c) 2014-2020 Evan You
  * Released under the MIT License.

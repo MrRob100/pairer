@@ -5,8 +5,10 @@ use App\Http\Controllers\CronController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManualController;
+use App\Http\Controllers\OngController;
 use App\Http\Controllers\PairsController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\RandomizeController;
 use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
@@ -62,5 +64,14 @@ Route::post('pairs/delete', [PairsController::class, 'delete'])->name('delete.pa
 
 /* balrecord */
 Route::get('/brecord', [ManualController::class, 'brecord'])->name('brecord');
+
+/* balpairrecord */
+Route::get('/get_pair_data', [ManualController::class, 'getPairData'])->name('getPairData');
+
+Route::get('/ong', [OngController::class, 'get']);
+
 /* public 3 charts */
 Route::get('zDvs1dgv55csnF0xgalE25', [PublicController::class, 'index'])->name('public');
+
+Route::get('/randomize', [RandomizeController::class, 'randomPair'])->name('randomize');
+Route::post('/dudpair', [RandomizeController::class, 'trash'])->name('trash');

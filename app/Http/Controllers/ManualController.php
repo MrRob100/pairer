@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Balance;
+use App\Models\Input;
+use App\Models\PairBalance;
 use App\Services\BinanceGetService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -43,8 +45,8 @@ class ManualController extends Controller
                 'balance_usd' => $balance * $price,
                 'price_at_trade' => $price,
                 'note' => 'after trade',
+                'side' => 'buy',
             ]);
-
 
             $b_record->user()->associate($user)->save();
 
@@ -74,5 +76,46 @@ class ManualController extends Controller
             ->limit(20)
             ->orderBy('created_at', 'DESC')
             ->get()->toArray();
+    }
+
+    public function getPairData(Request $request)
+    {
+        $pair_balances = PairBalance::where('s1', $request->s1)
+            ->where('s2', $request->s2)
+            ->orderBy('created_at')->get();
+
+        $inputs = Input::where(
+            function ($query) use ($request) {
+                $query->where('symbol1', $request->s1)
+                    ->where('symbol2', $request->s2);
+            }
+        )->orWhere(
+            function ($query) use ($request) {
+                $query->where('symbol1', $request->s2)
+                    ->where('symbol2', $request->s1);
+            }
+        )->orderBy('created_at')->get();
+
+        $data = [];
+        foreach($pair_balances as $pair_balance) {
+            for($i = 0; $i < sizeof($inputs); $i++) {
+                if ($inputs[$i]->created_at <= $pair_balance->created_at) {
+
+                    $relInputs = $inputs->where('created_at', '<=', $pair_balance->created_at);
+
+                    $merged = array_merge($pair_balance->toArray(), [
+                        'input_symbol1' => $relInputs->sum('amount1'),
+                        'input_symbol1_usd' => $relInputs->sum('amount1_usd'),
+                        'input_symbol2' => $relInputs->sum('amount2'),
+                        'input_symbol2_usd' => $relInputs->sum('amount2_usd'),
+                        'wbw_usd_1' => $relInputs->sum('amount1') * $pair_balance->price_at_trade_s1,
+                        'wbw_usd_2' => $relInputs->sum('amount2') * $pair_balance->price_at_trade_s2
+                    ]);
+
+                    $data[] = $merged;
+                }
+            }
+        }
+        return $data;
     }
 }

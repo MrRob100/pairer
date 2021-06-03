@@ -11,7 +11,9 @@
         dlr="{{ route('delete.pair') }}"
         bdr="{{ route('brecord') }}"
         dr="{{ route('download') }}"
+        rand="{{ route('randomize') }}"
+        dp="{{ route('trash') }}"
     >
     </pair-page>
-    @include('box')
+{{--    @include('box')--}}
 @endsection

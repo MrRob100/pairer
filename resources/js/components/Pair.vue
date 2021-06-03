@@ -11,13 +11,14 @@
             <a v-if="this.s.length == 2" :href="this.dlref0" class="btn btn-sm btn-primary m-1"><i class="fa fa-download mr-1"></i>Download csv</a>
         </div>
         <div class="col-4">
-            <trading-vue
+            <trading-vuea
+                :colorWickUp="lineDataPair ? JSON.stringify(lineDataPair) : null"
                 style="z-index: -1"
                 colorText="#7DA0B1"
                 :data="tradingVueData"
                 :height="280"
                 :width="460"
-            ></trading-vue>
+            ></trading-vuea>
         </div>
         <div class="col-4">
             <trading-vue
@@ -35,11 +36,13 @@
 <script>
 
     import TradingVue from 'trading-vue-js'
+    import TradingVuea from '../../js/trading-vue-a';
 
     export default {
 
         components: {
             TradingVue,
+            TradingVuea,
         },
 
         props: {
@@ -62,6 +65,7 @@
                 },
                 dlref0: "",
                 dlref1: "",
+                lineDataPair: [],
             }
         },
 
@@ -77,6 +81,14 @@
                     this.tradingVue1.ohlcv = response.data['first'];
                     this.tradingVueData.ohlcv = response.data['pair'];
                     this.tradingVue2.ohlcv = response.data['second'];
+                    this.lineDataPair = response.data['events'];
+
+                    let lasts = [
+                        {"s1": response.data['first'][response.data['first'].length - 1][4]},
+                        {"s2": response.data['second'][response.data['second'].length - 1][4]},
+                    ];
+
+                    this.$emit('lasts', lasts)
                 });
             },
             setChartHeading: function(val) {

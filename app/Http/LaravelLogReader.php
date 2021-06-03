@@ -17,6 +17,18 @@ class LaravelLogReader
 
     }
 
+    public function deleteLogs($index = null)
+    {
+//        $dates = [];
+//        $files = glob(storage_path('logs/laravel-*.log'));
+//        $files = array_reverse($files);
+//        foreach ($files as $path) {
+//            $fileName = basename($path);
+//            preg_match('/(?<=laravel-)(.*)(?=.log)/', $fileName, $dtMatch);
+//            $date = $dtMatch[0];
+//            array_push($dates, $date);
+//        }
+    }
 
     public function getLogFileDates()
     {
