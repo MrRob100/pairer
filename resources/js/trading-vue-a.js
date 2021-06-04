@@ -9585,27 +9585,28 @@ var price_Price = /*#__PURE__*/function () {
       ctx.setLineDash([]);
 
       if(this.comp.$props.colors.colorWickUp) {
-          let top1 = JSON.parse(this.comp.$props.colors.colorWickUp).top1
-          let top2 = JSON.parse(this.comp.$props.colors.colorWickUp).top2
+          let parsed = JSON.parse(this.comp.$props.colors.colorWickUp);
 
-          let bot1 = JSON.parse(this.comp.$props.colors.colorWickUp).bot1
-          let bot2 = JSON.parse(this.comp.$props.colors.colorWickUp).bot2
+          let l1 = layout.$2screen(parsed.middlePrice1);
+          let l2 = layout.$2screen(parsed.middlePrice2);
+          let l3 = layout.$2screen(parsed.middlePrice3);
 
-          let l1 = layout.$2screen(top1 / top2);
-          let l2 = layout.$2screen(bot1 / bot2);
-
-          //last sell
-          ctx.strokeStyle = "#FFFF00";
+          ctx.strokeStyle = "#4abcff";
           ctx.beginPath();
           ctx.moveTo(0, l1);
           ctx.lineTo(layout.width, l1);
           ctx.stroke();
 
-          //last buy
-          ctx.strokeStyle = "#0000FF";
+          ctx.strokeStyle = "#359ad6";
           ctx.beginPath();
           ctx.moveTo(0, l2);
           ctx.lineTo(layout.width, l2);
+          ctx.stroke();
+
+          ctx.strokeStyle = "#24638a";
+          ctx.beginPath();
+          ctx.moveTo(0, l3);
+          ctx.lineTo(layout.width, l3);
           ctx.stroke();
       }
     }

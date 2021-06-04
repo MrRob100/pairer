@@ -65,20 +65,21 @@ class AccountService
             }
         )->orderBy('created_at')->first();
 
-        $price_s1 = $this->binanceGetService->price($pair->s1);
-        $price_s2 = $this->binanceGetService->price($pair->s2);
+//        if($pair->isNotEmpty()) {
+            $price_s1 = $this->binanceGetService->price($pair->s1);
+            $price_s2 = $this->binanceGetService->price($pair->s2);
 
-        PairBalance::create([
-            's1' => $pair->s1,
-            'balance_s1' => $bals[$pair->s1]['available'],
-            'balance_s1_usd' => $bals[$pair->s1]['available'] * $price_s1,
-            'price_at_trade_s1' => $price_s1,
-            's2' => $pair->s2,
-            'balance_s2' => $bals[$pair->s2]['available'],
-            'balance_s2_usd' => $bals[$pair->s2]['available'] * $price_s2,
-            'price_at_trade_s2' => $price_s2,
-        ]);
-
+            PairBalance::create([
+                's1' => $pair->s1,
+                'balance_s1' => $bals[$pair->s1]['available'],
+                'balance_s1_usd' => $bals[$pair->s1]['available'] * $price_s1,
+                'price_at_trade_s1' => $price_s1,
+                's2' => $pair->s2,
+                'balance_s2' => $bals[$pair->s2]['available'],
+                'balance_s2_usd' => $bals[$pair->s2]['available'] * $price_s2,
+                'price_at_trade_s2' => $price_s2,
+            ]);
+//        }
 
         $user = Auth::user();
 

@@ -11,6 +11,16 @@
         <button @click="getBalance(symbol2, 'two')" class="btn btn-info mb-2">Balance {{ symbol2 }}: {{ bal.two }} (${{ Math.floor(bal.twoUSD) }})</button>
         <br>
         <button @click="getBalance('USDT', 'usdt')" class="btn btn-info mb-2">Balance USDT: ${{ Math.floor(bal.usdt) }}</button>
+        <br>
+        <button @click="showInputForm()">Add Input</button>
+        <div v-if="showForm">
+            <input type="text" :value="symbol1">
+            <input type="number" :placeholder="'amount ' + symbol1">
+            <input type="number" placeholder="amount $">
+            <input type="text" :value="symbol2">
+            <input type="number" :placeholder="'amount ' + symbol2">
+            <input type="number" placeholder="amount $">
+        </div>
     </div>
 </template>
 
@@ -34,11 +44,15 @@ export default {
                 twoUSD: null,
                 usdt: null
             },
-            disabled: false
+            disabled: false,
+            showForm: false,
         };
     },
 
     methods: {
+        showInputForm: function() {
+            this.showForm = !this.showForm;
+        },
         getBalance: function(symbol, which) {
             let _this = this;
             axios.get(this.br, {
