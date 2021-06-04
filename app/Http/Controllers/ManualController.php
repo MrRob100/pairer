@@ -33,22 +33,10 @@ class ManualController extends Controller
             Log::info('transfer success data to log in db: '.json_encode($transfer). 'user id: ' . $user->id);
             //transfer is the order array
 
-            $bal_all = $this->accountService->balance();
-
-            $balance = $bal_all[$_GET['to']]['available'];
-            $price = $transfer['fills'][0]['price'];
-
-            //to after
-            $b_record = Balance::create([
-                'symbol' => $_GET['to'],
-                'balance' => $balance,
-                'balance_usd' => $balance * $price,
-                'price_at_trade' => $price,
-                'note' => 'after trade',
-                'side' => 'buy',
-            ]);
-
-            $b_record->user()->associate($user)->save();
+//            $bal_all = $this->accountService->balance();
+//
+//            $balance = $bal_all[$_GET['to']]['available'];
+//            $price = $transfer['fills'][0]['price'];
 
             return true;
 

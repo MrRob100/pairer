@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Balance;
-use App\Models\PairPrice;
+use App\Models\Pair;
+use App\Models\PairBalance;
 use App\Services;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -47,35 +47,40 @@ class AccountService
         $bals = $this->balance();
 
         $available = $bals[$from]['available'];
-        $available_to = $bals[$to]['available'];
 
-        $price = $this->binanceGetService->price($from);
-        $price_to = $this->binanceGetService->price($to);
+        $toPass = [
+            'from' => $from,
+            'to' => $to,
+        ];
 
-        //log bal of from before
-        $b_record_from = Balance::create([
-            'symbol' => $from,
-            'balance' => $available,
-            'balance_usd' => $available * $price,
-            'price_at_trade' => $price,
-            'note' => 'before trade',
-            'side' => 'sell',
+        $pair = Pair::where(
+            function ($query) use ($toPass) {
+                $query->where('s1', $toPass['from'])
+                    ->where('s2', $toPass['to']);
+            }
+        )->orWhere(
+            function ($query) use ($toPass) {
+                $query->where('s1', $toPass['to'])
+                    ->where('s2', $toPass['from']);
+            }
+        )->orderBy('created_at')->first();
+
+        $price_s1 = $this->binanceGetService->price($pair->s1);
+        $price_s2 = $this->binanceGetService->price($pair->s2);
+
+        PairBalance::create([
+            's1' => $pair->s1,
+            'balance_s1' => $bals[$pair->s1]['available'],
+            'balance_s1_usd' => $bals[$pair->s1]['available'] * $price_s1,
+            'price_at_trade_s1' => $price_s1,
+            's2' => $pair->s2,
+            'balance_s2' => $bals[$pair->s2]['available'],
+            'balance_s2_usd' => $bals[$pair->s2]['available'] * $price_s2,
+            'price_at_trade_s2' => $price_s2,
         ]);
 
-        //log bal of to before
-        $b_record_to = Balance::create([
-            'symbol' => $to,
-            'balance' => $available_to,
-            'balance_usd' => $available_to * $price_to, //corrected hopefully
-            'price_at_trade' => $price_to,
-            'note' => 'before trade',
-            'side' => 'buy',
-        ]);
 
         $user = Auth::user();
-
-        $b_record_from->user()->associate($user)->save();
-        $b_record_to->user()->associate($user)->save();
 
         $to_init = $bals[$to]['available'];
 
@@ -105,18 +110,6 @@ class AccountService
         $bals_after = $this->balance();
 
         $bal_from_after = $bals_after[$from]['available'];
-
-        //from after
-        $b_record_from_after = Balance::create([
-            'symbol' => $from,
-            'balance' => $bal_from_after,
-            'balance_usd' => $bal_from_after * $price,
-            'price_at_trade' => $price,
-            'note' => 'after trade',
-            'side' => 'sell',
-        ]);
-
-        $b_record_from_after->user()->associate($user)->save();
 
         $bridgeBalAfter = $bals_after['USDT']['available'];
 

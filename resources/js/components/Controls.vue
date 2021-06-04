@@ -58,8 +58,8 @@ export default {
                 let _this = this;
                 axios.get(this.tr, {
                     params: {
-                        from: from,
-                        to: to,
+                        from: from.toUpperCase(),
+                        to: to.toUpperCase(),
                         portion: portion,
                     }
                 }).then(function (response) {

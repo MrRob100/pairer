@@ -157,8 +157,8 @@ export default {
             axios
                 .post(this.cpr, {
                     params: {
-                        s1: this.v1,
-                        s2: this.v2,
+                        s1: this.v1.toUpperCase(),
+                        s2: this.v2.toUpperCase(),
                     },
                 })
                 .then(function() {
