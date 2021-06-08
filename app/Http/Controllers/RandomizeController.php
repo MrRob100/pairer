@@ -30,15 +30,6 @@ class RandomizeController extends Controller
         $s1 = str_replace('USDT', '', $symbols[rand(0, $symbols->count())]);
         $s2 = str_replace('USDT', '', $symbols[rand(0, $symbols->count())]);
 
-//        dump($s1.$s2);
-//
-//        dump(str_contains($s2.$s1, 'DOWN'));
-//        dump(str_contains($s2.$s1, 'UP'));
-//        dump(str_contains($s2.$s1, 'BEAR'));
-//        dump(str_contains($s2.$s1, 'BULL'));
-//
-//        die();
-
         if(in_array($s1.$s2, $trash)
             || in_array($s2.$s1, $trash)
             || str_contains($s2.$s1, 'DOWN')
@@ -46,8 +37,9 @@ class RandomizeController extends Controller
             || str_contains($s2.$s1, 'BEAR')
             || str_contains($s2.$s1, 'BULL'))
         {
+
            DudPair::create(['symbol' => $s1.$s2]);
-           $this->randomPair();
+           return($this->randomPair());
         }
 
         return [
