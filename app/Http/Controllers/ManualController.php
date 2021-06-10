@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Balance;
 use App\Models\Input;
 use App\Models\PairBalance;
 use App\Services\BinanceGetService;
@@ -31,12 +30,6 @@ class ManualController extends Controller
             $user = Auth::user();
 
             Log::info('transfer success data to log in db: '.json_encode($transfer). 'user id: ' . $user->id);
-            //transfer is the order array
-
-//            $bal_all = $this->accountService->balance();
-//
-//            $balance = $bal_all[$_GET['to']]['available'];
-//            $price = $transfer['fills'][0]['price'];
 
             return true;
 
@@ -104,6 +97,7 @@ class ManualController extends Controller
                 }
             }
         }
-        return $data;
+
+        return collect($data)->unique()->toArray();
     }
 }
