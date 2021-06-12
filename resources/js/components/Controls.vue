@@ -12,7 +12,7 @@
         <br>
         <button @click="getBalance('USDT', 'usdt')" class="btn btn-info mb-2">Balance USDT: ${{ Math.floor(bal.usdt) }}</button>
         <br>
-        <button @click="showInputForm()">Add Input</button>
+        <button @click="showInputForm()" class="btn btn-info mb-2">Add Input</button>
         <div v-if="showForm">
             <input type="text" :value="symbol1">
             <input type="number" :placeholder="'amount ' + symbol1">

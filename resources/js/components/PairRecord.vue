@@ -6,6 +6,7 @@
                 <tr>
                     <th></th>
                     <th colspan="5">Real</th>
+                    <th></th>
                     <th colspan="5">If Holding</th>
                     <th>If $</th>
                 </tr>
@@ -14,6 +15,7 @@
                     <th colspan="2">Balance {{ s1 }}</th>
                     <th colspan="2">Balance {{ s2 }}</th>
                     <th>Total</th>
+                    <th></th>
                     <th colspan="2">Balance {{ s1 }}</th>
                     <th colspan="2">Balance {{ s2 }}</th>
                     <th>Total</th>
@@ -26,6 +28,7 @@
                     <th>{{ s2 }}</th>
                     <th>$</th>
                     <th>$</th>
+                    <th>Δ</th>
                     <th>{{ s1 }}</th>
                     <th>$</th>
                     <th>{{ s2 }}</th>
@@ -42,12 +45,44 @@
                     <td>{{ item.balance_s2.toFixed(2) }}</td>
                     <td>{{ item.balance_s2_usd.toFixed(2) }}</td>
                     <td class="bg-info text-light">{{ (item.balance_s1_usd + item.balance_s2_usd).toFixed(2) }}</td>
+                    <td class="text-light" :class="((item.balance_s1_usd + item.balance_s2_usd) - (item.wbw_usd_1 + item.wbw_usd_2)) > 0 ? 'bg-success' : 'bg-danger'"
+                    >{{ ((item.balance_s1_usd + item.balance_s2_usd) - (item.wbw_usd_1 + item.wbw_usd_2)).toFixed(2) }}</td>
                     <td>{{ item.input_symbol1.toFixed(2) }}</td>
                     <td>{{ item.wbw_usd_1.toFixed(2) }}</td>
                     <td>{{ item.input_symbol2.toFixed(2) }}</td>
                     <td>{{ item.wbw_usd_2.toFixed(2) }}</td>
                     <td class="bg-dark text-light">{{ (item.wbw_usd_1 + item.wbw_usd_2).toFixed(2) }}</td>
                     <td class="bg-secondary text-light">{{ (item.input_symbol1_usd + item.input_symbol2_usd).toFixed(2) }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>{{ formatDate(new Date()) }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="bg-info text-light"></td>
+                    <td class="text-light"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="bg-dark text-light"></td>
+                    <td class="bg-secondary text-light"></td>
                 </tr>
                 </tbody>
             </table>
@@ -100,7 +135,7 @@ export default {
         },
         pushLasts: function(val) {
             this.pricec1 = val[0].s1;
-            this.pricec2 = val[0].s2;
+            this.pricec2 = val[1].s2;
         }
 
     }
