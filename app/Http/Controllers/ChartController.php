@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Balance;
 use App\Models\PairBalance;
 use App\Services\BinanceGetService;
 use App\Services\IEXGetService;
@@ -277,5 +276,16 @@ class ChartController extends Controller
     public function pair(): View
     {
         return view('pair');
+    }
+
+    public function latestPrices(Request $request)
+    {
+        $response1 = $this->binanceGetService->apiCall($request->s1);
+        $response2 = $this->binanceGetService->apiCall($request->s2);
+
+        return [
+            's1' => $response1[0][4],
+            's2' => $response2[0][4],
+        ];
     }
 }

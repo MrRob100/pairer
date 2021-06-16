@@ -70,7 +70,11 @@
             </controls>
 <!--            <limits></limits>-->
         </div>
-        <pair-record :value="value" :push-lasts="pushLasts"></pair-record>
+        <pair-record
+            :br="br"
+            :value="value"
+            :push-lasts="pushLasts">
+        </pair-record>
 <!--        <record :bdr="bdr"></record>-->
     </div>
 </template>

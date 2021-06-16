@@ -69,23 +69,29 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <tr>
+                <tr v-if="(bals1 && bals2) || (bals1 && bals2 == 0) || (bals2 && bals1 == 0) && (Object.values(data)[Object.keys(data).length - 1])">
                     <td>{{ formatDate(new Date()) }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="bg-info text-light"></td>
-                    <td class="text-light"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="bg-dark text-light"></td>
-                    <td class="bg-secondary text-light"></td>
+                    <td>{{ bals1.toFixed(2) }}</td>
+                    <td>{{ (bals1 * pricec1Now).toFixed(2) }}</td>
+                    <td>{{ bals2.toFixed(2) }}</td>
+                    <td>{{ (bals2 * pricec2Now).toFixed(2) }}</td>
+                    <td class="bg-info text-light">{{ ((bals1 * pricec1Now) + (bals2 * pricec2Now)).toFixed(2) }}</td>
+                    <td class="text-light"
+                        :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((Object.values(data)[Object.keys(data).length - 1].input_symbol1 * pricec1Now) + (Object.values(data)[Object.keys(data).length - 1].input_symbol2 * pricec2Now)) > 0 ? 'bg-success' : 'bg-danger'"
+                    >
+                    {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((Object.values(data)[Object.keys(data).length - 1].input_symbol1 * pricec1Now) + (Object.values(data)[Object.keys(data).length - 1].input_symbol2 * pricec2Now))).toFixed(2) }}
+                    </td>
+                    <td>{{ Object.values(data)[Object.keys(data).length - 1].input_symbol1.toFixed(2) }}</td>
+                    <td>{{ (Object.values(data)[Object.keys(data).length - 1].input_symbol1 * pricec1Now).toFixed(2) }}</td>
+                    <td>{{ Object.values(data)[Object.keys(data).length - 1].input_symbol2.toFixed(2) }}</td>
+                    <td>{{ (Object.values(data)[Object.keys(data).length - 1].input_symbol2 * pricec2Now).toFixed(2) }}</td>
+                    <td class="bg-dark text-light">{{ (Object.values(data)[Object.keys(data).length - 1].input_symbol1 * pricec1Now + Object.values(data)[Object.keys(data).length - 1].input_symbol2 * pricec2Now).toFixed(2) }}</td>
+                    <td class="bg-secondary text-light">{{ (Object.values(data)[Object.keys(data).length - 1].input_symbol1_usd + Object.values(data)[Object.keys(data).length - 1].input_symbol2_usd).toFixed(2) }}</td>
                 </tr>
                 </tbody>
             </table>
+            <br>
+            <button v-if="pricec1" @click="getBalances" class="btn btn-primary">Get Latest</button>
         </div>
     </div>
 </template>
@@ -94,7 +100,8 @@
 export default {
     props: [
         "value",
-        "push-lasts"
+        "push-lasts",
+        "br"
     ],
     data: function() {
         return {
@@ -103,10 +110,11 @@ export default {
             pricec2: null,
             s1: null,
             s2: null,
+            bals1: null,
+            bals2: null,
+            pricec1Now: null,
+            pricec2Now: null,
         };
-    },
-
-    mounted() {
     },
 
     methods: {
@@ -125,7 +133,36 @@ export default {
             }).then(response => {
                 this.data = response.data;
             });
-        }
+        },
+        getBalances: function() {
+            let _this = this;
+
+            axios.get(this.br, {
+                params: {
+                    of: _this.s1,
+                }
+            }).then(function (response) {
+                _this.bals1 = response.data;
+            });
+
+            axios.get(this.br, {
+                params: {
+                    of: _this.s2,
+                }
+            }).then(function (response) {
+                _this.bals2 = response.data;
+            });
+
+            axios.get('/latestprices', {
+                params: {
+                    s1: _this.s1,
+                    s2: _this.s2,
+                }
+            }).then(function (response) {
+                _this.pricec1Now = response.data['s1'];
+                _this.pricec2Now = response.data['s2'];
+            });
+        },
     },
     watch: {
         value: function(val) {
@@ -137,7 +174,6 @@ export default {
             this.pricec1 = val[0].s1;
             this.pricec2 = val[1].s2;
         }
-
     }
 }
 

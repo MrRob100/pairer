@@ -75,3 +75,5 @@ Route::get('zDvs1dgv55csnF0xgalE25', [PublicController::class, 'index'])->name('
 
 Route::get('/randomize', [RandomizeController::class, 'randomPair'])->name('randomize');
 Route::post('/dudpair', [RandomizeController::class, 'trash'])->name('trash');
+
+Route::get('/latestprices', [ChartController::class, 'latestPrices']);
