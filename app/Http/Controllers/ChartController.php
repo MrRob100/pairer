@@ -41,8 +41,6 @@ class ChartController extends Controller
 
     public function goldpaxg()
     {
-//        NEED TO FINISH
-
         $response1 = array_reverse($this->pandaService->getData('XAU'));
         $response2 = array_reverse($this->formatBinanceResponse($this->binanceGetService->apiCall('PAXG', '4h')));
 
@@ -50,36 +48,49 @@ class ChartController extends Controller
         $size_min = min(sizeof($response1), sizeof($response2) - 1);
 
         $pair = [];
+        $extra = 0;
         for($i=0; $i<$size_max; $i++) {
 
             if ($i < $size_min) {
 
-                dump('t1'.$i.' '.gmdate("d-m-y", $response1[$i][0] / 1000)); //4 of those per day
-                dump('t2'.$i.' '.gmdate("d-m-y", $response2[$i][0] / 1000)); //6 of those per day
-                echo('------');
+                while (gmdate("d-m-y", $response1[$i][0] / 1000) !== gmdate("d-m-y", $response2[$i + $extra][0] / 1000)) {
+                    $extra++;
+                }
+
+//                if ($i + $extra == 128) {
+//                    die();
+//                }
+
+//                dump('t1'.$i.' '.gmdate("d-m-y H:i", $response1[$i][0] / 1000)); //4 of those per day
+//                dump('t2'.$i.' '.gmdate("d-m-y H:i", $response2[$i + $extra][0] / 1000)); //6 of those per day
+//                echo('------');
+
+
+                //if second is bigger than first, wind the second down one
+
 
                 $pair[] = [
                     $response1[$i][0], //timestamp
-                    $response1[$i][1] / $response2[$i][1],
-                    $response1[$i][2] / $response2[$i][2],
-                    $response1[$i][3] / $response2[$i][3],
-                    $response1[$i][4] / $response2[$i][4],
+                    $response1[$i][1] / $response2[$i + $extra][1],
+                    $response1[$i][2] / $response2[$i + $extra][2],
+                    $response1[$i][3] / $response2[$i + $extra][3],
+                    $response1[$i][4] / $response2[$i + $extra][4],
 //                $response1[$i][5], // volume
                 ];
             }
         }
 
-        return [
-            'first' => $response1,
-            'pair' => $pair,
-            'second' => $response2,
-        ];
-
 //        return [
-//            'first' => array_reverse($response1),
+//            'first' => $response1,
 //            'pair' => $pair,
-//            'second' => array_reverse($response2),
+//            'second' => $response2,
 //        ];
+
+        return [
+            'first' => array_reverse($response1),
+            'pair' => array_reverse($pair),
+            'second' => array_reverse($response2),
+        ];
 
     }
 
