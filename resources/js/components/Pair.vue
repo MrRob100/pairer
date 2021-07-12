@@ -1,10 +1,12 @@
 <template>
     <div class="row">
         <div class="col-4">
+
             <trading-vue
                 style="z-index: -1"
                 colorText="#7DA0B1"
                 :data="tradingVue1"
+                :overlays="overlays"
                 :height="280"
                 :width="460"
             ></trading-vue>
@@ -16,6 +18,7 @@
                 style="z-index: -1"
                 colorText="#7DA0B1"
                 :data="tradingVueData"
+                :overlays="overlays"
                 :height="280"
                 :width="460"
             ></trading-vuea>
@@ -25,6 +28,7 @@
                 style="z-index: -1"
                 colorText="#7DA0B1"
                 :data="tradingVue2"
+                :overlays="overlays"
                 :height="280"
                 :width="460"
             ></trading-vue>
@@ -35,8 +39,10 @@
 </template>
 <script>
 
-    import TradingVue from 'trading-vue-js'
-    import TradingVuea from '../../js/trading-vue-a';
+    import { TradingVue, DataCube } from 'trading-vue-js';
+    import Overlays from 'tvjs-overlays';
+    import TradingVuea from '../../js/trading-vue-a-2';
+    // import TradingVuea from '../../js/trading-vue-a';
 
     export default {
 
@@ -54,15 +60,52 @@
 
         data: function() {
             return {
-                tradingVue1: {
-                    ohlcv: [],
-                },
-                tradingVueData: {
-                    ohlcv: [],
-                },
-                tradingVue2: {
-                    ohlcv: [],
-                },
+                tradingVue1: new DataCube({
+                    chart: {
+                        data: []
+                    },
+                    onchart: [
+                        {
+                            name: 'EMA, 25',
+                            type: 'EMA',
+                            data: [],
+                            settings: {
+                                length: 25
+                            }
+                        }
+                    ]
+                }),
+                tradingVueData: new DataCube({
+                    chart: {
+                        data: []
+                    },
+                    onchart: [
+                        {
+                            name: 'EMA, 25',
+                            type: 'EMA',
+                            data: [],
+                            settings: {
+                                length: 25
+                            }
+                        }
+                    ]
+                }),
+                tradingVue2: new DataCube({
+                    chart: {
+                        data: []
+                    },
+                    onchart: [
+                        {
+                            name: 'EMA, 25',
+                            type: 'EMA',
+                            data: [],
+                            settings: {
+                                length: 25
+                            }
+                        }
+                    ]
+                }),
+                overlays: [Overlays['EMA']],
                 dlref0: "",
                 dlref1: "",
                 lineDataPair: [],
@@ -78,9 +121,18 @@
                         t,
                     }
                 }).then(response => {
-                    this.tradingVue1.ohlcv = response.data['first'];
-                    this.tradingVueData.ohlcv = response.data['pair'];
-                    this.tradingVue2.ohlcv = response.data['second'];
+                    this.tradingVue1.data.chart.data = response.data['first'];
+                    this.tradingVue1.data.onchart.data = response.data['first'];
+
+                    this.tradingVueData.data.chart.data = response.data['pair'];
+                    this.tradingVueData.data.onchart.data = response.data['pair'];
+                    // this.tradingVueData.ohlcv = response.data['pair'];
+
+                    this.tradingVue2.data.chart.data = response.data['second'];
+                    this.tradingVue2.data.onchart.data = response.data['second'];
+                    // this.tradingVue2.ohlcv = response.data['second'];
+
+
                     this.lineDataPair = response.data['events'];
 
                     let lasts = [
@@ -109,7 +161,7 @@
             s: function(val) {
                 if (val.length == 2) {
                     this.getData(val[0].name, val[1].name, this.t);
-                    this.setChartHeading(val);
+                    // this.setChartHeading(val);
                     this.dlref0 = this.dr + "?symbol=" + val[0].name.toUpperCase();
                     this.dlref1 = this.dr + "?symbol=" + val[1].name.toUpperCase();
                 }

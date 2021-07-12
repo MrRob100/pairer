@@ -6,7 +6,10 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+window.Vue = require('vue').default;
+
+// import Vue from 'vue';
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -23,7 +26,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('order', require('./components/Order.vue').default);
 Vue.component('pair', require('./components/Pair.vue').default);
 Vue.component('pair-page', require('./components/PairPage.vue').default);
-Vue.component('graph', require('./components/Graph.vue').default);
 Vue.component('controls', require('./components/Controls.vue').default);
 Vue.component('limits', require('./components/Limits.vue').default);
 Vue.component('public-page', require('./components/PublicPage.vue').default);

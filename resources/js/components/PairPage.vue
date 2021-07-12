@@ -2,11 +2,11 @@
     <div>
         <div class="row m-2">
             <div class="col-md-3 mb-3" style="z-index:10">
-                <multiselect
-                    v-model="marketType"
-                    :options="['binance', 'oil', 'metals', 'others', 'iex', 'goldpaxg']"
-                    :multiple="false"
-                ></multiselect>
+<!--                <multiselect-->
+<!--                    v-model="marketType"-->
+<!--                    :options="['binance', 'oil', 'metals', 'others', 'iex', 'goldpaxg']"-->
+<!--                    :multiple="false"-->
+<!--                ></multiselect>-->
                 <br>
                 <div v-if="marketType === 'binance'">
                     <div class="form-group">
@@ -32,14 +32,14 @@
                 </div>
 
                 <div v-if="marketType === 'oil'">
-                    <multiselect
-                        v-model="value"
-                        :options="getOptions()"
-                        :multiple="true"
-                        :max="2"
-                        label="name"
-                        track-by="name"
-                    ></multiselect>
+<!--                    <multiselect-->
+<!--                        v-model="value"-->
+<!--                        :options="getOptions()"-->
+<!--                        :multiple="true"-->
+<!--                        :max="2"-->
+<!--                        label="name"-->
+<!--                        track-by="name"-->
+<!--                    ></multiselect>-->
                 </div>
             </div>
             <div class="col-md-9">
