@@ -134,7 +134,7 @@
             s: function(val) {
                 if (val.length == 2) {
                     this.getData(val[0].name, val[1].name, this.t);
-                    // this.setChartHeading(val);
+                    this.setChartHeading(val);
                     this.dlref0 = this.dr + "?symbol=" + val[0].name.toUpperCase();
                     this.dlref1 = this.dr + "?symbol=" + val[1].name.toUpperCase();
                 }
