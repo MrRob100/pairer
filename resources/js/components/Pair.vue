@@ -6,7 +6,6 @@
                 style="z-index: -1"
                 colorText="#7DA0B1"
                 :data="tradingVue1"
-                :overlays="overlays"
                 :height="280"
                 :width="460"
             ></trading-vue>
@@ -28,7 +27,6 @@
                 style="z-index: -1"
                 colorText="#7DA0B1"
                 :data="tradingVue2"
-                :overlays="overlays"
                 :height="280"
                 :width="460"
             ></trading-vue>
@@ -64,16 +62,6 @@
                     chart: {
                         data: []
                     },
-                    onchart: [
-                        {
-                            name: 'EMA, 25',
-                            type: 'EMA',
-                            data: [],
-                            settings: {
-                                length: 25
-                            }
-                        }
-                    ]
                 }),
                 tradingVueData: new DataCube({
                     chart: {
@@ -81,11 +69,11 @@
                     },
                     onchart: [
                         {
-                            name: 'EMA, 25',
+                            name: 'EMA, 10',
                             type: 'EMA',
                             data: [],
                             settings: {
-                                length: 25
+                                length: 10
                             }
                         }
                     ]
@@ -94,16 +82,6 @@
                     chart: {
                         data: []
                     },
-                    onchart: [
-                        {
-                            name: 'EMA, 25',
-                            type: 'EMA',
-                            data: [],
-                            settings: {
-                                length: 25
-                            }
-                        }
-                    ]
                 }),
                 overlays: [Overlays['EMA']],
                 dlref0: "",
@@ -122,16 +100,11 @@
                     }
                 }).then(response => {
                     this.tradingVue1.data.chart.data = response.data['first'];
-                    this.tradingVue1.data.onchart.data = response.data['first'];
 
                     this.tradingVueData.data.chart.data = response.data['pair'];
                     this.tradingVueData.data.onchart.data = response.data['pair'];
-                    // this.tradingVueData.ohlcv = response.data['pair'];
 
                     this.tradingVue2.data.chart.data = response.data['second'];
-                    this.tradingVue2.data.onchart.data = response.data['second'];
-                    // this.tradingVue2.ohlcv = response.data['second'];
-
 
                     this.lineDataPair = response.data['events'];
 

@@ -5162,6 +5162,34 @@
                             ctx.lineTo(layout.width, y);
                             ctx.stroke();
                             ctx.setLineDash([]);
+
+                            if(this.comp.$props.colors.wickUp) {
+
+                                let parsed = JSON.parse(this.comp.$props.colors.wickUp);
+
+                                let l1 = layout.$2screen(parsed.middlePrice1);
+                                let l2 = layout.$2screen(parsed.middlePrice2);
+                                let l3 = layout.$2screen(parsed.middlePrice3);
+
+                                ctx.strokeStyle = "#4abcff";
+                                ctx.beginPath();
+                                ctx.moveTo(0, l1);
+                                ctx.lineTo(layout.width, l1);
+                                ctx.stroke();
+
+                                ctx.strokeStyle = "#359ad6";
+                                ctx.beginPath();
+                                ctx.moveTo(0, l2);
+                                ctx.lineTo(layout.width, l2);
+                                ctx.stroke();
+
+                                ctx.strokeStyle = "#24638a";
+                                ctx.beginPath();
+                                ctx.moveTo(0, l3);
+                                ctx.lineTo(layout.width, l3);
+                                ctx.stroke();
+                            }
+
                         }
                     }, {
                         key: "last_bar",
