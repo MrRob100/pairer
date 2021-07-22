@@ -75,6 +75,14 @@
                             settings: {
                                 length: 10
                             }
+                        },
+                        {
+                            name: 'EMA, 25',
+                            type: 'EMA',
+                            data: [],
+                            settings: {
+                                length: 25
+                            }
                         }
                     ]
                 }),

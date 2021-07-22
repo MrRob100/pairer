@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Input;
 use App\Models\PairBalance;
 use App\Services\BinanceGetService;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Services\AccountService;
@@ -63,6 +64,7 @@ class ManualController extends Controller
     {
         $pair_balances = PairBalance::where('s1', $request->s1)
             ->where('s2', $request->s2)
+            ->where('created_at', '>', Carbon::now()->firstOfMonth())
             ->orderBy('created_at')->get();
 
         $inputs = Input::where(
@@ -75,7 +77,9 @@ class ManualController extends Controller
                 $query->where('symbol1', $request->s2)
                     ->where('symbol2', $request->s1);
             }
-        )->orderBy('created_at')->get();
+        )
+            ->where('created_at', '>', Carbon::now()->firstOfMonth())
+            ->orderBy('created_at')->get();
 
         $data = [];
         foreach($pair_balances as $pair_balance) {
