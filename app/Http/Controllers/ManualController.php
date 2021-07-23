@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Input;
 use App\Models\PairBalance;
 use App\Services\BinanceGetService;
+use App\Services\HitBTCService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -15,11 +16,17 @@ class ManualController extends Controller
 {
     public $accountService;
     public $binanceGetService;
+    public $hitBTCService;
 
-    public function __construct(AccountService $accountService, BinanceGetService $binanceGetService)
+    public function __construct(
+        AccountService $accountService,
+        BinanceGetService $binanceGetService,
+        HitBTCService $hitBTCService,
+    )
     {
         $this->accountService = $accountService;
         $this->binanceGetService = $binanceGetService;
+        $this->hitBTCService = $hitBTCService;
     }
 
     public function transfer()
@@ -62,6 +69,8 @@ class ManualController extends Controller
 
     public function getPairData(Request $request)
     {
+        $c20 = collect($this->hitBTCService->getData('C20')['C20USD']);
+
         $pair_balances = PairBalance::where('s1', $request->s1)
             ->where('s2', $request->s2)
             ->where('created_at', '>', Carbon::now()->firstOfMonth())
@@ -94,8 +103,12 @@ class ManualController extends Controller
                         'input_symbol2' => $relInputs->sum('amount2'),
                         'input_symbol2_usd' => $relInputs->sum('amount2_usd'),
                         'wbw_usd_1' => $relInputs->sum('amount1') * $pair_balance->price_at_trade_s1,
-                        'wbw_usd_2' => $relInputs->sum('amount2') * $pair_balance->price_at_trade_s2
+                        'wbw_usd_2' => $relInputs->sum('amount2') * $pair_balance->price_at_trade_s2,
+                        'cix' => $c20->where('timestamp', $pair_balance->created_at->toDateString() . 'T00:00:00.000Z')->isNotEmpty()
+                                ? $c20->where('timestamp', $pair_balance->created_at->toDateString() . 'T00:00:00.000Z')->first()['close'] : null,
                     ]);
+                    
+//                    make it cough up an average
 
                     $data[] = $merged;
                 }

@@ -14,7 +14,7 @@ class PandaService
             $data = Cache::get('panda');
         } else {
             $data = json_decode(file_get_contents($this->url), true)['data'];
-            Cache::put('panda', $data, 600);
+            Cache::put('panda', $data, 8640);
         }
         return $data;
     }
