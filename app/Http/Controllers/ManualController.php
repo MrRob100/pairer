@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Input;
 use App\Models\PairBalance;
 use App\Services\BinanceGetService;
-use App\Services\HitBTCService;
+use App\Services\CmcService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -16,17 +16,17 @@ class ManualController extends Controller
 {
     public $accountService;
     public $binanceGetService;
-    public $hitBTCService;
+    public $cmcService;
 
     public function __construct(
         AccountService $accountService,
         BinanceGetService $binanceGetService,
-        HitBTCService $hitBTCService,
+        CmcService $cmcService,
     )
     {
         $this->accountService = $accountService;
         $this->binanceGetService = $binanceGetService;
-        $this->hitBTCService = $hitBTCService;
+        $this->cmcService = $cmcService;
     }
 
     public function transfer()
@@ -69,7 +69,7 @@ class ManualController extends Controller
 
     public function getPairData(Request $request)
     {
-        $c20 = collect($this->hitBTCService->getData('C20')['C20USD']);
+        $c20 = collect($this->cmcService->getData());
 
         $pair_balances = PairBalance::where('s1', $request->s1)
             ->where('s2', $request->s2)
@@ -104,17 +104,19 @@ class ManualController extends Controller
                         'input_symbol2_usd' => $relInputs->sum('amount2_usd'),
                         'wbw_usd_1' => $relInputs->sum('amount1') * $pair_balance->price_at_trade_s1,
                         'wbw_usd_2' => $relInputs->sum('amount2') * $pair_balance->price_at_trade_s2,
-                        'cix' => $c20->where('timestamp', $pair_balance->created_at->toDateString() . 'T00:00:00.000Z')->isNotEmpty()
-                                ? $c20->where('timestamp', $pair_balance->created_at->toDateString() . 'T00:00:00.000Z')->first()['close'] : null,
+                        'cix' => isset($c20['data']['points'][strval(Carbon::parse($pair_balance->created_at->format('Y-m-d'))->unix())])
+                            ? $c20['data']['points'][Carbon::parse($pair_balance->created_at->format('Y-m-d'))->unix()]['v'][0]
+                            : null
                     ]);
-                    
-//                    make it cough up an average
 
                     $data[] = $merged;
                 }
             }
         }
 
-        return collect($data)->unique()->toArray();
+        return [
+            'records' => collect($data)->unique()->toArray(),
+            'c20_latest' => collect($c20['data']['points'])->last()['v'][0]
+        ];
     }
 }

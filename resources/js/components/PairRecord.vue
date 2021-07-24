@@ -8,6 +8,7 @@
                     <th colspan="5">Real</th>
                     <th></th>
                     <th></th>
+                    <th></th>
                     <th colspan="5">If Holding</th>
                     <th>If $</th>
                 </tr>
@@ -16,6 +17,7 @@
                     <th colspan="2">Balance {{ s1 }}</th>
                     <th colspan="2">Balance {{ s2 }}</th>
                     <th>Total</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th colspan="2">Balance {{ s1 }}</th>
@@ -31,6 +33,7 @@
                     <th>$</th>
                     <th>$</th>
                     <th>Δ</th>
+                    <th>Δc</th>
                     <th>Δi</th>
                     <th>{{ s1 }}</th>
                     <th>$</th>
@@ -41,15 +44,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="item in data">
+                <tr v-for="item in data.records">
                     <td>{{ formatDate(item.created_at) }}</td>
                     <td>{{ item.balance_s1.toFixed(2) }}</td>
                     <td>{{ item.balance_s1_usd.toFixed(2) }}</td>
                     <td>{{ item.balance_s2.toFixed(2) }}</td>
                     <td>{{ item.balance_s2_usd.toFixed(2) }}</td>
                     <td class="bg-info text-light">{{ (item.balance_s1_usd + item.balance_s2_usd).toFixed(2) }}</td>
+
                     <td class="text-light" :class="((item.balance_s1_usd + item.balance_s2_usd) - (item.wbw_usd_1 + item.wbw_usd_2)) > 0 ? 'bg-success' : 'bg-danger'"
                     >{{ ((item.balance_s1_usd + item.balance_s2_usd) - (item.wbw_usd_1 + item.wbw_usd_2)).toFixed(2) }}</td>
+
+                    <td>{{ (((item.balance_s1_usd + item.balance_s2_usd) - (item.wbw_usd_1 + item.wbw_usd_2)) / item.cix).toFixed(2) }}</td>
+
                     <td :class="((item.balance_s1_usd + item.balance_s2_usd) - (item.input_symbol1_usd + item.input_symbol2_usd)) > 0 ? 'bg-success' : 'bg-danger'"
                     >{{ ((item.balance_s1_usd + item.balance_s2_usd) - (item.input_symbol1_usd + item.input_symbol2_usd)).toFixed(2) }}</td>
                     <td>{{ item.input_symbol1.toFixed(2) }}</td>
@@ -74,8 +81,9 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
-                <tr v-if="((bals1 && bals2) || (bals1 && bals2 == 0) || (bals2 && bals1 == 0)) && (Object.values(data)[Object.keys(data).length - 1]) && showNewRecord">
+                <tr v-if="((bals1 && bals2) || (bals1 && bals2 == 0) || (bals2 && bals1 == 0)) && (this.latestRecord) && showNewRecord">
                     <td>{{ formatDate(new Date()) }}</td>
                     <td>{{ bals1.toFixed(2) }}</td>
                     <td>{{ (bals1 * pricec1Now).toFixed(2) }}</td>
@@ -83,20 +91,21 @@
                     <td>{{ (bals2 * pricec2Now).toFixed(2) }}</td>
                     <td class="bg-info text-light">{{ ((bals1 * pricec1Now) + (bals2 * pricec2Now)).toFixed(2) }}</td>
                     <td class="text-light"
-                        :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((Object.values(data)[Object.keys(data).length - 1].input_symbol1 * pricec1Now) + (Object.values(data)[Object.keys(data).length - 1].input_symbol2 * pricec2Now)) > 0 ? 'bg-success' : 'bg-danger'"
+                        :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 * pricec1Now) + (this.latestRecord.input_symbol2 * pricec2Now)) > 0 ? 'bg-success' : 'bg-danger'"
                     >
-                    {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((Object.values(data)[Object.keys(data).length - 1].input_symbol1 * pricec1Now) + (Object.values(data)[Object.keys(data).length - 1].input_symbol2 * pricec2Now))).toFixed(2) }}
+                    {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 * pricec1Now) + (this.latestRecord.input_symbol2 * pricec2Now))).toFixed(2) }}
                     </td>
-                    <td :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((Object.values(data)[Object.keys(data).length - 1].input_symbol1_usd) + (Object.values(data)[Object.keys(data).length - 1].input_symbol2_usd)) > 0 ? 'bg-success' : 'bg-danger'"
+                    <td>{{ ((((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 * pricec1Now) + (this.latestRecord.input_symbol2 * pricec2Now))) / data.c20_latest).toFixed(2) }}</td>
+                    <td :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1_usd) + (this.latestRecord.input_symbol2_usd)) > 0 ? 'bg-success' : 'bg-danger'"
                     >
-                    {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((Object.values(data)[Object.keys(data).length - 1].input_symbol1_usd) + (Object.values(data)[Object.keys(data).length - 1].input_symbol2_usd))).toFixed(2) }}
+                    {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1_usd) + (this.latestRecord.input_symbol2_usd))).toFixed(2) }}
                     </td>
-                    <td>{{ Object.values(data)[Object.keys(data).length - 1].input_symbol1.toFixed(2) }}</td>
-                    <td>{{ (Object.values(data)[Object.keys(data).length - 1].input_symbol1 * pricec1Now).toFixed(2) }}</td>
-                    <td>{{ Object.values(data)[Object.keys(data).length - 1].input_symbol2.toFixed(2) }}</td>
-                    <td>{{ (Object.values(data)[Object.keys(data).length - 1].input_symbol2 * pricec2Now).toFixed(2) }}</td>
-                    <td class="bg-dark text-light">{{ (Object.values(data)[Object.keys(data).length - 1].input_symbol1 * pricec1Now + Object.values(data)[Object.keys(data).length - 1].input_symbol2 * pricec2Now).toFixed(2) }}</td>
-                    <td class="bg-secondary text-light">{{ (Object.values(data)[Object.keys(data).length - 1].input_symbol1_usd + Object.values(data)[Object.keys(data).length - 1].input_symbol2_usd).toFixed(2) }}</td>
+                    <td>{{ this.latestRecord.input_symbol1.toFixed(2) }}</td>
+                    <td>{{ (this.latestRecord.input_symbol1 * pricec1Now).toFixed(2) }}</td>
+                    <td>{{ this.latestRecord.input_symbol2.toFixed(2) }}</td>
+                    <td>{{ (this.latestRecord.input_symbol2 * pricec2Now).toFixed(2) }}</td>
+                    <td class="bg-dark text-light">{{ (this.latestRecord.input_symbol1 * pricec1Now + this.latestRecord.input_symbol2 * pricec2Now).toFixed(2) }}</td>
+                    <td class="bg-secondary text-light">{{ (this.latestRecord.input_symbol1_usd + this.latestRecord.input_symbol2_usd).toFixed(2) }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -175,6 +184,11 @@ export default {
 
                 _this.showNewRecord = true;
             });
+        },
+    },
+    computed: {
+        latestRecord: function() {
+            return Object.values(this.data.records)[Object.keys(this.data.records).length - 1];
         },
     },
     watch: {
