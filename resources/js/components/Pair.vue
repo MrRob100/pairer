@@ -1,7 +1,6 @@
 <template>
     <div class="row">
         <div class="col-4">
-
             <trading-vue
                 style="z-index: -1"
                 colorText="#7DA0B1"
@@ -54,6 +53,7 @@
             s: "",
             t: "",
             dr: "",
+            v1frozen: false,
         },
 
         data: function() {

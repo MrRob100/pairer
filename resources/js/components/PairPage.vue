@@ -10,8 +10,19 @@
                 <br>
                 <div v-if="marketType === 'binance'">
                     <div class="form-group">
-                        <input type="text" v-model="v1" class="form-control mb-1">
-                        <input type="text" v-model="v2" class="form-control">
+                        <div class="row">
+                            <div class="col-10 pr-0">
+                                <input type="text" v-model="v1" class="form-control mb-1">
+                            </div>
+                            <div class="col-2 pl-1">
+                                <button class="btn btn-info"><i class="fas fa-snowflake text-light"></i></button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10 mr-0 pr-0">
+                                <input type="text" v-model="v2" class="form-control">
+                            </div>
+                        </div>
                     </div>
                     <button @click="go" class="btn btn-success">Go</button>
                     <button @click="add" class="btn btn-success"><i class="fa fa-plus"></i></button>
@@ -118,6 +129,7 @@ export default {
             marketType: "binance",
             v1: "",
             v2: "",
+            v1frozen: false,
             added: [],
             pushLasts: [],
         }
