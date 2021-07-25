@@ -139,45 +139,11 @@ class ChartController extends Controller
         fclose($file1);
         fclose($file2);
 
-//        $top1 = Balance::where('symbol', $request->s1)
-//            ->where('side', 'sell')
-//            ->orderBy('created_at')->limit(1)->first() ?
-//            Balance::where('symbol', $request->s1)
-//            ->where('side', 'sell')
-//            ->orderBy('created_at', 'DESC')->limit(1)->first()->price_at_trade : null;
-
-
-
-
         $lines = PairBalance::where('s1', $request->s1)->orderBy('created_at', 'DESC')->limit(3)->get();
 
-//
-//        $top2 = PairBalance::where('s2', $request->s2)->first() ?
-//            PairBalance::where('s2', $request->s2)
-//                ->orderBy('created_at')->limit(1)->first()->price_at_trade_s2 : null;
-
-//        $top2 = Balance::where('symbol', $request->s2)
-//            ->where('side', 'buy')
-//            ->orderBy('created_at')->limit(1)->first()?
-//            Balance::where('symbol', $request->s2)
-//            ->where('side', 'buy')
-//            ->orderBy('created_at', 'DESC')->limit(1)->first()->price_at_trade : null;
-//
-//        $bot1 = Balance::where('symbol', $request->s1)
-//            ->where('side', 'buy')
-//            ->orderBy('created_at')->limit(1)->first() ? Balance::where('symbol', $request->s1)
-//            ->where('side', 'buy')
-//            ->orderBy('created_at', 'DESC')->limit(1)->first()->price_at_trade : null;
-//
-//        $bot2 = Balance::where('symbol', $request->s2)
-//            ->where('side', 'sell')
-//            ->orderBy('created_at')->limit(1)->first() ? Balance::where('symbol', $request->s2)
-//            ->where('side', 'sell')
-//            ->orderBy('created_at', 'DESC')->limit(1)->first()->price_at_trade : null;
-
         $midPrice1 = sizeof($lines) > 0 ? $lines->toArray()[0]['price_at_trade_s1'] / $lines->toArray()[0]['price_at_trade_s2'] : null;
-        $midPrice2 = sizeof($lines) > 0 ? $lines->toArray()[1]['price_at_trade_s1'] / $lines->toArray()[1]['price_at_trade_s2'] : null;
-        $midPrice3 = sizeof($lines) > 0 ? $lines->toArray()[2]['price_at_trade_s1'] / $lines->toArray()[2]['price_at_trade_s2'] : null;
+        $midPrice2 = sizeof($lines) > 1 ? $lines->toArray()[1]['price_at_trade_s1'] / $lines->toArray()[1]['price_at_trade_s2'] : null;
+        $midPrice3 = sizeof($lines) > 2 ? $lines->toArray()[2]['price_at_trade_s1'] / $lines->toArray()[2]['price_at_trade_s2'] : null;
 
         return [
             'first' => $this->formatBinanceResponse($response1),
