@@ -69,11 +69,16 @@ class ManualController extends Controller
 
     public function getPairData(Request $request)
     {
+        $month = $request->month ?: Carbon::now()->month;
+        $year = $month > Carbon::now()->month ? Carbon::now()->subYear()->year : Carbon::now()->year;
+        $startDate = Carbon::createFromDate($year, $month, 1);
+        $endDate = Carbon::createFromDate($year, $month, 1)->addMonth();
+
         $c20 = collect($this->cmcService->getData());
 
         $pair_balances = PairBalance::where('s1', $request->s1)
             ->where('s2', $request->s2)
-            ->where('created_at', '>', Carbon::now()->firstOfMonth())
+            ->whereBetween('created_at', [$startDate, $endDate])
             ->orderBy('created_at')->get();
 
         $inputs = Input::where(
@@ -87,7 +92,7 @@ class ManualController extends Controller
                     ->where('symbol2', $request->s1);
             }
         )
-            ->where('created_at', '>', Carbon::now()->firstOfMonth())
+            ->whereBetween('created_at', [$startDate, $endDate])
             ->orderBy('created_at')->get();
 
         $data = [];
@@ -116,7 +121,58 @@ class ManualController extends Controller
 
         return [
             'records' => collect($data)->unique()->toArray(),
-            'c20_latest' => collect($c20['data']['points'])->last()['v'][0]
+            'c20_latest' => collect($c20['data']['points'])->last()['v'][0],
+            'current_month' => $request->month ?: Carbon::now()->month,
+            'months' => [
+                0 => [
+                    'value' => 1,
+                    'name' => 'Jan',
+                ],
+                [
+                    'value' => 2,
+                    'name' => 'Feb',
+                ],
+                [
+                    'value' => 3,
+                    'name' => 'Mar',
+                ],
+                [
+                    'value' => 4,
+                    'name' => 'Apr',
+                ],
+                [
+                    'value' => 5,
+                    'name' => 'May',
+                ],
+                [
+                    'value' => 6,
+                    'name' => 'Jun',
+                ],
+                [
+                    'value' => 7,
+                    'name' => 'Jul',
+                ],
+                [
+                    'value' => 8,
+                    'name' => 'Aug',
+                ],
+                [
+                    'value' => 9,
+                    'name' => 'Sep',
+                ],
+                [
+                    'value' => 10,
+                    'name' => 'Oct',
+                ],
+                [
+                    'value' => 11,
+                    'name' => 'Nov',
+                ],
+                [
+                    'value' => 12,
+                    'name' => 'Dec',
+                ],
+            ]
         ];
     }
 }

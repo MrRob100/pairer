@@ -1,6 +1,14 @@
 <template>
     <div class="mr-5 ml-5 mt-5 mb-5 row">
         <div class="col-4">
+
+            <div v-if="data.months" class="mb-3">
+                <label class="font-weight-normal mr-3" for="month">Month:</label>
+                <select class="form-control" id="month" name="month" v-model="month" @change="getData(s1, s2, month)">
+                    <option v-for="month in data.months" :value="month.value">{{ month.name }}</option>
+                </select>
+            </div>
+
             <table class="table table-bordered table-striped table-hover table-vcenter">
                 <thead>
                 <tr>
@@ -124,6 +132,7 @@ export default {
     ],
     data: function() {
         return {
+            month: null,
             data: [],
             pricec1: null,
             pricec2: null,
@@ -142,16 +151,18 @@ export default {
             var obj = new Date(date);
             return obj.toLocaleDateString();
         },
-        getData: function(s1, s2) {
+        getData: function(s1, s2, month = null) {
             this.s1 = s1;
             this.s2 = s2;
             axios.get('/get_pair_data', {
                 params: {
                     s1,
                     s2,
+                    month,
                 }
             }).then(response => {
                 this.data = response.data;
+                this.month = response.data.current_month;
             });
         },
         getBalances: function() {

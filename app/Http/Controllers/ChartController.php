@@ -136,8 +136,8 @@ class ChartController extends Controller
             }
         }
 
-        fclose($file1);
-        fclose($file2);
+//        fclose($file1);
+//        fclose($file2);
 
         $lines = PairBalance::where('s1', $request->s1)->orderBy('created_at', 'DESC')->limit(3)->get();
 
