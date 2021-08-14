@@ -4,6 +4,7 @@ use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InputController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\OngController;
 use App\Http\Controllers\PairsController;
@@ -77,3 +78,5 @@ Route::get('/randomize', [RandomizeController::class, 'randomPair'])->name('rand
 Route::post('/dudpair', [RandomizeController::class, 'trash'])->name('trash');
 
 Route::get('/latestprices', [ChartController::class, 'latestPrices']);
+
+Route::post('/input', [InputController::class, 'create'])->name('inputs.create');

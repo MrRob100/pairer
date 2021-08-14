@@ -15,13 +15,16 @@
         <button @click="getBalance('USDT', 'usdt')" class="btn btn-info mb-2">Balance USDT: ${{ Math.floor(bal.usdt) }}</button>
         <br>
         <button @click="showInputForm()" class="btn btn-info mb-2">Add Input</button>
-        <div v-if="showForm">
-            <input type="text" :value="symbol1">
-            <input type="number" :placeholder="'amount ' + symbol1">
-            <input type="number" placeholder="amount $">
-            <input type="text" :value="symbol2">
-            <input type="number" :placeholder="'amount ' + symbol2">
-            <input type="number" placeholder="amount $">
+        <div v-if="showForm" class="mt-3">
+            <form v-on:submit.prevent>
+                <div class="form-group col-3 pl-0">
+                    <input class="form-control mb-2" v-model="input.one" type="number" :placeholder="'amount ' + symbol1">
+                    <input class="form-control mb-2" v-model="input.oneUSD" type="number" :placeholder="'amount ' + symbol1 + ' usd'">
+                    <input class="form-control mb-2" v-model="input.two" type="number" :placeholder="'amount ' + symbol2">
+                    <input class="form-control mb-2" v-model="input.twoUSD" type="number" :placeholder="'amount ' + symbol2 + ' usd'">
+                    <button @click="createInputRecord()" class="btn btn-success">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
 </template>
@@ -34,7 +37,8 @@ export default {
         "br",
         "cr",
         "symbol1",
-        "symbol2"
+        "symbol2",
+        "rr",
     ],
     data: function() {
         return {
@@ -49,10 +53,29 @@ export default {
             },
             disabled: false,
             showForm: false,
+            input: {
+                symbol1: null,
+                one: null,
+                oneUSD: null,
+                symbol2: null,
+                two: null,
+                twoUSD: null,
+            }
         };
     },
 
     methods: {
+        createInputRecord: function() {
+
+            this.input.symbol1 = this.symbol1;
+            this.input.symbol2 = this.symbol2;
+
+            axios.post(this.rr, this.input).then(() => {
+                this.showForm = false;
+            }).catch(error => {
+                console.error(error);
+            })
+        },
         showInputForm: function() {
             this.showForm = !this.showForm;
         },

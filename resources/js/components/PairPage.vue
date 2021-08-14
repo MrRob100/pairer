@@ -77,7 +77,8 @@
                 :cr="cr"
                 :br="br"
                 :pr="pr"
-                :tr="tr">
+                :tr="tr"
+                :rr="rr">
             </controls>
 <!--            <limits></limits>-->
         </div>
@@ -96,7 +97,7 @@ import Multiselect from "vue-multiselect";
 
 export default {
 
-    props: ["cr", "br", "pr", "tr", "spr", "cpr", "dlr", "bdr", "dr", "rand", "dp"],
+    props: ["cr", "br", "pr", "tr", "spr", "cpr", "dlr", "bdr", "dr", "rand", "dp", "rr"],
 
     components: {
         Multiselect

@@ -13,6 +13,7 @@
         dr="{{ route('download') }}"
         rand="{{ route('randomize') }}"
         dp="{{ route('trash') }}"
+        rr="{{ route('inputs.create') }}"
     >
     </pair-page>
 {{--    @include('box')--}}
