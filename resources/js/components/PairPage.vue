@@ -12,10 +12,11 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-10 pr-0">
-                                <input type="text" v-model="v1" class="form-control mb-1">
+                                <input type="text" v-model="v1" class="form-control mb-1" :disabled="v1frozen">
                             </div>
                             <div class="col-2 pl-1">
-                                <button class="btn btn-info"><i class="fas fa-snowflake text-light"></i></button>
+                                <button v-if="!v1frozen" @click="freezer" class="btn btn-info" title="Freeze"><i class="fas fa-snowflake text-light"></i></button>
+                                <button v-if="v1frozen" @click="freezer" class="btn btn-danger" title="Defrost"><i class="fas fa-snowflake text-light"></i></button>
                             </div>
                         </div>
                         <div class="row">
@@ -40,17 +41,6 @@
 
                 <div v-if="marketType === 'goldpaxg'">
                     <button @click="go" class="btn btn-success">Go</button>
-                </div>
-
-                <div v-if="marketType === 'oil'">
-<!--                    <multiselect-->
-<!--                        v-model="value"-->
-<!--                        :options="getOptions()"-->
-<!--                        :multiple="true"-->
-<!--                        :max="2"-->
-<!--                        label="name"-->
-<!--                        track-by="name"-->
-<!--                    ></multiselect>-->
                 </div>
             </div>
             <div class="col-md-9">
@@ -137,6 +127,9 @@ export default {
     },
 
     methods: {
+        freezer: function() {
+            this.v1frozen = !this.v1frozen;
+        },
         sendLasts: function(data) {
             this.pushLasts = data;
         },
@@ -189,13 +182,20 @@ export default {
         randomize: function() {
             let _this = this;
             axios.get(this.rand).then(response => {
-                _this.v1 = response.data.v1;
                 _this.v2 = response.data.v2;
 
                 _this.value = [
-                    {"name": (response.data.v1).toUpperCase()},
+                    {"name": _this.v1},
                     {"name": (response.data.v2).toUpperCase()},
                 ]
+
+                if (!this.v1frozen) {
+                    _this.v1 = response.data.v1;
+                    _this.value = [
+                        {"name": (response.data.v1).toUpperCase()},
+                        {"name": (response.data.v2).toUpperCase()},
+                    ]
+                }
             });
         },
         trash: function() {

@@ -109,9 +109,10 @@ class ManualController extends Controller
                         'input_symbol2_usd' => $relInputs->sum('amount2_usd'),
                         'wbw_usd_1' => $relInputs->sum('amount1') * $pair_balance->price_at_trade_s1,
                         'wbw_usd_2' => $relInputs->sum('amount2') * $pair_balance->price_at_trade_s2,
-                        'cix' => isset($c20['data']['points'][strval(Carbon::parse($pair_balance->created_at->format('Y-m-d'))->unix())])
-                            ? $c20['data']['points'][Carbon::parse($pair_balance->created_at->format('Y-m-d'))->unix()]['v'][0]
-                            : null
+                        'cix' => null
+//                        'cix' => isset($c20['data']['points'][strval(Carbon::parse($pair_balance->created_at->format('Y-m-d'))->unix())])
+//                            ? $c20['data']['points'][Carbon::parse($pair_balance->created_at->format('Y-m-d'))->unix()]['v'][0]
+//                            : null
                     ]);
 
                     $data[] = $merged;
@@ -121,7 +122,8 @@ class ManualController extends Controller
 
         return [
             'records' => collect($data)->unique()->toArray(),
-            'c20_latest' => collect($c20['data']['points'])->last()['v'][0],
+            'c20_latest' => null,
+//            'c20_latest' => collect($c20['data']['points'])->last()['v'][0],
             'current_month' => $request->month ?: Carbon::now()->month,
             'months' => [
                 0 => [

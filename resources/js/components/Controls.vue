@@ -18,10 +18,10 @@
         <div v-if="showForm" class="mt-3">
             <form v-on:submit.prevent>
                 <div class="form-group col-3 pl-0">
-                    <input class="form-control mb-2" v-model="input.one" type="number" :placeholder="'amount ' + symbol1">
-                    <input class="form-control mb-2" v-model="input.oneUSD" type="number" :placeholder="'amount ' + symbol1 + ' usd'">
-                    <input class="form-control mb-2" v-model="input.two" type="number" :placeholder="'amount ' + symbol2">
-                    <input class="form-control mb-2" v-model="input.twoUSD" type="number" :placeholder="'amount ' + symbol2 + ' usd'">
+                    <input class="form-control mb-2" v-model="input.one" type="number" step="any" :placeholder="'amount ' + symbol1">
+                    <input class="form-control mb-2" v-model="input.oneUSD" type="number" step="any" :placeholder="'amount ' + symbol1 + ' usd'">
+                    <input class="form-control mb-2" v-model="input.two" type="number" step="any" :placeholder="'amount ' + symbol2">
+                    <input class="form-control mb-2" v-model="input.twoUSD" type="number" step="any" :placeholder="'amount ' + symbol2 + ' usd'">
                     <button @click="createInputRecord()" class="btn btn-success">Submit</button>
                 </div>
             </form>

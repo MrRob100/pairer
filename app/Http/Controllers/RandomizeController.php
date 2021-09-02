@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\DudPair;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use function PHPUnit\Framework\isNull;
 
 class RandomizeController extends Controller
 {

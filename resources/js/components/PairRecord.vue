@@ -9,6 +9,10 @@
                 </select>
             </div>
 
+            <button @click="getData(s1, s2)" class="btn btn-primary">All</button>
+            <button @click="getData(s1, s2, month)" class="btn btn-primary">Per Month</button>
+            <br>
+            <br>
             <table class="table table-bordered table-striped table-hover table-vcenter">
                 <thead>
                 <tr>
@@ -17,7 +21,7 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th>If Holding</th>
+                    <th>If Holding (from time)</th>
                     <th>If $</th>
                 </tr>
                 <tr>
@@ -67,7 +71,8 @@
                     <td class="text-light" :class="((item.balance_s1_usd + item.balance_s2_usd) - (item.wbw_usd_1 + item.wbw_usd_2)) > 0 ? 'bg-success' : 'bg-danger'"
                     >{{ ((item.balance_s1_usd + item.balance_s2_usd) - (item.wbw_usd_1 + item.wbw_usd_2)).toFixed(2) }}</td>
 
-                    <td>{{ ((item.balance_s1_usd + item.balance_s2_usd) / item.cix).toFixed(2) }}</td>
+                    <td></td>
+<!--                    <td>{{ ((item.balance_s1_usd + item.balance_s2_usd) / item.cix).toFixed(2) }}</td>-->
 
                     <td :class="((item.balance_s1_usd + item.balance_s2_usd) - (item.input_symbol1_usd + item.input_symbol2_usd)) > 0 ? 'bg-success' : 'bg-danger'"
                     >{{ ((item.balance_s1_usd + item.balance_s2_usd) - (item.input_symbol1_usd + item.input_symbol2_usd)).toFixed(2) }}</td>
@@ -111,7 +116,8 @@
                     >
                     {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 * pricec1Now) + (this.latestRecord.input_symbol2 * pricec2Now))).toFixed(2) }}
                     </td>
-                    <td>{{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) / data.c20_latest).toFixed(2) }}</td>
+                    <td></td>
+<!--                    <td>{{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) / data.c20_latest).toFixed(2) }}</td>-->
                     <td :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1_usd) + (this.latestRecord.input_symbol2_usd)) > 0 ? 'bg-success' : 'bg-danger'"
                     >
                     {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1_usd) + (this.latestRecord.input_symbol2_usd))).toFixed(2) }}
