@@ -80,3 +80,7 @@ Route::post('/dudpair', [RandomizeController::class, 'trash'])->name('trash');
 Route::get('/latestprices', [ChartController::class, 'latestPrices']);
 
 Route::post('/input', [InputController::class, 'create'])->name('inputs.create');
+
+Route::post('/shave', [ManualController::class, 'shave'])->name('shave');
+
+Route::post('/pump', [ManualController::class, 'pump'])->name('pump');

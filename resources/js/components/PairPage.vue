@@ -68,7 +68,10 @@
                 :br="br"
                 :pr="pr"
                 :tr="tr"
-                :rr="rr">
+                :rr="rr"
+                :shaver="shaver"
+                :pumpr="pumpr"
+            >
             </controls>
 <!--            <limits></limits>-->
         </div>
@@ -87,7 +90,22 @@ import Multiselect from "vue-multiselect";
 
 export default {
 
-    props: ["cr", "br", "pr", "tr", "spr", "cpr", "dlr", "bdr", "dr", "rand", "dp", "rr"],
+    props: [
+        "cr",
+        "br",
+        "pr",
+        "tr",
+        "spr",
+        "cpr",
+        "dlr",
+        "bdr",
+        "dr",
+        "rand",
+        "dp",
+        "rr",
+        "shaver",
+        "pumpr",
+    ],
 
     components: {
         Multiselect
@@ -206,7 +224,9 @@ export default {
                     s2: this.v2,
                 }
             }).then(response => {
-                _this.v1 = '';
+                if (!this.v1frozen) {
+                    _this.v1 = '';
+                }
                 _this.v2 = '';
             })
         }

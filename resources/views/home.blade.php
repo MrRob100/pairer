@@ -14,6 +14,8 @@
         rand="{{ route('randomize') }}"
         dp="{{ route('trash') }}"
         rr="{{ route('inputs.create') }}"
+        shaver="{{ route('shave') }}"
+        pumpr="{{ route('pump') }}"
     >
     </pair-page>
 {{--    @include('box')--}}
