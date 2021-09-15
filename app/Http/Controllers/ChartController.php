@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Input;
 use App\Models\PairBalance;
 use App\Services\BinanceGetService;
 use App\Services\IEXGetService;
@@ -260,7 +261,24 @@ class ChartController extends Controller
         $response1 = $this->binanceGetService->apiCall($request->s1);
         $response2 = $this->binanceGetService->apiCall($request->s2);
 
+        $pair_balance = PairBalance::where('s1', $request->s1)
+            ->where('s2', $request->s2)
+            ->orderBy('created_at', 'desc')->first();
+
+        $input = Input::where(
+            function ($query) use ($request) {
+                $query->where('symbol1', $request->s1)
+                    ->where('symbol2', $request->s2);
+            }
+        )->orWhere(
+            function ($query) use ($request) {
+                $query->where('symbol1', $request->s2)
+                    ->where('symbol2', $request->s1);
+            }
+        )->orderBy('created_at', 'desc')->first();
+
         return [
+            'latest_input' => $input->created_at > $pair_balance->created_at ? $input : null,
             's1' => $response1[0][4],
             's2' => $response2[0][4],
         ];

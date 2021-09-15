@@ -130,7 +130,6 @@ export default {
             });
         },
         createInputRecord: function() {
-
             this.input.symbol1 = this.symbol1;
             this.input.symbol2 = this.symbol2;
 

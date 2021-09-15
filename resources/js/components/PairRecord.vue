@@ -95,10 +95,6 @@
                     <td></td>
                     <td></td>
                     <td></td>
-<!--                    <td></td>-->
-<!--                    <td></td>-->
-<!--                    <td></td>-->
-<!--                    <td></td>-->
                     <td></td>
                     <td></td>
                 </tr>
@@ -122,12 +118,8 @@
                     >
                     {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1_usd) + (this.latestRecord.input_symbol2_usd))).toFixed(2) }}
                     </td>
-<!--                    <td>{{ this.latestRecord.input_symbol1.toFixed(2) }}</td>-->
-<!--                    <td>{{ (this.latestRecord.input_symbol1 * pricec1Now).toFixed(2) }}</td>-->
-<!--                    <td>{{ this.latestRecord.input_symbol2.toFixed(2) }}</td>-->
-<!--                    <td>{{ (this.latestRecord.input_symbol2 * pricec2Now).toFixed(2) }}</td>-->
-                    <td class="bg-dark text-light">{{ (this.latestRecord.input_symbol1 * pricec1Now + this.latestRecord.input_symbol2 * pricec2Now).toFixed(2) }}</td>
-                    <td class="bg-secondary text-light">{{ (this.latestRecord.input_symbol1_usd + this.latestRecord.input_symbol2_usd).toFixed(2) }}</td>
+                    <td class="bg-dark text-light">{{ ((this.latestRecord.input_symbol1 + this.latestInput.s1.s1) * pricec1Now + (this.latestRecord.input_symbol2 + this.latestInput.s2.s2) * pricec2Now).toFixed(2) }}</td>
+                    <td class="bg-secondary text-light">{{ (this.latestRecord.input_symbol1_usd + this.latestRecord.input_symbol2_usd + this.latestInputTotal).toFixed(2) }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -156,6 +148,16 @@ export default {
             bals2: null,
             pricec1Now: null,
             pricec2Now: null,
+            latestInput: {
+                s1: {
+                    s1: null,
+                    usd: null,
+                },
+                s2: {
+                    s2: null,
+                    usd: null,
+                },
+            },
             showNewRecord: false,
         };
     },
@@ -207,6 +209,18 @@ export default {
                 _this.pricec1Now = response.data['s1'];
                 _this.pricec2Now = response.data['s2'];
 
+                if (response.data['latest_input']) {
+                    _this.latestInput.s1.usd = response.data['latest_input']['amount1_usd'];
+                    _this.latestInput.s1.s1 = response.data['latest_input']['amount1'];
+                    _this.latestInput.s2.usd = response.data['latest_input']['amount2_usd'];
+                    _this.latestInput.s2.s2 = response.data['latest_input']['amount2'];
+                } else {
+                    _this.latestInput.s1.usd = null;
+                    _this.latestInput.s1.s1 = null;
+                    _this.latestInput.s2.usd = null;
+                    _this.latestInput.s2.s2 = null;
+                }
+
                 _this.showNewRecord = true;
             });
         },
@@ -215,6 +229,9 @@ export default {
         latestRecord: function() {
             return Object.values(this.data.records)[Object.keys(this.data.records).length - 1];
         },
+        latestInputTotal: function() {
+            return this.latestInput.s1.usd + this.latestInput.s2.usd;
+        }
     },
     watch: {
         value: function(val) {
