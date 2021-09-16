@@ -110,16 +110,16 @@
                     <td class="text-light"
                         :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 * pricec1Now) + (this.latestRecord.input_symbol2 * pricec2Now)) > 0 ? 'bg-success' : 'bg-danger'"
                     >
-                    {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 * pricec1Now) + (this.latestRecord.input_symbol2 * pricec2Now))).toFixed(2) }}
+                    {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 + this.latestInput.s1.s1) * pricec1Now + (this.latestRecord.input_symbol2 + this.latestInput.s2.s2) * pricec2Now)).toFixed(2) }}
                     </td>
                     <td></td>
 <!--                    <td>{{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) / data.c20_latest).toFixed(2) }}</td>-->
-                    <td :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1_usd) + (this.latestRecord.input_symbol2_usd)) > 0 ? 'bg-success' : 'bg-danger'"
+                    <td :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - (this.totalInput) > 0 ? 'bg-success' : 'bg-danger'"
                     >
-                    {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1_usd) + (this.latestRecord.input_symbol2_usd))).toFixed(2) }}
+                    {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - (this.totalInput)).toFixed(2) }}
                     </td>
                     <td class="bg-dark text-light">{{ ((this.latestRecord.input_symbol1 + this.latestInput.s1.s1) * pricec1Now + (this.latestRecord.input_symbol2 + this.latestInput.s2.s2) * pricec2Now).toFixed(2) }}</td>
-                    <td class="bg-secondary text-light">{{ (this.latestRecord.input_symbol1_usd + this.latestRecord.input_symbol2_usd + this.latestInputTotal).toFixed(2) }}</td>
+                    <td class="bg-secondary text-light">{{ (this.totalInput).toFixed(2) }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -231,7 +231,10 @@ export default {
         },
         latestInputTotal: function() {
             return this.latestInput.s1.usd + this.latestInput.s2.usd;
-        }
+        },
+        totalInput: function() {
+            return this.latestRecord.input_symbol1_usd + this.latestRecord.input_symbol2_usd + this.latestInputTotal;
+        },
     },
     watch: {
         value: function(val) {
