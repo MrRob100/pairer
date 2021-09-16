@@ -11,8 +11,11 @@
                 <div v-if="marketType === 'binance'">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-10 pr-0">
+                            <div class="col-8 pr-0">
                                 <input type="text" v-model="v1" class="form-control mb-1" :disabled="v1frozen">
+                            </div>
+                            <div class="col-2">
+                                <img class="coin-icon" :src='`https://cryptoicon-api.vercel.app/api/icon/${v1.toLowerCase()}`'>
                             </div>
                             <div class="col-2 pl-1">
                                 <button v-if="!v1frozen" @click="freezer" class="btn btn-info" title="Freeze"><i class="fas fa-snowflake text-light"></i></button>
@@ -20,8 +23,11 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-10 mr-0 pr-0">
+                            <div class="col-8 mr-0 pr-0">
                                 <input type="text" v-model="v2" class="form-control">
+                            </div>
+                            <div class="col-2">
+                                <img class="coin-icon" :src='`https://cryptoicon-api.vercel.app/api/icon/${v2.toLowerCase()}`'>
                             </div>
                         </div>
                     </div>
