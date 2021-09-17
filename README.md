@@ -21,3 +21,8 @@ Wick piggy back
 Price label colour unset
 
     9605
+
+Price line events
+
+    ....
+    5166 onwards

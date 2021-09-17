@@ -5036,7 +5036,8 @@
                         value: function draw(data) {
                             var green = data.raw[4] >= data.raw[1];
                             var body_color = green ? this.style.colorCandleUp : this.style.colorCandleDw;
-                            var wick_color = green ? this.style.colorWickUp : this.style.colorWickDw;
+                            var wick_color = green ? this.style.colorCandleUp : this.style.colorCandleDw;
+                            // var wick_color = green ? this.style.colorWickUp : this.style.colorWickDw;
                             var w = Math.max(data.w, 1);
                             var hw = Math.max(Math.floor(w * 0.5), 1);
                             var h = Math.abs(data.o - data.c);
