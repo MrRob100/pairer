@@ -5190,7 +5190,6 @@
                                 ctx.lineTo(layout.width, l3);
                                 ctx.stroke();
                             }
-
                         }
                     }, {
                         key: "last_bar",
