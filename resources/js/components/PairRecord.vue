@@ -13,48 +13,37 @@
             <button @click="getData(s1, s2, month)" class="btn btn-primary">Per Month</button>
             <br>
             <br>
-            <table class="table table-bordered table-striped table-hover table-vcenter">
+            <table v-if="data.length != 0" class="table table-bordered table-striped table-hover table-vcenter">
                 <thead>
                 <tr>
                     <th></th>
-                    <th colspan="7">Real</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>If Holding (from time)</th>
-                    <th>If $</th>
+                    <th class="text-center" colspan="7">Real</th>
+                    <th class="text-center" colspan="2"></th>
+                    <th class="text-center">If Holding (from time)</th>
+                    <th class="text-center">If $</th>
                 </tr>
                 <tr>
                     <th></th>
-                    <th colspan="2">Balance {{ s1 }}</th>
-                    <th colspan="2">Balance {{ s2 }}</th>
-                    <th colspan="3">Σ</th>
-                    <th></th>
-                    <th></th>
-<!--                    <th colspan="2">Balance {{ s1 }}</th>-->
-<!--                    <th colspan="2">Balance {{ s2 }}</th>-->
-                    <th></th>
-                    <th>Σ</th>
-                    <th>Σ</th>
+                    <th class="text-center" colspan="2">Balance {{ s1 }}</th>
+                    <th class="text-center" colspan="2">Balance {{ s2 }}</th>
+                    <th class="text-center" colspan="3">Σ</th>
+                    <th class="text-center" colspan="2">Δ</th>
+                    <th class="text-center">Σ</th>
+                    <th class="text-center">Σ</th>
                 </tr>
                 <tr>
-                    <th>Date</th>
-                    <th>{{ s1 }}</th>
-                    <th>$</th>
-                    <th>{{ s2 }}</th>
-                    <th>$</th>
-                    <th>In {{ s1 }}</th>
-                    <th>In {{ s2 }}</th>
-                    <th>$</th>
-                    <th>Δ</th>
-                    <th>c</th>
-                    <th>Δi</th>
-<!--                    <th>{{ s1 }}</th>-->
-<!--                    <th>$</th>-->
-<!--                    <th>{{ s2 }}</th>-->
-<!--                    <th>$</th>-->
-                    <th>$</th>
-                    <th>$</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">{{ s1 }}</th>
+                    <th class="text-center">$</th>
+                    <th class="text-center">{{ s2 }}</th>
+                    <th class="text-center">$</th>
+                    <th class="text-center">In {{ s1 }}</th>
+                    <th class="text-center">In {{ s2 }}</th>
+                    <th class="text-center">$</th>
+                    <th class="text-center">Δ</th>
+                    <th class="text-center">Δi</th>
+                    <th class="text-center">$</th>
+                    <th class="text-center">$</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -71,20 +60,12 @@
                     <td class="text-light" :class="((item.balance_s1_usd + item.balance_s2_usd) - (item.wbw_usd_1 + item.wbw_usd_2)) > 0 ? 'bg-success' : 'bg-danger'"
                     >{{ ((item.balance_s1_usd + item.balance_s2_usd) - (item.wbw_usd_1 + item.wbw_usd_2)).toFixed(2) }}</td>
 
-                    <td></td>
-<!--                    <td>{{ ((item.balance_s1_usd + item.balance_s2_usd) / item.cix).toFixed(2) }}</td>-->
-
                     <td :class="((item.balance_s1_usd + item.balance_s2_usd) - (item.input_symbol1_usd + item.input_symbol2_usd)) > 0 ? 'bg-success' : 'bg-danger'"
                     >{{ ((item.balance_s1_usd + item.balance_s2_usd) - (item.input_symbol1_usd + item.input_symbol2_usd)).toFixed(2) }}</td>
-<!--                    <td>{{ item.input_symbol1.toFixed(2) }}</td>-->
-<!--                    <td>{{ item.wbw_usd_1.toFixed(2) }}</td>-->
-<!--                    <td>{{ item.input_symbol2.toFixed(2) }}</td>-->
-<!--                    <td>{{ item.wbw_usd_2.toFixed(2) }}</td>-->
                     <td class="bg-dark text-light">{{ (item.wbw_usd_1 + item.wbw_usd_2).toFixed(2) }}</td>
                     <td class="bg-secondary text-light">{{ (item.input_symbol1_usd + item.input_symbol2_usd).toFixed(2) }}</td>
                 </tr>
                 <tr>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -108,12 +89,10 @@
                     <td class="bg-secondary">{{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) / pricec2Now).toFixed(2) }}</td>
                     <td class="bg-info text-light">{{ ((bals1 * pricec1Now) + (bals2 * pricec2Now)).toFixed(2) }}</td>
                     <td class="text-light"
-                        :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 * pricec1Now) + (this.latestRecord.input_symbol2 * pricec2Now)) > 0 ? 'bg-success' : 'bg-danger'"
+                        :class="(((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 + this.latestInput.s1.s1) * pricec1Now + (this.latestRecord.input_symbol2 + this.latestInput.s2.s2) * pricec2Now)) > 0 ? 'bg-success' : 'bg-danger'"
                     >
                     {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 + this.latestInput.s1.s1) * pricec1Now + (this.latestRecord.input_symbol2 + this.latestInput.s2.s2) * pricec2Now)).toFixed(2) }}
                     </td>
-                    <td></td>
-<!--                    <td>{{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) / data.c20_latest).toFixed(2) }}</td>-->
                     <td :class="((bals1 * pricec1Now) + (bals2 * pricec2Now)) - (this.totalInput) > 0 ? 'bg-success' : 'bg-danger'"
                     >
                     {{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) - (this.totalInput)).toFixed(2) }}

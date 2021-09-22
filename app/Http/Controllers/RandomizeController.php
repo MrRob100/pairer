@@ -36,8 +36,8 @@ class RandomizeController extends Controller
             || str_contains($s2.$s1, 'BEAR')
             || str_contains($s2.$s1, 'BULL'))
         {
-
            DudPair::create(['symbol' => $s1.$s2]);
+
            return($this->randomPair());
         }
 
