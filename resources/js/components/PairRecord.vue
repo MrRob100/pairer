@@ -1,5 +1,9 @@
 <template>
     <div class="mr-5 ml-5 mt-5 mb-5 row">
+        <div class="col-10 m-auto">
+            <canvas id="performance">
+            </canvas>
+        </div>
         <div class="col-4">
 
             <div v-if="data.months" class="mb-3">
@@ -105,10 +109,6 @@
             <br>
             <button v-if="pricec1" @click="getBalances" class="btn btn-primary">Get Latest</button>
         </div>
-        <div class="col-10 m-auto">
-            <canvas id="performance">
-            </canvas>
-        </div>
     </div>
 </template>
 
@@ -206,6 +206,7 @@ export default {
             this.graphData.data.datasets[0].data = valueIfHolding;
             this.graphData.data.datasets[1].data = value;
 
+            //destroy context element and create new
             const ctx = document.getElementById('performance');
             new Chart(ctx, this.graphData);
         },
