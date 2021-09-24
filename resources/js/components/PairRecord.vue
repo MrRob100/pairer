@@ -105,10 +105,16 @@
             <br>
             <button v-if="pricec1" @click="getBalances" class="btn btn-primary">Get Latest</button>
         </div>
+        <div class="col-10 m-auto">
+            <canvas id="performance">
+            </canvas>
+        </div>
     </div>
 </template>
 
 <script>
+import Chart from 'chart.js';
+
 export default {
     props: [
         "value",
@@ -138,6 +144,30 @@ export default {
                 },
             },
             showNewRecord: false,
+            graphData: {
+                type: "bar",
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: "Pair value if holding",
+                            type: "line",
+                            data: [],
+                            backgroundColor: "rgba(54,73,93,.5)",
+                            borderColor: "#36495d",
+                            borderWidth: 3
+                        },
+                        {
+                            label: "Pair Value",
+                            type: "line",
+                            data: [],
+                            backgroundColor: "rgba(71, 183,132,.5)",
+                            borderColor: "#47b784",
+                            borderWidth: 3
+                        }
+                    ]
+                }
+            }
         };
     },
 
@@ -158,7 +188,26 @@ export default {
             }).then(response => {
                 this.data = response.data;
                 this.month = response.data.current_month;
+                this.formatChartData(response.data);
             });
+        },
+        formatChartData: function(data) {
+            var labels = [];
+            var value = [];
+            var valueIfHolding = [];
+
+            Object.values(data.records).forEach((item) => {
+                labels.push(item.created_at.substring(0, 10));
+                value.push(item.balance_s1_usd + item.balance_s2_usd);
+                valueIfHolding.push(item.wbw_usd_1 + item.wbw_usd_2);
+            });
+
+            this.graphData.data.labels = labels;
+            this.graphData.data.datasets[0].data = valueIfHolding;
+            this.graphData.data.datasets[1].data = value;
+
+            const ctx = document.getElementById('performance');
+            new Chart(ctx, this.graphData);
         },
         getBalances: function() {
             let _this = this;
