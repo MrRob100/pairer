@@ -1,5 +1,6 @@
 <template>
     <div>
+<!--        <shapes></shapes>-->
         <div class="row m-2">
             <div class="col-md-3 mb-3" style="z-index:10">
 <!--                <multiselect-->
