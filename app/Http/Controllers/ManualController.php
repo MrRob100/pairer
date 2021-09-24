@@ -199,4 +199,9 @@ class ManualController extends Controller
             ]
         ];
     }
+
+    public function icon(Request $request)
+    {
+        return $this->binanceGetService->getIcon($request->symbol);
+    }
 }

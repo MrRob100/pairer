@@ -16,6 +16,7 @@
         rr="{{ route('inputs.create') }}"
         shaver="{{ route('shave') }}"
         pumpr="{{ route('pump') }}"
+        icon="{{ route('icon') }}"
     >
     </pair-page>
 {{--    @include('box')--}}

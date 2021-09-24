@@ -8,7 +8,7 @@
                 :height="280"
                 :width="460"
             ></trading-vue>
-            <a v-if="this.s.length == 2" :href="this.dlref0" class="btn btn-sm btn-primary m-1"><i class="fa fa-download mr-1"></i>Download csv</a>
+<!--            <a v-if="this.s.length == 2" :href="this.dlref0" class="btn btn-sm btn-primary m-1"><i class="fa fa-download mr-1"></i>Download csv</a>-->
         </div>
         <div class="col-4">
             <trading-vuea
@@ -30,7 +30,7 @@
                 :width="460"
             ></trading-vue>
 
-            <a v-if="this.s.length == 2" :href="this.dlref1" class="btn btn-sm btn-primary m-1"><i class="fa fa-download mr-1"></i>Download csv</a>
+<!--            <a v-if="this.s.length == 2" :href="this.dlref1" class="btn btn-sm btn-primary m-1"><i class="fa fa-download mr-1"></i>Download csv</a>-->
         </div>
     </div>
 </template>

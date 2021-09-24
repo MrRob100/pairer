@@ -84,3 +84,5 @@ Route::post('/input', [InputController::class, 'create'])->name('inputs.create')
 Route::post('/shave', [ManualController::class, 'shave'])->name('shave');
 
 Route::post('/pump', [ManualController::class, 'pump'])->name('pump');
+
+Route::get('/icon', [ManualController::class, 'icon'])->name('icon');

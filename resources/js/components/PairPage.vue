@@ -15,7 +15,7 @@
                                 <input type="text" v-model="v1" class="form-control mb-1" :disabled="v1frozen">
                             </div>
                             <div class="col-2">
-                                <img class="coin-icon" :src='`https://cryptoicon-api.vercel.app/api/icon/${v1.toLowerCase()}`'>
+                                <img v-if="v1url" class="coin-icon" :src="v1url">
                             </div>
                             <div class="col-2 pl-1">
                                 <button v-if="!v1frozen" @click="freezer" class="btn btn-info" title="Freeze"><i class="fas fa-snowflake text-light"></i></button>
@@ -27,7 +27,7 @@
                                 <input type="text" v-model="v2" class="form-control">
                             </div>
                             <div class="col-2">
-                                <img class="coin-icon" :src='`https://cryptoicon-api.vercel.app/api/icon/${v2.toLowerCase()}`'>
+                                <img v-if="v2url" class="coin-icon" :src="v2url">
                             </div>
                         </div>
                     </div>
@@ -111,6 +111,7 @@ export default {
         "rr",
         "shaver",
         "pumpr",
+        "icon",
     ],
 
     components: {
@@ -144,6 +145,8 @@ export default {
             marketType: "binance",
             v1: "",
             v2: "",
+            v1url: null,
+            v2url: null,
             v1frozen: false,
             added: [],
             pushLasts: [],
@@ -241,6 +244,12 @@ export default {
     watch: {
         marketType: function(val) {
             this.options = this.symbols[val];
+        },
+        v1: function(val) {
+            axios.get(this.icon, {params: {symbol: val}}).then(response => this.v1url = response.data);
+        },
+        v2: function(val) {
+            axios.get(this.icon, {params: {symbol: val}}).then(response => this.v2url = response.data);
         }
     }
 }
