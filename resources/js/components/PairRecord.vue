@@ -1,8 +1,8 @@
 <template>
     <div class="mr-5 ml-5 mt-5 mb-5 row">
         <div class="col-10 m-auto">
-            <canvas id="performance">
-            </canvas>
+            <div id="performance_container">
+            </div>
         </div>
         <div class="col-4">
 
@@ -191,6 +191,7 @@ export default {
                 this.formatChartData(response.data);
             });
         },
+
         formatChartData: function(data) {
             var labels = [];
             var value = [];
@@ -206,9 +207,17 @@ export default {
             this.graphData.data.datasets[0].data = valueIfHolding;
             this.graphData.data.datasets[1].data = value;
 
-            //destroy context element and create new
-            const ctx = document.getElementById('performance');
-            new Chart(ctx, this.graphData);
+            let oldCanvasContainer =  document.getElementById('performance_container');
+
+            if (typeof(oldCanvasContainer) != 'undefined' && oldCanvasContainer != null) {
+                oldCanvasContainer.innerHTML = '';
+            }
+
+            let canvasContainer = document.getElementById('performance_container');
+            let canvas = document.createElement('canvas');
+            canvasContainer.appendChild(canvas);
+
+            new Chart(canvas, this.graphData);
         },
         getBalances: function() {
             let _this = this;
