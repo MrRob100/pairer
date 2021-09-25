@@ -1,22 +1,19 @@
 <template>
     <div class="mr-5 ml-5 mt-5 mb-5 row">
         <div class="col-10 m-auto">
-            <div id="performance_container">
-            </div>
-        </div>
-        <div class="col-4">
-
             <div v-if="data.months" class="mb-3">
                 <label class="font-weight-normal mr-3" for="month">Month:</label>
-                <select class="form-control" id="month" name="month" v-model="month" @change="getData(s1, s2, month)">
+                <select class="form-control col-3" id="month" name="month" v-model="month" @change="getData(s1, s2, month)">
                     <option v-for="month in data.months" :value="month.value">{{ month.name }}</option>
                 </select>
             </div>
 
             <button @click="getData(s1, s2)" class="btn btn-primary">All</button>
             <button @click="getData(s1, s2, month)" class="btn btn-primary">Per Month</button>
-            <br>
-            <br>
+            <div id="performance_container">
+            </div>
+        </div>
+        <div class="col-4">
             <table v-if="data.length != 0" class="table table-bordered table-striped table-hover table-vcenter">
                 <thead>
                 <tr>
@@ -164,6 +161,14 @@ export default {
                             backgroundColor: "rgba(71, 183,132,.5)",
                             borderColor: "#47b784",
                             borderWidth: 3
+                        },
+                        {
+                            label: "Input",
+                            type: "bar",
+                            data: [],
+                            backgroundColor: "rgba(71,127,183,0.5)",
+                            borderColor: "#4779b7",
+                            borderWidth: 3
                         }
                     ]
                 }
@@ -193,19 +198,22 @@ export default {
         },
 
         formatChartData: function(data) {
-            var labels = [];
-            var value = [];
-            var valueIfHolding = [];
+            let labels = [];
+            let value = [];
+            let valueIfHolding = [];
+            let inputs = [];
 
             Object.values(data.records).forEach((item) => {
                 labels.push(item.created_at.substring(0, 10));
                 value.push(item.balance_s1_usd + item.balance_s2_usd);
                 valueIfHolding.push(item.wbw_usd_1 + item.wbw_usd_2);
+                inputs.push(item.input_symbol1_usd + item.input_symbol2_usd);
             });
 
             this.graphData.data.labels = labels;
             this.graphData.data.datasets[0].data = valueIfHolding;
             this.graphData.data.datasets[1].data = value;
+            this.graphData.data.datasets[2].data = inputs;
 
             let oldCanvasContainer =  document.getElementById('performance_container');
 
