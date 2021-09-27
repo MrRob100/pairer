@@ -13,7 +13,7 @@
             <div id="performance_container">
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-10 m-auto">
             <table v-if="data.length != 0" class="table table-bordered table-striped table-hover table-vcenter">
                 <thead>
                 <tr>
