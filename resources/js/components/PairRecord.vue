@@ -88,7 +88,7 @@
                     <td>{{ (bals2 * pricec2Now).toFixed(2) }}</td>
                     <td class="bg-secondary">{{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) / pricec1Now).toFixed(2) }}</td>
                     <td class="bg-secondary">{{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) / pricec2Now).toFixed(2) }}</td>
-                    <td class="bg-info text-light">{{ ((bals1 * pricec1Now) + (bals2 * pricec2Now)).toFixed(2) }}</td>
+                    <td class="bg-info text-light">{{ currentValue }}</td>
                     <td class="text-light"
                         :class="(((bals1 * pricec1Now) + (bals2 * pricec2Now)) - ((this.latestRecord.input_symbol1 + this.latestInput.s1.s1) * pricec1Now + (this.latestRecord.input_symbol2 + this.latestInput.s2.s2) * pricec2Now)) > 0 ? 'bg-success' : 'bg-danger'"
                     >
@@ -141,6 +141,7 @@ export default {
                 },
             },
             showNewRecord: false,
+            latest: false,
             graphData: {
                 type: "bar",
                 data: {
@@ -215,6 +216,30 @@ export default {
             this.graphData.data.datasets[1].data = value;
             this.graphData.data.datasets[2].data = inputs;
 
+            this.newChart();
+        },
+        pushLatestToChart: function() {
+
+            let today = new Date();
+
+            if (this.latest) {
+                let offset = this.graphData.data.datasets[0].data.length - 1;
+
+                this.graphData.data.labels[offset] = today.toISOString().split('T')[0];
+                this.graphData.data.datasets[0].data[offset] = this.valueIfHolding;
+                this.graphData.data.datasets[1].data[offset] = this.currentValue;
+                this.graphData.data.datasets[2].data[offset] = this.totalInput.toFixed(2);
+            } else {
+                this.graphData.data.labels.push(today.toISOString().split('T')[0]);
+                this.graphData.data.datasets[0].data.push(this.valueIfHolding);
+                this.graphData.data.datasets[1].data.push(this.currentValue);
+                this.graphData.data.datasets[2].data.push((this.totalInput).toFixed(2));
+            }
+
+            this.newChart();
+            this.latest = true;
+        },
+        newChart: function() {
             let oldCanvasContainer =  document.getElementById('performance_container');
 
             if (typeof(oldCanvasContainer) != 'undefined' && oldCanvasContainer != null) {
@@ -229,6 +254,7 @@ export default {
         },
         getBalances: function() {
             let _this = this;
+            _this.showNewRecord = true;
 
             axios.get(this.br, {
                 params: {
@@ -236,6 +262,7 @@ export default {
                 }
             }).then(function (response) {
                 _this.bals1 = response.data;
+                _this.pushLatestToChart();
             });
 
             axios.get(this.br, {
@@ -244,6 +271,7 @@ export default {
                 }
             }).then(function (response) {
                 _this.bals2 = response.data;
+                _this.pushLatestToChart();
             });
 
             axios.get('/latestprices', {
@@ -266,7 +294,7 @@ export default {
                     _this.latestInput.s2.usd = null;
                     _this.latestInput.s2.s2 = null;
                 }
-
+                _this.pushLatestToChart();
                 _this.showNewRecord = true;
             });
         },
@@ -280,6 +308,12 @@ export default {
         },
         totalInput: function() {
             return this.latestRecord.input_symbol1_usd + this.latestRecord.input_symbol2_usd + this.latestInputTotal;
+        },
+        currentValue: function() {
+            return ((this.bals1 * this.pricec1Now) + (this.bals2 * this.pricec2Now)).toFixed(2);
+        },
+        valueIfHolding: function() {
+            return ((this.latestRecord.input_symbol1 + this.latestInput.s1.s1) * this.pricec1Now + (this.latestRecord.input_symbol2 + this.latestInput.s2.s2) * this.pricec2Now).toFixed(2)  ;
         },
     },
     watch: {
