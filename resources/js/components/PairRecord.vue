@@ -219,7 +219,6 @@ export default {
             this.newChart();
         },
         pushLatestToChart: function() {
-
             let today = new Date();
 
             if (this.latest) {

@@ -26,14 +26,14 @@ class BinanceGetService {
         return $data['price'];
     }
 
-    public function getIcon($symbol): string
+    public function getIcon($symbol): ?string
     {
         //gxs doesnt work
 
         $coinData = json_decode(file_get_contents(public_path('cmc.json')), true);
 
-        $id = collect($coinData['data'])->where('symbol', '=', $symbol)->first()['id'];
+        $first = collect($coinData['data'])->where('symbol', '=', $symbol)->first();
 
-        return "https://s2.coinmarketcap.com/static/img/coins/64x64/{$id}.png";
+        return $first ? "https://s2.coinmarketcap.com/static/img/coins/64x64/{$first['id']}.png" : false;
     }
 }
