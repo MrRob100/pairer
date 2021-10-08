@@ -317,8 +317,9 @@ export default {
     },
     watch: {
         value: function(val) {
-            this.showNewRecord = false;
             if (val.length == 2) {
+                this.showNewRecord = false;
+                this.latest = false;
                 this.getData(val[0].name, val[1].name);
             }
         },
