@@ -3,7 +3,7 @@
         <ul class="col-list">
             <li v-for="pair in pairs">
                 <p @click="populate(pair.s1, pair.s2)" class="btn-link mr-2">{{ (pair.s1 + pair.s2).toUpperCase() }}</p>
-                <i @click="deletePair(pair.id)" class="fa fa-times"></i>
+                <i @click="deletePair(pair.id)" class="fa fa-times grey-cross"></i>
             </li>
         </ul>
     </div>
@@ -82,6 +82,10 @@ export default {
 
     i {
         cursor: pointer;
+    }
+
+    .grey-cross {
+        color: #777;
     }
 }
 </style>

@@ -67,6 +67,7 @@
             @lasts="sendLasts"
         ></pair>
         <br>
+        <br>
         <div class="container">
             <controls
                 :symbol1="v1.toUpperCase()"
