@@ -1,10 +1,10 @@
 <template>
-    <Scene>
+    <Scene id="cont">
         <Camera></Camera>
         <HemisphericLight diffuse="#0000FF"></HemisphericLight>
-        <Entity :position="[-3, 0, 5]">
-            <Animation property="rotation.y" :duration="13" :end="Math.PI * 2"></Animation>
-            <Animation property="rotation.x" :duration="10" :end="Math.PI * 2"></Animation>
+        <Entity :position="[-4, 0, 5]">
+            <Animation property="rotation.y" :duration="10" :end="Math.PI * 2"></Animation>
+            <Animation property="rotation.x" :duration="15" :end="Math.PI * 2"></Animation>
             <PointLight diffuse="#FF0000"></PointLight>
             <Cylinder>
                 <property name="scaling" :vector="{ x: 5, y: 0.5, z: 5 }"></property>
@@ -13,8 +13,8 @@
                 </Material>
             </Cylinder>
         </Entity>
-        <Entity :position="[3, 0, 5]">
-            <Animation property="rotation.y" :duration="10" :end="Math.PI * 2"></Animation>
+        <Entity :position="[4, 0, 5]">
+            <Animation property="rotation.y" :duration="11" :end="Math.PI * 2"></Animation>
             <Animation property="rotation.x" :duration="15" :end="Math.PI * 2"></Animation>
             <PointLight diffuse="#FF0000"></PointLight>
             <Cylinder>
@@ -28,6 +28,10 @@
 </template>
 
 <script>
+
+import vb from 'vue-babylonjs';
+window.Vue.use(vb);
+
 export default {
     name: "App",
     props: ["v1url", "v2url"],
@@ -39,11 +43,6 @@ export default {
 
 <style>
 #cont {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    height: 100%;
-    width: 50%;
+    position: absolute;
 }
 </style>

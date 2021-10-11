@@ -2,8 +2,10 @@
     <div class="row">
         <div class="col-4">
             <trading-vue
+                colorBack="rgba(0,0,0,0)"
                 style="z-index: -1"
                 colorText="#7DA0B1"
+                colorGrid="#777"
                 :data="tradingVue1"
                 :height="280"
                 :width="460"
@@ -12,9 +14,11 @@
         </div>
         <div class="col-4">
             <trading-vuea
+                colorBack="rgba(0,0,0,0)"
                 :colorWickUp="lineDataPair ? JSON.stringify(lineDataPair) : null"
                 style="z-index: -1"
                 colorText="#7DA0B1"
+                colorGrid="#777"
                 :data="tradingVueData"
                 :overlays="overlays"
                 :height="280"
@@ -23,8 +27,10 @@
         </div>
         <div class="col-4">
             <trading-vue
+                colorBack="rgba(0,0,0,0)"
                 style="z-index: -1"
                 colorText="#7DA0B1"
+                colorGrid="#777"
                 :data="tradingVue2"
                 :height="280"
                 :width="460"

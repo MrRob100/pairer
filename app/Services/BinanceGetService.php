@@ -34,6 +34,24 @@ class BinanceGetService {
 
         $first = collect($coinData['data'])->where('symbol', '=', $symbol)->first();
 
-        return $first ? "https://s2.coinmarketcap.com/static/img/coins/64x64/{$first['id']}.png" : false;
+        if ($first) {
+            $url = "https://s2.coinmarketcap.com/static/img/coins/64x64/{$first['id']}.png";
+
+            $file_name = public_path() . '/icons/' . $symbol . '.png';
+
+            if (!file_exists($file_name)) {
+                $ch = curl_init($url);
+                $fp = fopen(public_path() . '/icons/' . $symbol . '.png' , 'wb');
+                curl_setopt($ch, CURLOPT_FILE, $fp);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_exec($ch);
+                curl_close($ch);
+                fclose($fp);
+            }
+
+            return '/icons/' . $symbol . '.png';
+        } else {
+            return false;
+        }
     }
 }
