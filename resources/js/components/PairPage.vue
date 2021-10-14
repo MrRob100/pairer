@@ -1,6 +1,6 @@
 <template>
     <div>
-        <sphere :v1url="v1url" :v2url="v2url"></sphere>
+        <shapes :v1url="v1url" :v2url="v2url"></shapes>
         <div class="row m-2">
             <div class="col-md-3 mb-3" style="z-index:10">
 <!--                <multiselect-->

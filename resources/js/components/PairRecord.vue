@@ -18,42 +18,42 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th class="text-center" colspan="7">Real</th>
-                    <th class="text-center" colspan="2"></th>
-                    <th class="text-center">If Holding (from time)</th>
-                    <th class="text-center">If $</th>
+                    <th class="text-center text-light" colspan="7">Real</th>
+                    <th class="text-center text-light" colspan="2"></th>
+                    <th class="text-center text-light">If Holding (from time)</th>
+                    <th class="text-center text-light">If $</th>
                 </tr>
                 <tr>
                     <th></th>
-                    <th class="text-center" colspan="2">Balance {{ s1 }}</th>
-                    <th class="text-center" colspan="2">Balance {{ s2 }}</th>
-                    <th class="text-center" colspan="3">Σ</th>
-                    <th class="text-center" colspan="2">Δ</th>
-                    <th class="text-center">Σ</th>
-                    <th class="text-center">Σ</th>
+                    <th class="text-center text-light" colspan="2">Balance {{ s1 }}</th>
+                    <th class="text-center text-light" colspan="2">Balance {{ s2 }}</th>
+                    <th class="text-center text-light" colspan="3">Σ</th>
+                    <th class="text-center text-light" colspan="2">Δ</th>
+                    <th class="text-center text-light">Σ</th>
+                    <th class="text-center text-light">Σ</th>
                 </tr>
                 <tr>
-                    <th class="text-center">Date</th>
-                    <th class="text-center">{{ s1 }}</th>
-                    <th class="text-center">$</th>
-                    <th class="text-center">{{ s2 }}</th>
-                    <th class="text-center">$</th>
-                    <th class="text-center">In {{ s1 }}</th>
-                    <th class="text-center">In {{ s2 }}</th>
-                    <th class="text-center">$</th>
-                    <th class="text-center">Δ</th>
-                    <th class="text-center">Δi</th>
-                    <th class="text-center">$</th>
-                    <th class="text-center">$</th>
+                    <th class="text-center text-light">Date</th>
+                    <th class="text-center text-light">{{ s1 }}</th>
+                    <th class="text-center text-light">$</th>
+                    <th class="text-center text-light">{{ s2 }}</th>
+                    <th class="text-center text-light">$</th>
+                    <th class="text-center text-light">In {{ s1 }}</th>
+                    <th class="text-center text-light">In {{ s2 }}</th>
+                    <th class="text-center text-light">$</th>
+                    <th class="text-center text-light">Δ</th>
+                    <th class="text-center text-light">Δi</th>
+                    <th class="text-center text-light">$</th>
+                    <th class="text-center text-light">$</th>
                 </tr>
                 </thead>
                 <tbody>
                     <tr v-for="item in data.records">
-                        <td>{{ formatDate(item.created_at) }}</td>
-                        <td>{{ item.balance_s1.toFixed(2) }}</td>
-                        <td>{{ item.balance_s1_usd.toFixed(2) }}</td>
-                        <td>{{ item.balance_s2.toFixed(2) }}</td>
-                        <td>{{ item.balance_s2_usd.toFixed(2) }}</td>
+                        <td class="text-light">{{ formatDate(item.created_at) }}</td>
+                        <td class="text-light">{{ item.balance_s1.toFixed(2) }}</td>
+                        <td class="text-light">{{ item.balance_s1_usd.toFixed(2) }}</td>
+                        <td class="text-light">{{ item.balance_s2.toFixed(2) }}</td>
+                        <td class="text-light">{{ item.balance_s2_usd.toFixed(2) }}</td>
                         <td class="bg-secondary">{{ ((item.balance_s1_usd + item.balance_s2_usd) / item.price_at_trade_s1).toFixed(2) }}</td>
                         <td class="bg-secondary">{{ ((item.balance_s1_usd + item.balance_s2_usd) / item.price_at_trade_s2).toFixed(2) }}</td>
                         <td class="bg-info text-light">{{ (item.balance_s1_usd + item.balance_s2_usd).toFixed(2) }}</td>
@@ -81,11 +81,11 @@
                         <td></td>
                     </tr>
                     <tr v-if="((bals1 && bals2) || (bals1 && bals2 == 0) || (bals2 && bals1 == 0)) && (this.latestRecord) && showNewRecord">
-                        <td>{{ formatDate(new Date()) }}</td>
-                        <td>{{ bals1.toFixed(2) }}</td>
-                        <td>{{ (bals1 * pricec1Now).toFixed(2) }}</td>
-                        <td>{{ bals2.toFixed(2) }}</td>
-                        <td>{{ (bals2 * pricec2Now).toFixed(2) }}</td>
+                        <td class="text-light">{{ formatDate(new Date()) }}</td>
+                        <td class="text-light">{{ bals1.toFixed(2) }}</td>
+                        <td class="text-light">{{ (bals1 * pricec1Now).toFixed(2) }}</td>
+                        <td class="text-light">{{ bals2.toFixed(2) }}</td>
+                        <td class="text-light">{{ (bals2 * pricec2Now).toFixed(2) }}</td>
                         <td class="bg-secondary">{{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) / pricec1Now).toFixed(2) }}</td>
                         <td class="bg-secondary">{{ (((bals1 * pricec1Now) + (bals2 * pricec2Now)) / pricec2Now).toFixed(2) }}</td>
                         <td class="bg-info text-light">{{ currentValue }}</td>
