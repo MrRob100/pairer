@@ -13,7 +13,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-8 pr-0">
-                                <input type="text" v-model="v1" class="form-control mb-1" :disabled="v1frozen">
+                                <input type="text" :value="v1.toUpperCase()" @input="v1 = $event.target.value.toUpperCase()" class="form-control mb-1" :disabled="v1frozen">
                             </div>
                             <div class="col-2">
                                 <img v-if="v1url" class="coin-icon" :src="v1url">
@@ -25,7 +25,7 @@
                         </div>
                         <div class="row">
                             <div class="col-8 mr-0 pr-0">
-                                <input type="text" v-model="v2" class="form-control">
+                                <input type="text" :value="v2.toUpperCase()" @input="v2 = $event.target.value.toUpperCase()" class="form-control">
                             </div>
                             <div class="col-2">
                                 <img v-if="v2url" class="coin-icon" :src="v2url">
