@@ -85,8 +85,6 @@ class ManualController extends Controller
         $startDate = Carbon::createFromDate($year, $month, 1);
         $endDate = Carbon::createFromDate($year, $month, 1)->addMonth();
 
-//        $c20 = collect($this->cmcService->getData());
-
         $query = PairBalance::where('s1', $request->s1)
             ->where('s2', $request->s2);
 
@@ -115,7 +113,7 @@ class ManualController extends Controller
         $inputs = $inputsQuery->orderBy('created_at')->get();
 
         $data = [];
-        foreach($pair_balances as $pair_balance) {
+        foreach($pair_balances as $key => $pair_balance) {
             for($i = 0; $i < sizeof($inputs); $i++) {
                 if ($inputs[$i]->created_at <= $pair_balance->created_at) {
 
@@ -141,8 +139,6 @@ class ManualController extends Controller
 
         return [
             'records' => collect($data)->unique()->toArray(),
-            'c20_latest' => null,
-//            'c20_latest' => collect($c20['data']['points'])->last()['v'][0],
             'current_month' => $request->month ?: Carbon::now()->month,
             'months' => [
                 0 => [
