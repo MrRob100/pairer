@@ -113,7 +113,7 @@ class ManualController extends Controller
         $inputs = $inputsQuery->orderBy('created_at')->get();
 
         $data = [];
-        foreach($pair_balances as $key => $pair_balance) {
+        foreach($pair_balances as $pair_balance) {
             for($i = 0; $i < sizeof($inputs); $i++) {
                 if ($inputs[$i]->created_at <= $pair_balance->created_at) {
 
