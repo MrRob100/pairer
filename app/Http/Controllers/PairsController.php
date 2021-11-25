@@ -14,7 +14,13 @@ class PairsController extends Controller
 
     public function create(Request $request)
     {
-        Pair::create($request->all()['params']);
+        Pair::UpdateOrCreate(
+            [
+                's1' => $request->all()['params']['s1'],
+                's2' => $request->all()['params']['s2'],
+            ],
+            $request->all()['params']
+        );
     }
 
     public function delete(Request $request)
