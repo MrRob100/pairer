@@ -33,7 +33,6 @@ export default {
     watch: {
 
     }
-
 }
 
 </script>

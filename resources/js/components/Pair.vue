@@ -53,7 +53,6 @@
             TradingVue,
             TradingVuea,
         },
-
         props: {
             cr: "",
             s: "",

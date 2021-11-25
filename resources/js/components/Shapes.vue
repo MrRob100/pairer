@@ -5,7 +5,7 @@
 <!--        <Ground :options="{ width: 10, height: 10 }">-->
 <!--            <Physics></Physics>-->
 <!--        </Ground>-->
-        <Entity :position="[-4, 0, 5]">
+        <Entity :position="[-7, 0, 5]">
 <!--            <Physics :mass="1"></Physics>-->
             <Animation property="rotation.y" :duration="10" :end="Math.PI * 2"></Animation>
             <Animation property="rotation.x" :duration="15" :end="Math.PI * 2"></Animation>
@@ -17,7 +17,7 @@
                 </Material>
             </Cylinder>
         </Entity>
-        <Entity :position="[4, 0, 5]">
+        <Entity :position="[7, 0, 5]">
             <Animation property="rotation.y" :duration="11" :end="Math.PI * 2"></Animation>
             <Animation property="rotation.x" :duration="15" :end="Math.PI * 2"></Animation>
             <PointLight diffuse="#FF0000"></PointLight>

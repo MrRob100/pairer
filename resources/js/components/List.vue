@@ -1,5 +1,16 @@
 <template>
     <div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Active</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Archive</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Next</a>
+            </li>
+        </ul>
         <ul class="col-list">
             <li v-for="pair in pairs">
                 <p @click="populate(pair.s1, pair.s2)" class="btn-link mr-2">{{ (pair.s1 + pair.s2).toUpperCase() }}</p>

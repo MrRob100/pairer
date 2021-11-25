@@ -28,7 +28,11 @@ class BinanceGetService {
 
     public function getIcon($symbol): ?string
     {
-        //gxs doesnt work
+        $file_name_hq = public_path() . '/icons2/' . $symbol . '.png';
+
+        if (file_exists($file_name_hq)) {
+            return '/icons2/' . $symbol . '.png';
+        }
 
         $coinData = json_decode(file_get_contents(public_path('cmc.json')), true);
 

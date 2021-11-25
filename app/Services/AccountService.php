@@ -78,7 +78,6 @@ class AccountService
                 'balance_s2' => $bals[$pair->s2]['available'],
                 'balance_s2_usd' => $bals[$pair->s2]['available'] * $price_s2,
                 'price_at_trade_s2' => $price_s2,
-                'worth_if_holding' => null,//previous worth if holding + delta inputs since last (USD)
             ]);
 //        }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddWorthIfHoldingToPairBalancesTable extends Migration
+class AddStateToPairsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddWorthIfHoldingToPairBalancesTable extends Migration
      */
     public function up()
     {
-        Schema::table('pair_balances', function (Blueprint $table) {
-            $table->float('worth_if_holding');
+        Schema::table('pairs', function (Blueprint $table) {
+            $table->string('state');
         });
     }
 
@@ -25,8 +25,8 @@ class AddWorthIfHoldingToPairBalancesTable extends Migration
      */
     public function down()
     {
-        Schema::table('pair_balances', function (Blueprint $table) {
-            $table->dropColumn('worth_if_holding');
+        Schema::table('pairs', function (Blueprint $table) {
+            $table->dropColumn('state');
         });
     }
 }
