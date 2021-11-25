@@ -33,8 +33,10 @@
                         </div>
                     </div>
                     <button @click="go" class="btn btn-success">Go</button>
-                    <button @click="add" class="btn btn-success"><i class="fa fa-plus"></i></button>
                     <button @click="randomize" class="btn btn-success"><i class="fa fa-random"></i></button>
+                    <button @click="add('next')" class="btn btn-success"><i class="fa fa-lightbulb"></i></button>
+                    <button @click="add('active')" class="btn btn-success"><i class="fa fa-bolt"></i></button>
+                    <button @click="add('archived')" class="btn btn-secondary"><i class="fa fa-book"></i></button>
                     <button @click="trash" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                 </div>
 
@@ -191,13 +193,14 @@ export default {
             this.go();
         },
 
-        add: function() {
+        add: function(state) {
             let _this = this;
             axios
                 .post(this.cpr, {
                     params: {
                         s1: this.v1.toUpperCase(),
                         s2: this.v2.toUpperCase(),
+                        state: state,
                     },
                 })
                 .then(function() {

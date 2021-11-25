@@ -2,13 +2,13 @@
     <div>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Active</a>
+                <a @click="tab('active')" class="nav-link" :class="state === 'active' ? 'active' : ''" aria-current="page">Active</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Archive</a>
+                <a @click="tab('archived')" class="nav-link" :class="state === 'archived' ? 'active' : ''">Archived</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Next</a>
+                <a @click="tab('next')" class="nav-link" :class="state === 'next' ? 'active' : ''">Next</a>
             </li>
         </ul>
         <ul class="col-list">
@@ -32,23 +32,33 @@ export default {
         return {
             pairs: [],
             totalPairs: [],
+            state: 'active',
         };
     },
 
     mounted() {
-        this.getSavedPairs();
+        this.getSavedPairs(this.state);
     },
 
     methods: {
-        getSavedPairs() {
+        getSavedPairs(state) {
             axios
-                .get(this.spr)
+                .get(this.spr, {
+                    params: {
+                        state: state,
+                    }
+                })
                 .then((response) => (this.pairs = response.data))
                 .catch((error) => console.log(error));
         },
 
         populate(s1, s2) {
             this.$emit('populate', s1, s2);
+        },
+
+        tab(state) {
+            this.state = state;
+            this.getSavedPairs(state);
         },
 
         deletePair(id) {
@@ -60,21 +70,23 @@ export default {
                     },
                 })
                 .then(function() {
-                    _this.getSavedPairs();
+                    _this.getSavedPairs(this.state);
                 });
         }
     },
 
     watch: {
         added: function() {
-            this.getSavedPairs();
+            this.getSavedPairs(this.state);
         }
     }
-
 }
 
 </script>
 <style lang="scss">
+.nav-link {
+    cursor: pointer;
+}
 .col-list {
     cursor: pointer;
     columns: 3;

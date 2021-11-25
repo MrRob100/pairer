@@ -11,6 +11,7 @@ class Pair extends Model
 
     protected $fillable = [
         's1',
-        's2'
+        's2',
+        'state',
     ];
 }

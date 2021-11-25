@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class PairsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Pair::all();
+        return Pair::where('state', $request->state)->get();
     }
 
     public function create(Request $request)
