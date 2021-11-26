@@ -122,7 +122,10 @@ class AccountService
             $fromBridge = $this->marketFromUSDT($to, $quantityFBUSD);
 
             if (!$fromBridge) {
-                return null;
+                $fromBridge = $this->marketFromUSDT($to, $quantityFBUSD, true);
+                if (!$fromBridge) {
+                    return null;
+                }
             }
 
             if ($fromBridge['status'] === 'FILLED') {
@@ -144,7 +147,7 @@ class AccountService
      * in usd
      * @return array|null
      */
-    public function marketFromUSDT($to, $quantity)
+    public function marketFromUSDT($to, $quantity, $roundMore = false)
     {
         //ROUND QUANTITY
 
@@ -159,6 +162,11 @@ class AccountService
             $quantityRounded = strval(floor($quantOfTo));
         } else {
             $quantityRounded = strval(floor($quantOfTo * 100)/100);
+        }
+
+        if ($roundMore) {
+            $quantityRounded = strval(round($quantOfTo, 1));
+            Log::info("2nd attempt USD to $to this time $quantityRounded");
         }
 
         Log::info("quant: $quantityRounded of $to"); //showing 0
@@ -176,7 +184,6 @@ class AccountService
 
     public function marketToUSDT($from, $quantity)
     {
-
         //ROUND QUANTITY
 
         $api = $this->api();
