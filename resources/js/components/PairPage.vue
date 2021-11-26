@@ -35,8 +35,8 @@
                     <button @click="go" class="btn btn-success">Go</button>
                     <button @click="randomize" class="btn btn-success"><i class="fa fa-random"></i></button>
                     <button @click="add('next')" class="btn btn-success"><i class="fa fa-lightbulb"></i></button>
-                    <button @click="add('active')" class="btn btn-success"><i class="fa fa-bolt"></i></button>
                     <button @click="add('archived')" class="btn btn-secondary"><i class="fa fa-book"></i></button>
+                    <button @click="add('active')" class="btn btn-success"><i class="fa fa-bolt"></i></button>
                     <button @click="trash" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                 </div>
 

@@ -2,13 +2,13 @@
     <div>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a @click="tab('active')" class="nav-link" :class="state === 'active' ? 'active' : ''" aria-current="page">Active</a>
+                <a @click="tab('active')" class="nav-link" :class="state === 'active' ? 'active' : ''" aria-current="page"><i class="fa fa-bolt"></i></a>
             </li>
             <li class="nav-item">
-                <a @click="tab('archived')" class="nav-link" :class="state === 'archived' ? 'active' : ''">Archived</a>
+                <a @click="tab('archived')" class="nav-link" :class="state === 'archived' ? 'active' : ''"><i class="fa fa-book"></i></a>
             </li>
             <li class="nav-item">
-                <a @click="tab('next')" class="nav-link" :class="state === 'next' ? 'active' : ''">Next</a>
+                <a @click="tab('next')" class="nav-link" :class="state === 'next' ? 'active' : ''"><i class="fa fa-lightbulb"></i></a>
             </li>
         </ul>
         <ul class="col-list">
