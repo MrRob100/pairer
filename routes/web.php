@@ -62,6 +62,7 @@ Route::get('logs', [LogViewerController::class, 'index'])->name('logs')->middlew
 Route::get('pairs', [PairsController::class, 'index'])->name('saved.pairs');
 Route::post('pairs', [PairsController::class, 'create'])->name('create.pair');
 Route::post('pairs/delete', [PairsController::class, 'delete'])->name('delete.pair');
+Route::get('sync', [PairsController::class, 'sync']);
 
 /* balrecord */
 Route::get('/brecord', [ManualController::class, 'brecord'])->name('brecord');

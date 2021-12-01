@@ -37,6 +37,7 @@
                     <button @click="add('next')" class="btn btn-success"><i class="fa fa-lightbulb"></i></button>
                     <button @click="add('archived')" class="btn btn-secondary"><i class="fa fa-book"></i></button>
                     <button @click="add('active')" class="btn btn-success"><i class="fa fa-bolt"></i></button>
+                    <button @click="sync" class="btn btn-info"><i class="fa fa-sync"></i></button>
                     <button @click="trash" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                 </div>
 
@@ -191,6 +192,10 @@ export default {
             this.v2 = s2;
 
             this.go();
+        },
+
+        sync: function() {
+            axios.get('sync');
         },
 
         add: function(state) {
