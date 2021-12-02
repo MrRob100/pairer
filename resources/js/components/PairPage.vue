@@ -34,19 +34,11 @@
                     </div>
                     <button @click="go" class="btn btn-success">Go</button>
                     <button @click="randomize" class="btn btn-success"><i class="fa fa-random"></i></button>
-                    <button @click="add('next')" class="btn btn-success"><i class="fa fa-lightbulb"></i></button>
-                    <button @click="add('archived')" class="btn btn-secondary"><i class="fa fa-book"></i></button>
                     <button @click="add('active')" class="btn btn-success"><i class="fa fa-bolt"></i></button>
+                    <button @click="add('archived')" class="btn btn-secondary"><i class="fa fa-book"></i></button>
+                    <button @click="add('next')" class="btn btn-success"><i class="fa fa-lightbulb"></i></button>
                     <button @click="sync" class="btn btn-info"><i class="fa fa-sync"></i></button>
                     <button @click="trash" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                </div>
-
-                <div v-if="marketType === 'iex'">
-                    <div class="form-group">
-                        <input type="text" v-model="v1" class="form-control mb-1">
-                        <input type="text" v-model="v2" class="form-control">
-                    </div>
-                    <button @click="go" class="btn btn-success">Go</button>
                 </div>
 
                 <div v-if="marketType === 'goldpaxg'">
