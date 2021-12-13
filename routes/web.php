@@ -10,6 +10,7 @@ use App\Http\Controllers\OngController;
 use App\Http\Controllers\PairsController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\RandomizeController;
+use App\Http\Controllers\ResultsController;
 use App\Http\Controllers\TargetController;
 use Illuminate\Support\Facades\Route;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
@@ -29,8 +30,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
 /* chart data */
 Route::get('/chart', [ChartController::class, 'data'])->name('chart.data');
 
@@ -45,6 +44,10 @@ Route::put('/target/set', [TargetController::class, 'set'])->name('target.set');
 
 /* main page */
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+/* Results */
+Route::get('/results', [HomeController::class, 'results']);
+Route::get('/results/data', [ResultsController::class, 'index']);
 
 /* real cron script */
 Route::get('/check', [CronController::class, 'check'])->name('check');

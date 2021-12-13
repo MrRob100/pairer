@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Pair;
 use App\Models\PairBalance;
+use App\Models\User;
 use App\Services;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +20,7 @@ class AccountService
 
     protected function api()
     {
-        $data = Auth()->user()->key;
+        $data = User::first()->key;
 
         return new Services\BinanceService($data->k, $data->s);
     }

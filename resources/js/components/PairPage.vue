@@ -45,13 +45,16 @@
                     <button @click="go" class="btn btn-success">Go</button>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <list
                     @populate="populate"
                     :spr="spr"
                     :added="added"
                     :dlr="dlr"
                 ></list>
+            </div>
+            <div class="col-md-1">
+                <a href="/results">Results</a>
             </div>
         </div>
         <pair

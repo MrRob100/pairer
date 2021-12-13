@@ -12,13 +12,14 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     public function index(): View
     {
-        return view('home')->with('user', Auth::user());
+        return view('home');
+    }
+
+    public function results(): View
+    {
+        return view('results');
     }
 }
