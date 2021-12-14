@@ -51,7 +51,7 @@ class ManualController extends Controller
 
             $user = Auth::user();
 
-            Log::info('transfer success data to log in db: '.json_encode($transfer). 'user id: ' . $user->id);
+            Log::info('transfer success data to log in db: '.json_encode($transfer));
 
             return true;
 

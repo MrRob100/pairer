@@ -59,7 +59,7 @@ Route::get('/balance', [ManualController::class, 'balance'])->name('balance');
 Route::get('/price', [ManualController::class, 'price'])->name('price');
 
 /* logs */
-Route::get('logs', [LogViewerController::class, 'index'])->name('logs')->middleware('auth');
+Route::get('logs', [LogViewerController::class, 'index'])->name('logs');
 
 /* pairs */
 Route::get('pairs', [PairsController::class, 'index'])->name('saved.pairs');

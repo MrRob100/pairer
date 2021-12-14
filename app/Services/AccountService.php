@@ -82,17 +82,15 @@ class AccountService
             ]);
 //        }
 
-        $user = Auth::user();
-
         $to_init = $bals[$to]['available'];
 
-        Log::info("(transfering from $from to $to ). Bals before transfer: $from: $available, $to: $to_init . user id: {$user->id}");
+        Log::info("(transfering from $from to $to ). Bals before transfer: $from: $available, $to: $to_init .");
         //also db
 
         $bridgeBalBefore = $bals['USDT']['available'];
         $quantityTB = $available / $portion;
 
-        Log::info("quant: $quantityTB of $from user: $user" ); //works
+        Log::info("quant: $quantityTB of $from " ); //works
 
         $toBridge = $this->marketToUSDT($from, $quantityTB);
 
