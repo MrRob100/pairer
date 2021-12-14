@@ -45,7 +45,7 @@
                     <button @click="go" class="btn btn-success">Go</button>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6 pr-0">
                 <list
                     @populate="populate"
                     :spr="spr"
@@ -53,8 +53,12 @@
                     :dlr="dlr"
                 ></list>
             </div>
-            <div class="col-md-1">
-                <a href="/results">Results</a>
+            <div class="col-md-3 pl-0">
+                <ul class="nav nav-tabs justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/results">Results</a>
+                    </li>
+                </ul>
             </div>
         </div>
         <pair

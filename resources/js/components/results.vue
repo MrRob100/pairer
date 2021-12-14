@@ -1,7 +1,13 @@
 <template>
     <div>
         <div class="row p-4">
-            <a href="/home" class="text-light"><i class="fas fa-lg fa-home"></i></a>
+            <div class="col-12">
+                <ul class="nav nav-tabs justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/home"><i class="fas fa-home"></i></a>
+                    </li>
+                </ul>
+            </div>
             <table class="table table-borderless table-striped table-hover table-vcenter">
                 <thead>
                     <tr>
