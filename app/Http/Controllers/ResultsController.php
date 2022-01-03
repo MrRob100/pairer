@@ -30,7 +30,7 @@ class ResultsController extends Controller
 
             $data = array_values($this->pairDataService->getPairData($fakedRequest));
 
-            if (sizeof($data) > 0) {
+            if (sizeof($data) > 2) {
                 $results[] = [
                     'pair' => "$pair->s1$pair->s2",
                     'total_input' => $data[sizeof($data) -1]['input_symbol1_usd'] + $data[sizeof($data) -1]['input_symbol2_usd'],
