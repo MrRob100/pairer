@@ -1,3 +1,5 @@
+# Pair-trading tool for Binance exchange
+
 ## Trading-vue hacks
 
 Removing top on label (formerly ohclv data)

@@ -71,6 +71,9 @@
         <br>
         <br>
         <div class="container">
+<!--            <input type="number" class="input" :value="lastCombined">-->
+<!--            <br>-->
+<!--            <br>-->
             <controls
                 :symbol1="v1.toUpperCase()"
                 :symbol2="v2.toUpperCase()"
@@ -259,6 +262,15 @@ export default {
         },
         v2: function(val) {
             axios.get(this.icon, {params: {symbol: val}}).then(response => this.v2url = response.data);
+        }
+    },
+    computed: {
+        lastCombined: function() {
+            if (this.pushLasts.length > 0) {
+                return this.pushLasts[0].s1 / this.pushLasts[1].s2;
+            } else {
+                return null;
+            }
         }
     }
 }
