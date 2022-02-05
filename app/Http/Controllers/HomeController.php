@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
+use Jenssegers\Agent\Agent;
 
 class HomeController extends Controller
 {
@@ -15,7 +15,9 @@ class HomeController extends Controller
 
     public function index(): View
     {
-        return view('home');
+        $agent = new Agent();
+
+        return view('home')->with('mobile', $agent->isiMobile());
     }
 
     public function results(): View

@@ -9,6 +9,7 @@
         spr="{{ route('saved.pairs') }}"
         cpr="{{ route('create.pair') }}"
         dlr="{{ route('delete.pair') }}"
+        mobile="{{ $mobile }}"
         bdr="{{ route('brecord') }}"
         dr="{{ route('download') }}"
         rand="{{ route('randomize') }}"

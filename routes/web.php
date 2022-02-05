@@ -26,9 +26,9 @@ use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/* main page */
+Route::get('/', [HomeController::class, 'index'])->name('home');
+//Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
 
 /* chart data */
 Route::get('/chart', [ChartController::class, 'data'])->name('chart.data');
@@ -41,9 +41,6 @@ Route::get('/pair', [ChartController::class, 'pair'])->name('pair');
 
 /* set trigger */
 Route::put('/target/set', [TargetController::class, 'set'])->name('target.set');
-
-/* main page */
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 /* Results */
 Route::get('/results', [HomeController::class, 'results']);

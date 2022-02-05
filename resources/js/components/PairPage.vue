@@ -127,7 +127,7 @@ export default {
 
     data: function () {
         return {
-            value: '',
+            value: "",
             symbols: {
                 oil: [
                     { "id": 1, "name": "USO"},
