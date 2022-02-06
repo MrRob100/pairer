@@ -33,14 +33,31 @@ class ResultsController extends Controller
             if (sizeof($data) > 2) {
                 $results[] = [
                     'pair' => "$pair->s1$pair->s2",
-                    'total_input' => $data[sizeof($data) -1]['input_symbol1_usd'] + $data[sizeof($data) -1]['input_symbol2_usd'],
-                    'value' => $data[sizeof($data) -1]['balance_s1_usd'] + $data[sizeof($data) -1]['balance_s2_usd'],
-                    'wbw' => $data[sizeof($data) -1]['wbw_usd_1'] + $data[sizeof($data) -1]['wbw_usd_2'],
+                    'total_input' => $this->totalInput($data),
+                    'value' => $this->value($data),
+                    'wbw' => $this->wbw($data),
                     'seconds' => Carbon::parse($data[sizeof($data) -1]['created_at'])->unix() - Carbon::parse($data[0]['created_at'])->unix(),
+                    'diff_if_holding' => $this->value($data) - $this->wbw($data),
+                    'profit' => $this->value($data) - $this->totalInput($data),
                 ];
             }
         }
 
         return $results;
+    }
+
+    public function wbw($data): int
+    {
+        return $data[sizeof($data) -1]['wbw_usd_1'] + $data[sizeof($data) -1]['wbw_usd_2'];
+    }
+
+    public function value($data): int
+    {
+        return $data[sizeof($data) -1]['balance_s1_usd'] + $data[sizeof($data) -1]['balance_s2_usd'];
+    }
+
+    public function totalInput($data): int
+    {
+        return $data[sizeof($data) -1]['input_symbol1_usd'] + $data[sizeof($data) -1]['input_symbol2_usd'];
     }
 }
