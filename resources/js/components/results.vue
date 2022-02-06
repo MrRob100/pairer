@@ -14,7 +14,7 @@
                     <tr>
                         <th class="text-light"><i class="fa fa-bolt"></i></th>
                         <th class="text-light" colspan="3">Δ WIH</th>
-                        <th class="text-light" colspan="3">Δ Input</th>
+                        <th class="text-light" colspan="3">Δ Input (profit)</th>
                     </tr>
                     <tr>
                         <th class="text-light">Pair</th>
@@ -22,6 +22,7 @@
                         <th class="text-light">/ W</th>
                         <th class="text-light">/ M</th>
                         <th class="text-light"><button class="btn text-light" @click="metric.active = 'profit'">Σ</button></th>
+                        <th></th>
                         <th class="text-light">/ W</th>
                         <th class="text-light">/ M</th>
                     </tr>
@@ -29,25 +30,27 @@
                 <tbody>
                     <tr v-for="item in activeSorted">
                         <td class="text-light">{{ item.pair }}</td>
-                        <td class="text-light">{{ (item.value - item.wbw).toFixed(0) }}</td>
-                        <td class="text-light">{{ ((item.value - item.wbw) / (item.seconds / 604800)).toFixed(0) }}</td>
-                        <td class="text-light">{{ ((item.value - item.wbw) / (item.seconds / 2628000)).toFixed(0) }}</td>
-                        <td class="text-light">{{ (item.value - item.total_input).toFixed(0) }}</td>
-                        <td class="text-light">{{ ((item.value - item.total_input) / (item.seconds / 604800)).toFixed(0) }}</td>
-                        <td class="text-light">{{ ((item.value - item.total_input) / (item.seconds / 2628000)).toFixed(0) }}</td>
+                        <td :class="colorClass(item.diff_if_holding)">{{ item.diff_if_holding.toFixed(0) }}</td>
+                        <td class="text-light">{{ (item.diff_if_holding / (item.seconds / 604800)).toFixed(0) }}</td>
+                        <td class="text-light">{{ (item.diff_if_holding / (item.seconds / 2628000)).toFixed(0) }}</td>
+                        <td class="cell-narrow" :class="colorClass(item.profit)">{{ (item.profit).toFixed(0) }}</td>
+                        <td :class="colorClass(item.profit)">{{ ((item.profit / item.total_input) * 100).toFixed(1) }}%</td>
+                        <td class="text-light">{{ ((item.profit) / (item.seconds / 604800)).toFixed(0) }}</td>
+                        <td class="text-light">{{ ((item.profit) / (item.seconds / 2628000)).toFixed(0) }}</td>
                     </tr>
                     <tr class="bg-black">
                         <td class="text-light">Σ</td>
-                        <td class="text-light">{{ totalDiffWorthIfHolding('active').toFixed(0) }}</td>
+                        <td :class="colorClass(totalDiffWorthIfHolding('active'))">{{ totalDiffWorthIfHolding('active').toFixed(0) }}</td>
                         <td class="text-light">{{ perWeekDiffWorthIfHolding('active').toFixed(0) }}</td>
                         <td class="text-light">{{ perMonthDiffWorthIfHolding('active').toFixed(0) }}</td>
-                        <td class="text-light">{{ totalDiffInput('active').toFixed(0) }}</td>
+                        <td :class="colorClass(totalDiffInput('active'))">{{ totalDiffInput('active').toFixed(0) }}</td>
+                        <td :class="colorClass(totalDiffInput('active'))">{{ profitPercent('active') }}</td>
                         <td class="text-light">{{ perWeekDiffInput('active').toFixed(0) }}</td>
                         <td class="text-light">{{ perMonthDiffInput('active').toFixed(0) }}</td>
                     </tr>
                     <tr>
                     <tr v-if="loading_chived">
-                        <td colspan="7" class="text-center">
+                        <td colspan="8" class="text-center">
                             <div class="spinner-border"></div>
                         </td>
                     </tr>
@@ -61,7 +64,7 @@
                 <tr>
                     <th class="text-light"><i class="fa fa-book"></i></th>
                     <th class="text-light" colspan="3">Δ WIH</th>
-                    <th class="text-light" colspan="3">Δ Input</th>
+                    <th class="text-light" colspan="3">Δ Input (profit)</th>
                 </tr>
                 <tr>
                     <th class="text-light">Pair</th>
@@ -69,6 +72,7 @@
                     <th class="text-light">/ W</th>
                     <th class="text-light">/ M</th>
                     <th class="text-light"><button class="btn text-light" @click="metric.chived = 'profit'">Σ</button></th>
+                    <th></th>
                     <th class="text-light">/ W</th>
                     <th class="text-light">/ M</th>
                 </tr>
@@ -76,24 +80,26 @@
                 <tbody>
                 <tr v-for="item in chivedSorted">
                     <td class="text-light">{{ item.pair }}</td>
-                    <td class="text-light">{{ (item.value - item.wbw).toFixed(0) }}</td>
-                    <td class="text-light">{{ ((item.value - item.wbw) / (item.seconds / 604800)).toFixed(0) }}</td>
-                    <td class="text-light">{{ ((item.value - item.wbw) / (item.seconds / 2628000)).toFixed(0) }}</td>
-                    <td class="text-light">{{ (item.value - item.total_input).toFixed(0) }}</td>
-                    <td class="text-light">{{ ((item.value - item.total_input) / (item.seconds / 604800)).toFixed(0) }}</td>
-                    <td class="text-light">{{ ((item.value - item.total_input) / (item.seconds / 2628000)).toFixed(0) }}</td>
+                    <td :class="colorClass(item.diff_if_holding)">{{ item.diff_if_holding.toFixed(0) }}</td>
+                    <td class="text-light">{{ (item.diff_if_holding / (item.seconds / 604800)).toFixed(0) }}</td>
+                    <td class="text-light">{{ (item.diff_if_holding / (item.seconds / 2628000)).toFixed(0) }}</td>
+                    <td class="cell-narrow" :class="colorClass(item.profit)">{{ (item.profit).toFixed(0) }}</td>
+                    <td :class="colorClass(item.profit)">{{ ((item.profit / item.total_input) * 100).toFixed(1) }}%</td>
+                    <td class="text-light">{{ ((item.profit) / (item.seconds / 604800)).toFixed(0) }}</td>
+                    <td class="text-light">{{ ((item.profit) / (item.seconds / 2628000)).toFixed(0) }}</td>
                 </tr>
                 <tr class="bg-black">
                     <td class="text-light">Σ</td>
-                    <td class="text-light">{{ totalDiffWorthIfHolding('chived').toFixed(0) }}</td>
+                    <td :class="colorClass(totalDiffWorthIfHolding('chived'))">{{ totalDiffWorthIfHolding('chived').toFixed(0) }}</td>
                     <td class="text-light">{{ perWeekDiffWorthIfHolding('chived').toFixed(0) }}</td>
                     <td class="text-light">{{ perMonthDiffWorthIfHolding('chived').toFixed(0) }}</td>
-                    <td class="text-light">{{ totalDiffInput('chived').toFixed(0) }}</td>
+                    <td :class="colorClass(totalDiffInput('chived'))">{{ totalDiffInput('chived').toFixed(0) }}</td>
+                    <td :class="colorClass(totalDiffInput('chived'))">{{ profitPercent('chived') }}</td>
                     <td class="text-light">{{ perWeekDiffInput('chived').toFixed(0) }}</td>
                     <td class="text-light">{{ perMonthDiffInput('chived').toFixed(0) }}</td>
                 </tr>
                 <tr v-if="loading_chived">
-                    <td colspan="7" class="text-center">
+                    <td colspan="8" class="text-center">
                         <div class="spinner-border"></div>
                     </td>
                 </tr>
@@ -155,6 +161,9 @@ export default {
     },
 
     methods: {
+        colorClass: function(number) {
+            return number > 0 ? 'text-success' : 'text-danger';
+        },
         getActive: function() {
             this.loading_active = true;
             axios.get("/results/data", {
@@ -178,42 +187,50 @@ export default {
             });
         },
         totalDiffWorthIfHolding: function (type) {
-            var tdwih = 0;
+            let tdwih = 0;
             this[type].forEach(function(item) {
                 tdwih += (item.value - item.wbw);
             });
             return tdwih;
         },
         perWeekDiffWorthIfHolding: function (type) {
-            var mdwih = 0;
+            let mdwih = 0;
             this[type].forEach(function(item) {
                 mdwih += ((item.value - item.wbw) / (item.seconds / 604800));
             });
             return mdwih;
         },
         perMonthDiffWorthIfHolding: function (type) {
-            var wdwih = 0;
+            let wdwih = 0;
             this[type].forEach(function(item) {
                 wdwih += ((item.value - item.wbw) / (item.seconds / 2628000));
             });
             return wdwih;
         },
+        profitPercent: function(type) {
+            let input = 0;
+            this[type].forEach(function(item) {
+                input += item.total_input;
+            });
+
+            return ((this.totalDiffInput(type) / input) * 100).toFixed(1) + "%";
+        },
         totalDiffInput: function(type) {
-            var tdi = 0;
+            let tdi = 0;
             this[type].forEach(function(item) {
                 tdi += (item.value - item.total_input);
             });
             return tdi;
         },
         perWeekDiffInput: function(type) {
-            var wdi = 0;
+            let wdi = 0;
             this[type].forEach(function(item) {
                 wdi += ((item.value - item.total_input) / (item.seconds / 604800));
             });
             return wdi;
         },
         perMonthDiffInput: function(type) {
-            var mdi = 0;
+            let mdi = 0;
             this[type].forEach(function(item) {
                 mdi += ((item.value - item.total_input) / (item.seconds / 2628000));
             });
@@ -226,5 +243,8 @@ export default {
 <style>
 .bg-black {
     background-color: black !important;
+}
+.cell-narrow {
+    width: 50px;
 }
 </style>
