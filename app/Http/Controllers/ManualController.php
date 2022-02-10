@@ -63,7 +63,9 @@ class ManualController extends Controller
 
     public function balance()
     {
-        return $this->accountService->balance()[$_GET['of']]['available'];
+        $balance = $this->accountService->balance()[$_GET['of']];
+
+        return floatval($balance['available']) + floatval($balance['onOrder']);
     }
 
     public function price()

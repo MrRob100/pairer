@@ -17,11 +17,12 @@
                         <th class="text-light" colspan="3">Δ Input (profit)</th>
                     </tr>
                     <tr>
-                        <th class="text-light">Pair</th>
+                        <th class="text-light" style="width:200px">Pair</th>
                         <th class="text-light"><button class="btn text-light" @click="metric.active = 'diff_if_holding'">Σ</button></th>
                         <th class="text-light">/ W</th>
                         <th class="text-light">/ M</th>
                         <th class="text-light"><button class="btn text-light" @click="metric.active = 'profit'">Σ</button></th>
+                        <th></th>
                         <th></th>
                         <th class="text-light">/ W</th>
                         <th class="text-light">/ M</th>
@@ -34,7 +35,8 @@
                         <td class="text-light">{{ (item.diff_if_holding / (item.seconds / 604800)).toFixed(0) }}</td>
                         <td class="text-light">{{ (item.diff_if_holding / (item.seconds / 2628000)).toFixed(0) }}</td>
                         <td class="cell-narrow" :class="colorClass(item.profit)">{{ (item.profit).toFixed(0) }}</td>
-                        <td :class="colorClass(item.profit)">{{ ((item.profit / item.total_input) * 100).toFixed(1) }}%</td>
+                        <td class="cell-narrow" :class="colorClass(item.profit)">{{ ((item.profit / item.total_input) * 100).toFixed(1) }}%</td>
+                        <td class="text-light">{{ (item.seconds / 2628000).toFixed(1) }} months</td>
                         <td class="text-light">{{ ((item.profit) / (item.seconds / 604800)).toFixed(0) }}</td>
                         <td class="text-light">{{ ((item.profit) / (item.seconds / 2628000)).toFixed(0) }}</td>
                     </tr>
@@ -45,12 +47,13 @@
                         <td class="text-light">{{ perMonthDiffWorthIfHolding('active').toFixed(0) }}</td>
                         <td :class="colorClass(totalDiffInput('active'))">{{ totalDiffInput('active').toFixed(0) }}</td>
                         <td :class="colorClass(totalDiffInput('active'))">{{ profitPercent('active') }}</td>
+                        <td></td>
                         <td class="text-light">{{ perWeekDiffInput('active').toFixed(0) }}</td>
                         <td class="text-light">{{ perMonthDiffInput('active').toFixed(0) }}</td>
                     </tr>
                     <tr>
-                    <tr v-if="loading_chived">
-                        <td colspan="8" class="text-center">
+                    <tr v-if="loading_active">
+                        <td colspan="9" class="text-center">
                             <div class="spinner-border"></div>
                         </td>
                     </tr>
@@ -67,11 +70,12 @@
                     <th class="text-light" colspan="3">Δ Input (profit)</th>
                 </tr>
                 <tr>
-                    <th class="text-light">Pair</th>
+                    <th class="text-light" style="width:200px">Pair</th>
                     <th class="text-light"><button class="btn text-light" @click="metric.chived = 'diff_if_holding'">Σ</button></th>
                     <th class="text-light">/ W</th>
                     <th class="text-light">/ M</th>
                     <th class="text-light"><button class="btn text-light" @click="metric.chived = 'profit'">Σ</button></th>
+                    <th></th>
                     <th></th>
                     <th class="text-light">/ W</th>
                     <th class="text-light">/ M</th>
@@ -84,7 +88,8 @@
                     <td class="text-light">{{ (item.diff_if_holding / (item.seconds / 604800)).toFixed(0) }}</td>
                     <td class="text-light">{{ (item.diff_if_holding / (item.seconds / 2628000)).toFixed(0) }}</td>
                     <td class="cell-narrow" :class="colorClass(item.profit)">{{ (item.profit).toFixed(0) }}</td>
-                    <td :class="colorClass(item.profit)">{{ ((item.profit / item.total_input) * 100).toFixed(1) }}%</td>
+                    <td class="cell-narrow" :class="colorClass(item.profit)">{{ ((item.profit / item.total_input) * 100).toFixed(1) }}%</td>
+                    <td class="text-light">{{ (item.seconds / 2628000).toFixed(1) }} months</td>
                     <td class="text-light">{{ ((item.profit) / (item.seconds / 604800)).toFixed(0) }}</td>
                     <td class="text-light">{{ ((item.profit) / (item.seconds / 2628000)).toFixed(0) }}</td>
                 </tr>
@@ -95,11 +100,12 @@
                     <td class="text-light">{{ perMonthDiffWorthIfHolding('chived').toFixed(0) }}</td>
                     <td :class="colorClass(totalDiffInput('chived'))">{{ totalDiffInput('chived').toFixed(0) }}</td>
                     <td :class="colorClass(totalDiffInput('chived'))">{{ profitPercent('chived') }}</td>
+                    <td></td>
                     <td class="text-light">{{ perWeekDiffInput('chived').toFixed(0) }}</td>
                     <td class="text-light">{{ perMonthDiffInput('chived').toFixed(0) }}</td>
                 </tr>
                 <tr v-if="loading_chived">
-                    <td colspan="8" class="text-center">
+                    <td colspan="9" class="text-center">
                         <div class="spinner-border"></div>
                     </td>
                 </tr>
