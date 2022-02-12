@@ -53,7 +53,7 @@
             TradingVuea,
         },
         props: {
-            mobile: false,
+            mobile: true,
             cr: "",
             s: "",
             t: "",

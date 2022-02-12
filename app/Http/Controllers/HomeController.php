@@ -17,7 +17,7 @@ class HomeController extends Controller
     {
         $agent = new Agent();
 
-        return view('home')->with('mobile', $agent->isiMobile());
+        return view('home')->with('mobile', $agent->isMobile());
     }
 
     public function results(): View
