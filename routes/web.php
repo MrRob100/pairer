@@ -8,7 +8,6 @@ use App\Http\Controllers\InputController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\OngController;
 use App\Http\Controllers\PairsController;
-use App\Http\Controllers\PublicController;
 use App\Http\Controllers\RandomizeController;
 use App\Http\Controllers\ResultsController;
 use App\Http\Controllers\TargetController;

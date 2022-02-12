@@ -9,28 +9,28 @@
         <br>
         <hr>
         <button @click="getBalance(symbol1, 'one')" class="btn btn-info mb-2">Balance {{ symbol1 }}: {{ bal.one }} (${{ Math.floor(bal.oneUSD) }})</button>
-        <button @click="shave.one.show ? shave.one.show = false : shave.one.show = true" class="btn btn-info mb-2"><i class="fas fa-cut"></i></button>
-        <span v-if="shave.one.show">
-            <input class="form-control w-25 align-top d-inline" type="number" step="any" :placeholder="'amount ' + symbol1">
-            <button @click="shaveBal(symbol1, shave.one.amountUSD)" class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>
-        </span>
-        <button @click="pump.one.show ? pump.one.show = false : pump.one.show = true" class="btn btn-info mb-2"><i class="fas fa-pump-soap"></i></button>
-        <span v-if="pump.one.show">
-            <input class="form-control w-25 align-top d-inline" type="number" step="any" :placeholder="'amount ' + symbol1">
-            <button @click="shaveBal(symbol1, pump.one.amountUSD)" class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>
-        </span>
+<!--        <button @click="shave.one.show ? shave.one.show = false : shave.one.show = true" class="btn btn-info mb-2"><i class="fas fa-cut"></i></button>-->
+<!--        <span v-if="shave.one.show">-->
+<!--            <input class="form-control w-25 align-top d-inline" type="number" step="any" :placeholder="'amount ' + symbol1">-->
+<!--            <button @click="shaveBal(symbol1, shave.one.amountUSD)" class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>-->
+<!--        </span>-->
+<!--        <button @click="pump.one.show ? pump.one.show = false : pump.one.show = true" class="btn btn-info mb-2"><i class="fas fa-pump-soap"></i></button>-->
+<!--        <span v-if="pump.one.show">-->
+<!--            <input class="form-control w-25 align-top d-inline" type="number" step="any" :placeholder="'amount ' + symbol1">-->
+<!--            <button @click="shaveBal(symbol1, pump.one.amountUSD)" class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>-->
+<!--        </span>-->
         <br>
         <button @click="getBalance(symbol2, 'two')" class="btn btn-info mb-2">Balance {{ symbol2 }}: {{ bal.two }} (${{ Math.floor(bal.twoUSD) }})</button>
-        <button @click="shave.two.show ? shave.two.show = false : shave.two.show = true" class="btn btn-info mb-2"><i class="fas fa-cut"></i></button>
-        <span v-if="shave.two.show">
-            <input class="form-control w-25 align-top d-inline" type="number" step="any" :placeholder="'amount ' + symbol1">
-            <button @click="pumpBal(symbol2, shave.two.amountUSD)" class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>
-        </span>
-        <button @click="pump.two.show ? pump.two.show = false : pump.two.show = true" class="btn btn-info mb-2"><i class="fas fa-pump-soap"></i></button>
-        <span v-if="pump.two.show">
-            <input class="form-control w-25 align-top d-inline" type="number" step="any" :placeholder="'amount ' + symbol1">
-            <button @click="pumpBal(symbol1, pump.two.amountUSD)" class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>
-        </span>
+<!--        <button @click="shave.two.show ? shave.two.show = false : shave.two.show = true" class="btn btn-info mb-2"><i class="fas fa-cut"></i></button>-->
+<!--        <span v-if="shave.two.show">-->
+<!--            <input class="form-control w-25 align-top d-inline" type="number" step="any" :placeholder="'amount ' + symbol1">-->
+<!--            <button @click="pumpBal(symbol2, shave.two.amountUSD)" class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>-->
+<!--        </span>-->
+<!--        <button @click="pump.two.show ? pump.two.show = false : pump.two.show = true" class="btn btn-info mb-2"><i class="fas fa-pump-soap"></i></button>-->
+<!--        <span v-if="pump.two.show">-->
+<!--            <input class="form-control w-25 align-top d-inline" type="number" step="any" :placeholder="'amount ' + symbol1">-->
+<!--            <button @click="pumpBal(symbol1, pump.two.amountUSD)" class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>-->
+<!--        </span>-->
         <br>
         <button @click="getBalance('USDT', 'usdt')" class="btn btn-info mb-2">Balance USDT: ${{ Math.floor(bal.usdt) }}</button>
         <br>
