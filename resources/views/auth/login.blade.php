@@ -15,7 +15,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="text" value="{{ \App\Models\User::first()?->email }}" class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" autofocus>
+                                <input id="email" type="text" value="" class="form-control @error('email') is-invalid @enderror" name="email" required autocomplete="email" autofocus>
                             </div>
                         </div>
 

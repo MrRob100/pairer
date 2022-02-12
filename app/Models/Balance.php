@@ -18,9 +18,4 @@ class Balance extends Model
         'note',
         'side'
     ];
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 }

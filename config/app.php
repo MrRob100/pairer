@@ -200,7 +200,6 @@ return [
     */
 
     'aliases' => [
-
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,

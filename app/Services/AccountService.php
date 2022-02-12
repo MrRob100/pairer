@@ -4,9 +4,7 @@ namespace App\Services;
 
 use App\Models\Pair;
 use App\Models\PairBalance;
-use App\Models\User;
 use App\Services;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class AccountService
@@ -20,15 +18,14 @@ class AccountService
 
     protected function api()
     {
-        $data = User::first()->key;
+        $key = env('BINANCE_KEY');
+        $secret = env('BINANCE_SECRET');
 
-        return new Services\BinanceService($data->k, $data->s);
+        return new Services\BinanceService($key, $secret);
     }
 
     public function scale()
     {
-        //get scale from db
-
         return 2.24;
     }
 

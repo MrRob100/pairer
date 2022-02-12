@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-4">
+        <div v-if="!mobile" class="col-4">
             <trading-vue
                 colorBack="rgba(0,0,0,0)"
                 style="z-index: -1"
@@ -10,7 +10,6 @@
                 :height="280"
                 :width="460"
             ></trading-vue>
-<!--            <a v-if="this.s.length == 2" :href="this.dlref0" class="btn btn-sm btn-primary m-1"><i class="fa fa-download mr-1"></i>Download csv</a>-->
         </div>
         <div class="col-4">
             <trading-vuea
@@ -25,7 +24,7 @@
                 :width="460"
             ></trading-vuea>
         </div>
-        <div class="col-4">
+        <div v-if="!mobile" class="col-4">
             <trading-vue
                 colorBack="rgba(0,0,0,0)"
                 style="z-index: -1"
@@ -54,6 +53,7 @@
             TradingVuea,
         },
         props: {
+            mobile: false,
             cr: "",
             s: "",
             t: "",
@@ -130,16 +130,21 @@
                 });
             },
             setChartHeading: function(val) {
-                var elems = document.getElementsByClassName('trading-vue-ohlcv');
+                let elems = document.getElementsByClassName('trading-vue-ohlcv');
 
-                elems[0].style.display = "block";
-                elems[0].innerText = val[0].name + "USD";
+                if (!this.mobile) {
+                    elems[0].style.display = "block";
+                    elems[0].innerText = val[0].name + "USD";
 
-                elems[1].style.display = "block";
-                elems[1].innerText = val[0].name + val[1].name;
+                    elems[1].style.display = "block";
+                    elems[1].innerText = val[0].name + val[1].name;
 
-                elems[2].style.display = "block";
-                elems[2].innerText = val[1].name + "USD";
+                    elems[2].style.display = "block";
+                    elems[2].innerText = val[1].name + "USD";
+                } else {
+                    elems[0].style.display = "block";
+                    elems[0].innerText = val[0].name + val[1].name;
+                }
             }
         },
 

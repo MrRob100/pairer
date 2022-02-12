@@ -5,14 +5,13 @@
 /vendor
 .env
 .env.backup
+DOCS.md
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
 dep.sh
-UserSeeder.php
-KSSeeder.php
 amp.iml
 modules.xml
 php.xml

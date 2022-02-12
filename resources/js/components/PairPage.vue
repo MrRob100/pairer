@@ -1,6 +1,6 @@
 <template>
     <div>
-        <shapes :v1url="v1url" :v2url="v2url"></shapes>
+        <shapes v-if="!mobile" :v1url="v1url" :v2url="v2url"></shapes>
         <div class="row m-2">
             <div class="col-md-3 mb-3" style="z-index:10">
 <!--                <multiselect-->
@@ -63,9 +63,10 @@
         </div>
         <pair
             :cr="cr"
+            :dr="dr"
+            :mobile="mobile"
             :s="value"
             :t="marketType"
-            :dr="dr"
             @lasts="sendLasts"
         ></pair>
         <br>
@@ -104,6 +105,7 @@ import Multiselect from "vue-multiselect";
 export default {
 
     props: [
+        "mobile",
         "cr",
         "br",
         "pr",

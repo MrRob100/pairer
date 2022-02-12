@@ -27,8 +27,7 @@ use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 */
 
 /* main page */
-Route::get('/', [HomeController::class, 'index'])->name('home');
-//Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/', [HomeController::class, 'index'])->name('home')->middleware(['pairs']);
 
 /* chart data */
 Route::get('/chart', [ChartController::class, 'data'])->name('chart.data');
@@ -72,9 +71,6 @@ Route::get('/get_pair_data', [ManualController::class, 'getPairData'])->name('ge
 
 Route::get('/ong', [OngController::class, 'get']);
 
-/* public 3 charts */
-Route::get('zDvs1dgv55csnF0xgalE25', [PublicController::class, 'index'])->name('public');
-
 Route::get('/randomize', [RandomizeController::class, 'randomPair'])->name('randomize');
 Route::post('/dudpair', [RandomizeController::class, 'trash'])->name('trash');
 
@@ -87,3 +83,5 @@ Route::post('/shave', [ManualController::class, 'shave'])->name('shave');
 Route::post('/pump', [ManualController::class, 'pump'])->name('pump');
 
 Route::get('/icon', [ManualController::class, 'icon'])->name('icon');
+
+Auth::routes();
