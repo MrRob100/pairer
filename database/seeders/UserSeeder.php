@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             ['email' => env('USER_EMAIL')],
             [
                 'email' => env('USER_EMAIL'),
-                'password' => Hash::make(env('PASSWORD')),
+                'password' => Hash::make(env('USER_PASSWORD')),
             ]
         );
     }
