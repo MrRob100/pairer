@@ -206,8 +206,6 @@ class ChartController extends Controller
             'pair' => array_reverse($pair),
             'second' => $this->formatIEXResponse($response2),
         ];
-
-//        return array_reverse($formatted);
     }
 
     public function metals()
