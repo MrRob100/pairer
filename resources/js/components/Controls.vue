@@ -2,8 +2,8 @@
     <div>
         <button @click="transfer(symbol1, symbol2, (1/splitLow) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol2 }} 25%</button>
         <button @click="transfer(symbol1, symbol2, (1/split) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol2 }} {{ split }}%</button>
-        <button @click="transfer(symbol1, symbol2, 1)" class="btn btn-info mb-2 mr-1" :disabled="disabled">Buy {{ symbol2 }} 100%</button>
-        <button @click="transfer(symbol2, symbol1, (1/splitLow) * 100)" class="btn btn-info mb-2 ml-1" :disabled="disabled">Buy {{ symbol1 }} 25%</button>
+        <button @click="transfer(symbol1, symbol2, 1)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol2 }} 100%</button>
+        <button @click="transfer(symbol2, symbol1, (1/splitLow) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} 25%</button>
         <button @click="transfer(symbol2, symbol1, (1/split) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} {{ split }}%</button>
         <button @click="transfer(symbol2, symbol1, 1)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} 100%</button>
         <br>

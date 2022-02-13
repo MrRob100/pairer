@@ -10,7 +10,7 @@
 
             <button @click="getData(s1, s2)" class="btn btn-primary">All</button>
             <button @click="getData(s1, s2, month)" class="btn btn-primary">Per Month</button>
-            <div id="performance_container">
+            <div :class="mobile ? 'invisible' : ''" id="performance_container">
             </div>
         </div>
         <div class="col-10 m-auto">
@@ -114,9 +114,10 @@ import Chart from 'chart.js';
 
 export default {
     props: [
-        "value",
+        "br",
+        "mobile",
         "push-lasts",
-        "br"
+        "value",
     ],
     data: function() {
         return {

@@ -48,9 +48,10 @@
             <div class="col-md-6 pr-0">
                 <list
                     @populate="populate"
-                    :spr="spr"
                     :added="added"
                     :dlr="dlr"
+                    :mobile="mobile"
+                    :spr="spr"
                 ></list>
             </div>
             <div class="col-md-3 pl-0">
@@ -87,12 +88,12 @@
                 :pumpr="pumpr"
             >
             </controls>
-<!--            <limits></limits>-->
         </div>
         <pair-record
             :br="br"
-            :value="value"
-            :push-lasts="pushLasts">
+            :mobile="mobile"
+            :push-lasts="pushLasts"
+            :value="value">
         </pair-record>
 <!--        <record :bdr="bdr"></record>-->
     </div>

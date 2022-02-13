@@ -11,7 +11,7 @@
                 <a @click="tab('next')" class="nav-link" :class="state === 'next' ? 'active' : ''"><i class="fa fa-lightbulb"></i></a>
             </li>
         </ul>
-        <ul class="col-list">
+        <ul class="col-list" :class="mobile ? 'onecol' : ''">
             <li v-for="pair in pairs">
                 <p @click="populate(pair.s1, pair.s2)" class="btn-link mr-2">{{ (pair.s1 + pair.s2).toUpperCase() }}</p>
                 <i @click="deletePair(pair.id)" class="fa fa-times grey-cross"></i>
@@ -23,6 +23,7 @@
 <script>
 export default {
     props: [
+        "mobile",
         "added",
         "spr",
         "dlr",
@@ -92,6 +93,16 @@ export default {
     columns: 3;
     -webkit-columns: 3;
     -moz-columns: 3;
+
+    &.onecol {
+        columns: 1;
+        -webkit-columns: 1;
+        -moz-columns: 1;
+
+        p {
+            float: left;
+        }
+    }
 
     p {
         display: contents;
