@@ -56,6 +56,7 @@ Route::get('/price', [ManualController::class, 'price'])->name('price')->middlew
 /* logs */
 Route::get('logs', [LogViewerController::class, 'index'])->name('logs')->middleware(['pairs']);
 
+
 /* pairs */
 Route::get('pairs', [PairsController::class, 'index'])->name('saved.pairs')->middleware(['pairs']);
 Route::post('pairs', [PairsController::class, 'create'])->name('create.pair')->middleware(['pairs']);
