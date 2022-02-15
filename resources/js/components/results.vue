@@ -47,7 +47,7 @@
                         <td class="text-light">{{ perMonthDiffWorthIfHolding('active').toFixed(0) }}</td>
                         <td :class="colorClass(totalDiffInput('active'))">{{ totalDiffInput('active').toFixed(0) }}</td>
                         <td :class="colorClass(totalDiffInput('active'))">{{ profitPercent('active') }}</td>
-                        <td></td>
+                        <td class="text-light">{{ (active_time / 2628000).toFixed(1) }} months</td>
                         <td class="text-light">{{ perWeekDiffInput('active').toFixed(0) }}</td>
                         <td class="text-light">{{ perMonthDiffInput('active').toFixed(0) }}</td>
                     </tr>
@@ -100,7 +100,7 @@
                     <td class="text-light">{{ perMonthDiffWorthIfHolding('chived').toFixed(0) }}</td>
                     <td :class="colorClass(totalDiffInput('chived'))">{{ totalDiffInput('chived').toFixed(0) }}</td>
                     <td :class="colorClass(totalDiffInput('chived'))">{{ profitPercent('chived') }}</td>
-                    <td></td>
+                    <td class="text-light">{{ (chived_time / 2628000).toFixed(1) }} months</td>
                     <td class="text-light">{{ perWeekDiffInput('chived').toFixed(0) }}</td>
                     <td class="text-light">{{ perMonthDiffInput('chived').toFixed(0) }}</td>
                 </tr>
@@ -120,7 +120,9 @@ export default {
     data: function() {
         return {
             active: [],
+            active_time: null,
             chived: [],
+            chived_time: null,
             loading_active: true,
             loading_chived: true,
             metric: {
@@ -177,7 +179,8 @@ export default {
                     type: 'active',
                 }
             }).then(response => {
-                this.active = response.data;
+                this.active = response.data.data;
+                this.active_time = response.data.total_time;
                 this.loading_active = false
             });
         },
@@ -188,7 +191,8 @@ export default {
                     type: 'archived',
                 }
             }).then(response => {
-                this.chived = response.data;
+                this.chived = response.data.data;
+                this.chived_time = response.data.total_time;
                 this.loading_chived = false;
             });
         },

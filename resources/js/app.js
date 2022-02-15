@@ -23,15 +23,11 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('order', require('./components/Order.vue').default);
 Vue.component('pair', require('./components/Pair.vue').default);
 Vue.component('pair-page', require('./components/PairPage.vue').default);
 Vue.component('controls', require('./components/Controls.vue').default);
-Vue.component('limits', require('./components/Limits.vue').default);
 Vue.component('list', require('./components/List.vue').default);
-Vue.component('record', require('./components/Record.vue').default);
-Vue.component('box', require('./components/Box.vue').default);
 Vue.component('pair-record', require('./components/PairRecord.vue').default);
 Vue.component('shapes', require('./components/Shapes.vue').default);
 Vue.component('results', require('./components/Results.vue').default);

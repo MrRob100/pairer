@@ -31,19 +31,33 @@ class ResultsController extends Controller
             $data = array_values($this->pairDataService->getPairData($fakedRequest));
 
             if (sizeof($data) > 2) {
+
+                $started = Carbon::parse($data[0]['created_at'])->unix();
+                $ended = Carbon::parse($data[sizeof($data) -1]['created_at'])->unix();
+
                 $results[] = [
                     'pair' => "$pair->s1$pair->s2",
                     'total_input' => $this->totalInput($data),
                     'value' => $this->value($data),
                     'wbw' => $this->wbw($data),
-                    'seconds' => Carbon::parse($data[sizeof($data) -1]['created_at'])->unix() - Carbon::parse($data[0]['created_at'])->unix(),
+                    'seconds' => $ended - $started,
+                    'started' => $started,
+                    'ended' => $ended,
                     'diff_if_holding' => $this->value($data) - $this->wbw($data),
                     'profit' => $this->value($data) - $this->totalInput($data),
                 ];
             }
         }
 
-        return $results;
+        $collection = collect($results);
+
+        $started = $collection->min('started');
+        $ended = $collection->max('ended');
+
+        return [
+            'data' => $results,
+            'total_time' => $ended - $started,
+        ];
     }
 
     public function wbw($data): int
