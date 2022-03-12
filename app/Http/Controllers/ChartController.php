@@ -146,7 +146,15 @@ class ChartController extends Controller
         $midPrice2 = sizeof($lines) > 1 ? $lines->toArray()[1]['price_at_trade_s1'] / $lines->toArray()[1]['price_at_trade_s2'] : null;
         $midPrice3 = sizeof($lines) > 2 ? $lines->toArray()[2]['price_at_trade_s1'] / $lines->toArray()[2]['price_at_trade_s2'] : null;
 
+        $pures = ['BTC', 'ETH', 'BNB'];
+
+        $pure = false;
+        if (in_array($request->s1, $pures) || in_array($request->s2, $pures)) {
+            $pure = true;
+        }
+
         return [
+            'pure_pair' => $pure,
             'first' => $this->formatBinanceResponse($response1),
             'pair' => array_reverse($pair),
             'second' => $this->formatBinanceResponse($response2),

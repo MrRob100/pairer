@@ -112,6 +112,8 @@
                         t,
                     }
                 }).then(response => {
+                    this.$emit('pure', response.data['pure_pair']);
+
                     this.tradingVue1.data.chart.data = response.data['first'];
 
                     this.tradingVueData.data.chart.data = response.data['pair'];

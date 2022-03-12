@@ -66,6 +66,7 @@
             :cr="cr"
             :dr="dr"
             :mobile="mobile"
+            @pure="setPure"
             :s="value"
             :t="marketType"
             @lasts="sendLasts"
@@ -153,6 +154,7 @@ export default {
                 ]
             },
             marketType: "binance",
+            pure: false,
             v1: "",
             v2: "",
             v1url: null,
@@ -169,6 +171,9 @@ export default {
         },
         sendLasts: function(data) {
             this.pushLasts = data;
+        },
+        setPure: function(val) {
+            this.pure = val;
         },
         getOptions: function() {
             if (this.marketType === "oil") {
