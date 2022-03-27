@@ -5189,6 +5189,23 @@
                                 ctx.moveTo(0, l3);
                                 ctx.lineTo(layout.width, l3);
                                 ctx.stroke();
+                            };
+                            if(this.comp.$props.colors.wickDw) {
+                                let parsedLimits = JSON.parse(this.comp.$props.colors.wickDw);
+                                let limitBuyPriceScaled = layout.$2screen(parsedLimits.limitBuyPrice);
+                                let stopLimitSellPriceScaled = layout.$2screen(parsedLimits.stopLimitSellPrice);
+
+                                ctx.strokeStyle = "#01ff16";
+                                ctx.beginPath();
+                                ctx.moveTo(0, limitBuyPriceScaled);
+                                ctx.lineTo(layout.width, limitBuyPriceScaled);
+                                ctx.stroke();
+
+                                ctx.strokeStyle = "#ff2a2a";
+                                ctx.beginPath();
+                                ctx.moveTo(0, stopLimitSellPriceScaled);
+                                ctx.lineTo(layout.width, stopLimitSellPriceScaled);
+                                ctx.stroke();
                             }
                         }
                     }, {

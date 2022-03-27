@@ -65,6 +65,8 @@
         <pair
             :cr="cr"
             :dr="dr"
+            :stopLimitSellPrice="stopLimitSellPrice"
+            :limitBuyPrice="limitBuyPrice"
             :mobile="mobile"
             @pure="setPure"
             :s="value"
@@ -83,10 +85,14 @@
                 :cr="cr"
                 :br="br"
                 :pr="pr"
+                @limitBuyPrice="setLimitBuyPrice"
+                @stopLimitSellPrice="setStopLimitSellPrice"
+                :pure="pure"
                 :tr="tr"
                 :rr="rr"
                 :shaver="shaver"
                 :pumpr="pumpr"
+                :push-lasts="pushLasts"
             >
             </controls>
         </div>
@@ -131,6 +137,8 @@ export default {
 
     data: function () {
         return {
+            limitBuyPrice: null,
+            stopLimitSellPrice: null,
             value: "",
             symbols: {
                 oil: [
@@ -174,6 +182,12 @@ export default {
         },
         setPure: function(val) {
             this.pure = val;
+        },
+        setLimitBuyPrice: function(val) {
+            this.limitBuyPrice = val;
+        },
+        setStopLimitSellPrice: function(val) {
+            this.stopLimitSellPrice = val;
         },
         getOptions: function() {
             if (this.marketType === "oil") {

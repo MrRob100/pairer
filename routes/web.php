@@ -84,4 +84,6 @@ Route::post('/pump', [ManualController::class, 'pump'])->name('pump')->middlewar
 
 Route::get('/icon', [ManualController::class, 'icon'])->name('icon')->middleware(['pairs']);
 
+Route::get('/limit_orders', [ManualController::class, 'getLimits']);
+
 Auth::routes();

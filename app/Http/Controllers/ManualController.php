@@ -145,4 +145,14 @@ class ManualController extends Controller
     {
         return $this->binanceGetService->getIcon($request->symbol);
     }
+
+    public function getLimits(Request $request): array
+    {
+        return $this->accountService->getOpenOrders(strtoupper($request->symbol1.$request->symbol2));
+    }
+
+    public function limitBuy(Request $request): array
+    {
+        return $this->accountService->limitBuy($request->symbol1.$request->symbol2, '');
+    }
 }

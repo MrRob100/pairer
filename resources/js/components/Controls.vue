@@ -1,11 +1,22 @@
 <template>
     <div>
-        <button @click="transfer(symbol1, symbol2, (1/splitLow) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol2 }} 25%</button>
-        <button @click="transfer(symbol1, symbol2, (1/split) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol2 }} {{ split }}%</button>
-        <button @click="transfer(symbol1, symbol2, 1)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol2 }} 100%</button>
-        <button @click="transfer(symbol2, symbol1, (1/splitLow) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} 25%</button>
-        <button @click="transfer(symbol2, symbol1, (1/split) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} {{ split }}%</button>
-        <button @click="transfer(symbol2, symbol1, 1)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} 100%</button>
+        <div v-if="pure">
+            <label class="w-25 text-light text-right">{{ limitBuyLabel }}</label>
+            <input class="form-control w-25 align-top d-inline" v-model="limitBuyPrice" type="number" :step="step" :placeholder="limitBuyLabel">
+            <button class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>
+            <br>
+            <label class="w-25 text-light text-right">{{ stopLimitSellLabel }}</label>
+            <input class="form-control w-25 align-top d-inline" v-model="stopLimitSellPrice" type="number" :step="step" :placeholder="stopLimitSellLabel">
+            <button class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>
+        </div>
+        <div v-else>
+            <button @click="transfer(symbol1, symbol2, (1/splitLow) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol2 }} 25%</button>
+            <button @click="transfer(symbol1, symbol2, (1/split) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol2 }} {{ split }}%</button>
+            <button @click="transfer(symbol1, symbol2, 1)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol2 }} 100%</button>
+            <button @click="transfer(symbol2, symbol1, (1/splitLow) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} 25%</button>
+            <button @click="transfer(symbol2, symbol1, (1/split) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} {{ split }}%</button>
+            <button @click="transfer(symbol2, symbol1, 1)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol1 }} 100%</button>
+        </div>
         <br>
         <hr>
         <button @click="getBalance(symbol1, 'one')" class="btn btn-info mb-2">Balance {{ symbol1 }}: {{ bal.one }} (${{ Math.floor(bal.oneUSD) }})</button>
@@ -60,7 +71,9 @@ export default {
         "symbol2",
         "rr",
         "shaver",
-        "pumpr"
+        "pumpr",
+        "pure",
+        "pushLasts"
     ],
     data: function() {
         return {
@@ -84,8 +97,6 @@ export default {
                     amountUSD: null,
                 },
             },
-            splitLow: 25,
-            split: 44.5,
             bal: {
                 one: null,
                 oneUSD: null,
@@ -94,6 +105,8 @@ export default {
                 usdt: null
             },
             disabled: false,
+            limitBuyPrice: null,
+            stopLimitSellPrice: null,
             showForm: false,
             input: {
                 symbol1: null,
@@ -102,7 +115,10 @@ export default {
                 symbol2: null,
                 two: null,
                 twoUSD: null,
-            }
+            },
+            splitLow: 25,
+            split: 44.5,
+            step: null,
         };
     },
 
@@ -181,20 +197,58 @@ export default {
             }).then(function (response) {
                 _this.bal[which + "USD"] = response.data * amount;
             });
+        },
+        getLimitOrders: function() {
+            axios.get('limit_orders', {
+                params: {
+                    symbol1: this.symbol1,
+                    symbol2: this.symbol2,
+                }
+            }).then(function(response) {
+                if(response.data.success) {
+
+                } else {
+                    console.error(response.data);
+                }
+            })
         }
+    },
+
+    computed: {
+        limitBuyLabel: function() {
+            return 'limit buy (' + this.symbol1 + '->' + this.symbol2 + ')';
+        },
+        stopLimitSellLabel: function() {
+            return 'stop limit sell (' + this.symbol2 + '->' + this.symbol1 +')';
+        },
     },
 
     watch: {
         symbol1: function() {
             this.bal.one = "";
             this.bal.oneUSD = "";
+            this.getLimitOrders();
         },
         symbol2: function() {
             this.bal.two = "";
             this.bal.twoUSD = "";
         },
+        pushLasts: function() {
+            if (this.pushLasts.length === 2) {
+                let divided = this.pushLasts[0].s1 / this.pushLasts[1].s2;
+                let order = (Math.floor(1 / divided).toString().length) + 2;
+                this.limitBuyPrice = divided.toFixed(order)
+                this.stopLimitSellPrice = divided.toFixed(order);
+                this.step = Math.pow(10, - order);
+            }
+        },
+        limitBuyPrice: function() {
+            this.$emit('limitBuyPrice', this.limitBuyPrice);
+        },
+        stopLimitSellPrice: function() {
+            this.$emit('stopLimitSellPrice', this.stopLimitSellPrice);
+        }
     }
-
 }
 
 </script>

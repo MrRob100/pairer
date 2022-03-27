@@ -15,6 +15,7 @@
             <trading-vuea
                 colorBack="rgba(0,0,0,0)"
                 :colorWickUp="lineDataPair ? JSON.stringify(lineDataPair) : null"
+                :colorWickDw="limitLines"
                 style="z-index: -1"
                 colorText="#7DA0B1"
                 colorGrid="#777"
@@ -59,6 +60,8 @@
             t: "",
             dr: "",
             v1frozen: false,
+            limitBuyPrice: null,
+            stopLimitSellPrice: null,
         },
 
         data: function() {
@@ -149,7 +152,18 @@
                 }
             }
         },
-
+        computed: {
+            limitLines: function() {
+                if (this.limitBuyPrice && this.stopLimitSellPrice) {
+                    return JSON.stringify({
+                        'limitBuyPrice': this.limitBuyPrice,
+                        'stopLimitSellPrice': this.stopLimitSellPrice,
+                    });
+                } else {
+                    return null;
+                }
+            }
+        },
         watch: {
             s: function(val) {
                 if (val.length == 2) {

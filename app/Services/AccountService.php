@@ -207,4 +207,36 @@ class AccountService
     {
 
     }
+
+    public function getOpenOrders(string $pair): array
+    {
+        $api = $this->api();
+        $api->useServerTime();
+
+        try {
+            return [
+                'success' => true,
+                $api->openorders($pair),
+            ];
+        } catch(\Exception $e) {
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    public function limitBuy($pair, $price)
+    {
+        $api = $this->api();
+        $api->useServerTime();
+
+
+    }
+
+    public function stopSell($pair, $price)
+    {
+        $api = $this->api();
+        $api->useServerTime();
+    }
 }
