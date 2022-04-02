@@ -226,17 +226,50 @@ class AccountService
         }
     }
 
-    public function limitBuy($pair, $price)
+    public function limitBuy($symbol1, $symbol2, $price, $portion): array
     {
+        //eg btc to rif, want price (of rif) to be low
         $api = $this->api();
         $api->useServerTime();
 
+        $pair = $symbol1.$symbol2;
 
+        $bals = $this->balance();
+        $quantity = ($bals[$symbol2]['available'] * ($portion / 100)) / $price;
+
+        $order = $api->order('BUY', $pair, $quantity, $price, 'LIMIT');
+
+        dd($order);
+
+//                public function order(string $side, string $symbol, $quantity, $price, string $type = "LIMIT", array $flags = [], bool $test = false)
+//    {
+//        $opt = [
+//            "symbol" => $symbol,
+//            "side" => $side,
+//            "type" => $type,
+//            "quantity" => $quantity,
+//            "recvWindow" => 60000,
+//        ];
+
+        return [];
     }
 
-    public function stopSell($pair, $price)
+    public function stopLimitSell($symbol1, $symbol2, $price, $portion): array
     {
         $api = $this->api();
         $api->useServerTime();
+
+        $pair = $symbol1.$symbol2;
+
+        $bals = $this->balance();
+        $quantity = ($bals[$symbol1]['available'] * ($portion / 100)) * $price;
+
+        // Set the type STOP_LOSS (market) or STOP_LOSS_LIMIT, and TAKE_PROFIT (market) or TAKE_PROFIT_LIMIT
+
+        $order = $api->order('SELL', $pair, $quantity, $price, 'TAKE_PROFIT');
+
+        dd($order);
+
+        return [];
     }
 }

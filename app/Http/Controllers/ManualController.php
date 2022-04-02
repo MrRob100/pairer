@@ -153,6 +153,14 @@ class ManualController extends Controller
 
     public function limitBuy(Request $request): array
     {
-        return $this->accountService->limitBuy($request->symbol1.$request->symbol2, '');
+        return $this->accountService->limitBuy($request->symbol1, $request->symbol2, $request->price, $request->portion);
+    }
+
+    public function stopLimitSell(Request $request): array
+    {
+
+        dd($request->all());
+
+        return $this->accountService->stopLimitSell($request->symbol1, $request->symbol2, $request->price, $request->portion);
     }
 }

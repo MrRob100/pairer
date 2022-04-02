@@ -1,13 +1,30 @@
 <template>
     <div>
         <div v-if="pure">
-            <label class="w-25 text-light text-right">{{ limitBuyLabel }}</label>
-            <input class="form-control w-25 align-top d-inline" v-model="limitBuyPrice" type="number" :step="step" :placeholder="limitBuyLabel">
-            <button class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>
+            <div class="d-flex justify-content-center">
+                <label class="text-light mx-1">{{ stopLimitSellLabel }}</label>
+                <label class="text-light mx-1">{{ amount1to2 }}%</label>
+            </div>
+            <div class="d-flex justify-content-center">
+                <input class="form-control w-50 align-top d-inline mr-2" v-model="stopLimitSellPrice" type="number" :step="step" :placeholder="stopLimitSellLabel">
+                <button @click="setStopLimitSell(stopLimitSellPrice)" class="btn btn-success mb-2 d-inline align-top"><i class="fas fa-check"></i></button>
+            </div>
+            <div class="d-flex justify-content-center">
+                <input v-model=amount1to2 type="range" min="0" max="100" value="50" class="slider w-50 ml-25">
+            </div>
             <br>
-            <label class="w-25 text-light text-right">{{ stopLimitSellLabel }}</label>
-            <input class="form-control w-25 align-top d-inline" v-model="stopLimitSellPrice" type="number" :step="step" :placeholder="stopLimitSellLabel">
-            <button class="btn btn-success mb-2 d-inline"><i class="fas fa-check"></i></button>
+            <br>
+            <div class="d-flex justify-content-center">
+                <label class="text-light mx-1">{{ limitBuyLabel }}</label>
+                <label class="text-light mx-1">{{ amount2to1 }}%</label>
+            </div>
+            <div class="d-flex justify-content-center">
+                <input class="form-control w-50 align-top d-inline mr-2" v-model="limitBuyPrice" type="number" :step="step" :placeholder="limitBuyLabel">
+                <button @click="setLimitBuy(limitBuyPrice)" class="btn btn-success mb-2 d-inline align-top"><i class="fas fa-check"></i></button>
+            </div>
+            <div class="d-flex justify-content-center">
+                <input v-model=amount2to1 type="range" min="0" max="100" value="50" class="slider w-50 ml-25">
+            </div>
         </div>
         <div v-else>
             <button @click="transfer(symbol1, symbol2, (1/splitLow) * 100)" class="btn btn-info mb-2" :disabled="disabled">Buy {{ symbol2 }} 25%</button>
@@ -77,6 +94,8 @@ export default {
     ],
     data: function() {
         return {
+            amount1to2: 0,
+            amount2to1: 0,
             shave: {
                 one: {
                     show: false,
@@ -199,6 +218,7 @@ export default {
             });
         },
         getLimitOrders: function() {
+            let _this = this;
             axios.get('limit_orders', {
                 params: {
                     symbol1: this.symbol1,
@@ -206,20 +226,53 @@ export default {
                 }
             }).then(function(response) {
                 if(response.data.success) {
-
+                    Object.values(response.data[0]).forEach(function(order) {
+                        if (order.type === 'LIMIT' && order.side === 'BUY') {
+                            _this.limitBuyPrice = parseFloat(order.price);
+                            _this.amount2to1 = parseFloat(order.origQty);
+                        }
+                        if (order.type === 'LIMIT' && order.side === 'SELL') {
+                            _this.stopLimitSellPrice = parseFloat(order.price);
+                            _this.amount1to2 = parseFloat(order.origQty);
+                        }
+                    })
                 } else {
                     console.error(response.data);
                 }
             })
+        },
+        setLimitBuy: function(price) {
+            if (confirm(`when price reaches ${price} transfer from ${this.symbol2} to ${this.symbol1}?`)) {
+                axios.post('limit_buy', {
+                    symbol1: this.symbol1,
+                    symbol2: this.symbol2,
+                    price: price,
+                    portion: this.amount2to1,
+                }).then(function(response) {
+                    //make faded line the hard line
+                });
+            }
+        },
+        setStopLimitSell: function(price) {
+            if (confirm(`when price reaches ${price} transfer from ${this.symbol1} to ${this.symbol2}?`)) {
+                axios.post('stop_limit_sell', {
+                    symbol1: this.symbol1,
+                    symbol2: this.symbol2,
+                    price: price,
+                    portion: this.amount1to2,
+                }).then(function(response) {
+                    //make faded line the hard line
+                });
+            }
         }
     },
 
     computed: {
-        limitBuyLabel: function() {
-            return 'limit buy (' + this.symbol1 + '->' + this.symbol2 + ')';
-        },
         stopLimitSellLabel: function() {
-            return 'stop limit sell (' + this.symbol2 + '->' + this.symbol1 +')';
+            return 'stop limit sell (' + this.symbol1 + '->' + this.symbol2 + ')';
+        },
+        limitBuyLabel: function() {
+            return 'limit buy (' + this.symbol2 + '->' + this.symbol1 +')';
         },
     },
 
@@ -252,3 +305,35 @@ export default {
 }
 
 </script>
+<style>
+.slider {
+    border-radius: 0.25rem;
+    -webkit-appearance: none;
+    height: 32px;
+    background: #d3d3d3;
+    outline: none;
+    -webkit-transition: .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    border-radius: 0.25rem;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 32px;
+    height: 32px;
+    background: #38c172;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    border-radius: 0.25rem;
+    width: 32px;
+    height: 32px;
+    background: #38c172;
+    cursor: pointer;
+}
+</style>

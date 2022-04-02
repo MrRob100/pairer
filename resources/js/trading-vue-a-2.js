@@ -5195,13 +5195,13 @@
                                 let limitBuyPriceScaled = layout.$2screen(parsedLimits.limitBuyPrice);
                                 let stopLimitSellPriceScaled = layout.$2screen(parsedLimits.stopLimitSellPrice);
 
-                                ctx.strokeStyle = "#01ff16";
+                                ctx.strokeStyle = "#ff2a95";
                                 ctx.beginPath();
                                 ctx.moveTo(0, limitBuyPriceScaled);
                                 ctx.lineTo(layout.width, limitBuyPriceScaled);
                                 ctx.stroke();
 
-                                ctx.strokeStyle = "#ff2a2a";
+                                ctx.strokeStyle = "#01ff16";
                                 ctx.beginPath();
                                 ctx.moveTo(0, stopLimitSellPriceScaled);
                                 ctx.lineTo(layout.width, stopLimitSellPriceScaled);

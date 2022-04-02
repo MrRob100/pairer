@@ -86,4 +86,8 @@ Route::get('/icon', [ManualController::class, 'icon'])->name('icon')->middleware
 
 Route::get('/limit_orders', [ManualController::class, 'getLimits']);
 
+Route::post('/limit_buy', [ManualController::class, 'limitBuy']);
+
+Route::post('/stop_limit_sell', [ManualController::class, 'stoplimitSell']);
+
 Auth::routes();
