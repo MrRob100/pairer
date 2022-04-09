@@ -103,6 +103,7 @@
                 dlref0: "",
                 dlref1: "",
                 lineDataPair: [],
+                limitLines: null,
             }
         },
 
@@ -131,6 +132,8 @@
                         {"s2": response.data['second'][response.data['second'].length - 1][4]},
                     ];
 
+                    this.putLines();
+
                     this.$emit('lasts', lasts)
                 });
             },
@@ -150,17 +153,13 @@
                     elems[0].style.display = "block";
                     elems[0].innerText = val[0].name + val[1].name;
                 }
-            }
-        },
-        computed: {
-            limitLines: function() {
+            },
+            putLines: function() {
                 if (this.limitBuyPrice && this.stopLimitSellPrice) {
-                    return JSON.stringify({
+                    this.limitLines = JSON.stringify({
                         'limitBuyPrice': this.limitBuyPrice,
                         'stopLimitSellPrice': this.stopLimitSellPrice,
                     });
-                } else {
-                    return null;
                 }
             }
         },
@@ -173,6 +172,12 @@
                     this.dlref1 = this.dr + "?symbol=" + val[1].name.toUpperCase();
                 }
             },
+            limitBuyPrice: function() {
+                this.putLines();
+            },
+            stopLimitSellPrice: function() {
+                this.putLines();
+            }
         }
     }
 </script>

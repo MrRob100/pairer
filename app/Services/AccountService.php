@@ -208,15 +208,24 @@ class AccountService
 
     }
 
-    public function getOpenOrders(string $pair): array
+    public function getOpenOrders(string $symbol1, string $symbol2): array
     {
         $api = $this->api();
         $api->useServerTime();
 
+        $balance = $this->balance();
+
+        $total1 = $balance[$symbol1]['onOrder'] + $balance[$symbol1]['available'];
+        $total2 = $balance[$symbol2]['onOrder'] + $balance[$symbol2]['available'];
+
         try {
             return [
+                'order_balance_percentage' => [
+                    'symbol1' => ($balance[$symbol1]['onOrder'] / $total1) * 100,
+                    'symbol2' => ($balance[$symbol2]['onOrder'] / $total2) * 100,
+                ],
                 'success' => true,
-                $api->openorders($pair),
+                $api->openorders($symbol1.$symbol2),
             ];
         } catch(\Exception $e) {
             return [
@@ -226,7 +235,7 @@ class AccountService
         }
     }
 
-    public function limitBuy($symbol1, $symbol2, $price, $portion): array
+    public function limitBuy($symbol1, $symbol2, $price, $portion, $lotSize): array
     {
         //eg btc to rif, want price (of rif) to be low
         $api = $this->api();
@@ -235,9 +244,12 @@ class AccountService
         $pair = $symbol1.$symbol2;
 
         $bals = $this->balance();
-        $quantity = ($bals[$symbol2]['available'] * ($portion / 100)) / $price;
 
-        $order = $api->order('BUY', $pair, $quantity, $price, 'LIMIT');
+        $quantity = number_format(($bals[$symbol2]['available'] * ($portion / 100)) / $price, 7);
+
+        $quantityChopped = floor($quantity / $lotSize) * $lotSize;
+
+        $order = $api->order('BUY', $pair, $quantityChopped, $price, 'LIMIT');
 
         dd($order);
 
@@ -254,7 +266,7 @@ class AccountService
         return [];
     }
 
-    public function stopLimitSell($symbol1, $symbol2, $price, $portion): array
+    public function stopLimitSell($symbol1, $symbol2, $price, $portion, $lotSize): array
     {
         $api = $this->api();
         $api->useServerTime();
@@ -262,14 +274,26 @@ class AccountService
         $pair = $symbol1.$symbol2;
 
         $bals = $this->balance();
-        $quantity = ($bals[$symbol1]['available'] * ($portion / 100)) * $price;
+        $quantity = number_format(($bals[$symbol1]['available'] * ($portion / 100)) * $price, 7);
+
+
+        $quantityChopped = floor($quantity / $lotSize) * $lotSize;
 
         // Set the type STOP_LOSS (market) or STOP_LOSS_LIMIT, and TAKE_PROFIT (market) or TAKE_PROFIT_LIMIT
 
-        $order = $api->order('SELL', $pair, $quantity, $price, 'TAKE_PROFIT');
+        $order = $api->order('SELL', $pair, $quantityChopped, $price, 'LIMIT');
 
         dd($order);
 
         return [];
+    }
+
+    public function getLotSize($pair): float
+    {
+        $api = $this->api();
+
+        $filters = collect($api->exchangeInfo()['symbols'][$pair]['filters']);
+
+        return floatval($filters->where('filterType', 'LOT_SIZE')->first()['stepSize']);
     }
 }

@@ -125,6 +125,7 @@ export default {
             },
             disabled: false,
             limitBuyPrice: null,
+            lotSize: null,
             stopLimitSellPrice: null,
             showForm: false,
             input: {
@@ -229,6 +230,9 @@ export default {
                     Object.values(response.data[0]).forEach(function(order) {
                         if (order.type === 'LIMIT' && order.side === 'BUY') {
                             _this.limitBuyPrice = parseFloat(order.price);
+
+
+
                             _this.amount2to1 = parseFloat(order.origQty);
                         }
                         if (order.type === 'LIMIT' && order.side === 'SELL') {
@@ -248,6 +252,7 @@ export default {
                     symbol2: this.symbol2,
                     price: price,
                     portion: this.amount2to1,
+                    lotSize: this.lotSize,
                 }).then(function(response) {
                     //make faded line the hard line
                 });
@@ -260,10 +265,19 @@ export default {
                     symbol2: this.symbol2,
                     price: price,
                     portion: this.amount1to2,
+                    lotSize: this.lotSize,
                 }).then(function(response) {
                     //make faded line the hard line
                 });
             }
+        },
+        getLotSize: function() {
+            axios.get('lot_size', {
+                params: {
+                    symbol1: this.symbol1,
+                    symbol2: this.symbol2,
+                }
+            }).then(response => (this.lotSize = response.data));
         }
     },
 
@@ -286,6 +300,9 @@ export default {
             this.bal.two = "";
             this.bal.twoUSD = "";
         },
+        pure: function(val) {
+            if (val) this.getLotSize();
+        },
         pushLasts: function() {
             if (this.pushLasts.length === 2) {
                 let divided = this.pushLasts[0].s1 / this.pushLasts[1].s2;
@@ -300,7 +317,7 @@ export default {
         },
         stopLimitSellPrice: function() {
             this.$emit('stopLimitSellPrice', this.stopLimitSellPrice);
-        }
+        },
     }
 }
 

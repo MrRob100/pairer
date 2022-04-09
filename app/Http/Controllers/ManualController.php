@@ -148,19 +148,33 @@ class ManualController extends Controller
 
     public function getLimits(Request $request): array
     {
-        return $this->accountService->getOpenOrders(strtoupper($request->symbol1.$request->symbol2));
+        return $this->accountService->getOpenOrders(strtoupper($request->symbol1), strtoupper($request->symbol2));
     }
 
     public function limitBuy(Request $request): array
     {
-        return $this->accountService->limitBuy($request->symbol1, $request->symbol2, $request->price, $request->portion);
+        return $this->accountService->limitBuy(
+            $request->symbol1,
+            $request->symbol2,
+            $request->price,
+            $request->portion,
+            $request->lotSize,
+        );
     }
 
     public function stopLimitSell(Request $request): array
     {
+        return $this->accountService->stopLimitSell(
+            $request->symbol1,
+            $request->symbol2,
+            $request->price,
+            $request->portion,
+            $request->lotSize,
+        );
+    }
 
-        dd($request->all());
-
-        return $this->accountService->stopLimitSell($request->symbol1, $request->symbol2, $request->price, $request->portion);
+    public function getLotSize(Request $request): float
+    {
+        return $this->accountService->getLotSize($request->symbol1.$request->symbol2);
     }
 }
