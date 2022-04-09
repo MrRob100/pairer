@@ -230,14 +230,11 @@ export default {
                     Object.values(response.data[0]).forEach(function(order) {
                         if (order.type === 'LIMIT' && order.side === 'BUY') {
                             _this.limitBuyPrice = parseFloat(order.price);
-
-
-
-                            _this.amount2to1 = parseFloat(order.origQty);
+                            _this.amount2to1 = response.data.order_balance_percentage.symbol2;
                         }
                         if (order.type === 'LIMIT' && order.side === 'SELL') {
                             _this.stopLimitSellPrice = parseFloat(order.price);
-                            _this.amount1to2 = parseFloat(order.origQty);
+                            _this.amount1to2 = response.data.order_balance_percentage.symbol1;
                         }
                     })
                 } else {
