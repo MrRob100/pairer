@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PairBalance extends Model
 {
@@ -19,4 +20,9 @@ class PairBalance extends Model
     ];
 
     use HasFactory;
+
+    public function openOrders(): HasMany
+    {
+        return $this->hasMany(OpenOrder::class);
+    }
 }

@@ -90,6 +90,8 @@ Route::post('/limit_buy', [ManualController::class, 'limitBuy']);
 
 Route::post('/stop_limit_sell', [ManualController::class, 'stoplimitSell']);
 
+Route::post('/cancel_orders', [ManualController::class, 'cancelOrders']);
+
 Route::get('/lot_size', [ManualController::class, 'getLotSize']);
 
 Auth::routes();

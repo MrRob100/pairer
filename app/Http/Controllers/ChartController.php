@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PairHelper;
 use App\Models\Input;
 use App\Models\PairBalance;
 use App\Services\BinanceGetService;
@@ -140,21 +141,20 @@ class ChartController extends Controller
 //        fclose($file1);
 //        fclose($file2);
 
-        $lines = PairBalance::where('s1', $request->s1)->orderBy('created_at', 'DESC')->limit(3)->get();
+        $lines = PairBalance::where('s1', $request->s1)
+            ->whereNotNull('price_at_trade_s1')
+            ->whereNotNull('price_at_trade_s2')
+            ->orderBy('created_at', 'DESC')
+            ->limit(3)->get();
 
         $midPrice1 = sizeof($lines) > 0 ? $lines->toArray()[0]['price_at_trade_s1'] / $lines->toArray()[0]['price_at_trade_s2'] : null;
         $midPrice2 = sizeof($lines) > 1 ? $lines->toArray()[1]['price_at_trade_s1'] / $lines->toArray()[1]['price_at_trade_s2'] : null;
         $midPrice3 = sizeof($lines) > 2 ? $lines->toArray()[2]['price_at_trade_s1'] / $lines->toArray()[2]['price_at_trade_s2'] : null;
 
-        $pures = ['BTC', 'ETH', 'BNB'];
-
-        $pure = false;
-        if (in_array($request->s1, $pures) || in_array($request->s2, $pures)) {
-            $pure = true;
-        }
+        $pureClass = app()->make(PairHelper::class);
 
         return [
-            'pure_pair' => $pure,
+            'pure_pair' => $pureClass->isPure($request->s1, $request->s2),
             'first' => $this->formatBinanceResponse($response1),
             'pair' => array_reverse($pair),
             'second' => $this->formatBinanceResponse($response2),

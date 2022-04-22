@@ -8,6 +8,7 @@
             <div class="d-flex justify-content-center">
                 <input class="form-control w-50 align-top d-inline mr-2" v-model="stopLimitSellPrice" type="number" :step="step" :placeholder="stopLimitSellLabel">
                 <button @click="setStopLimitSell(stopLimitSellPrice)" class="btn btn-success mb-2 d-inline align-top"><i class="fas fa-check"></i></button>
+                <button @click="cancelOrders('SELL')" class="ml-2 btn btn-success mb-2 d-inline align-top"><i class="fas fa-trash"></i></button>
             </div>
             <div class="d-flex justify-content-center">
                 <input v-model=amount1to2 type="range" min="0" max="100" value="50" class="slider w-50 ml-25">
@@ -21,6 +22,7 @@
             <div class="d-flex justify-content-center">
                 <input class="form-control w-50 align-top d-inline mr-2" v-model="limitBuyPrice" type="number" :step="step" :placeholder="limitBuyLabel">
                 <button @click="setLimitBuy(limitBuyPrice)" class="btn btn-success mb-2 d-inline align-top"><i class="fas fa-check"></i></button>
+                <button @click="cancelOrders('BUY')" class="ml-2 btn btn-success mb-2 d-inline align-top"><i class="fas fa-trash"></i></button>
             </div>
             <div class="d-flex justify-content-center">
                 <input v-model=amount2to1 type="range" min="0" max="100" value="50" class="slider w-50 ml-25">
@@ -255,6 +257,16 @@ export default {
                 });
             }
         },
+        cancelOrders: function(type) {
+            let _this = this;
+            axios.post('cancel_orders', {
+                symbol1: this.symbol1,
+                symbol2: this.symbol2,
+                side: type,
+            }).then(function() {
+                _this.getLimitOrders();
+            });
+        },
         setStopLimitSell: function(price) {
             if (confirm(`when price reaches ${price} transfer from ${this.symbol1} to ${this.symbol2}?`)) {
                 axios.post('stop_limit_sell', {
@@ -304,7 +316,7 @@ export default {
             if (this.pushLasts.length === 2) {
                 let divided = this.pushLasts[0].s1 / this.pushLasts[1].s2;
                 let order = (Math.floor(1 / divided).toString().length) + 2;
-                this.limitBuyPrice = divided.toFixed(order)
+                this.limitBuyPrice = divided.toFixed(order);
                 this.stopLimitSellPrice = divided.toFixed(order);
                 this.step = Math.pow(10, - order);
             }

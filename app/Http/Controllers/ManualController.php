@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Input;
 use App\Models\PairBalance;
+use App\Models\User;
 use App\Services\BinanceGetService;
 use App\Services\CmcService;
 use App\Services\PairDataService;
@@ -171,6 +172,11 @@ class ManualController extends Controller
             $request->portion,
             $request->lotSize,
         );
+    }
+
+    public function cancelOrders(Request $request)
+    {
+        return $this->accountService->cancelOrders($request->symbol1, $request->symbol2, $request->side);
     }
 
     public function getLotSize(Request $request): float

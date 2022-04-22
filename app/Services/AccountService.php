@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\PairHelper;
 use App\Models\Pair;
 use App\Models\PairBalance;
 use App\Services;
@@ -218,11 +219,18 @@ class AccountService
         $total1 = $balance[$symbol1]['onOrder'] + $balance[$symbol1]['available'];
         $total2 = $balance[$symbol2]['onOrder'] + $balance[$symbol2]['available'];
 
+        $pureClass = app()->make(PairHelper::class);
+
+        if (!$pureClass->isPure($symbol1, $symbol2)) return [
+            'success' => false,
+            'error' => 'impure pair'
+        ];
+
         try {
             return [
                 'order_balance_percentage' => [
-                    'symbol1' => ($balance[$symbol1]['onOrder'] / $total1) * 100,
-                    'symbol2' => ($balance[$symbol2]['onOrder'] / $total2) * 100,
+                    'symbol1' => $total1 == 0 ?: ($balance[$symbol1]['onOrder'] / $total1) * 100,
+                    'symbol2' => $total2 == 0 ?: ($balance[$symbol2]['onOrder'] / $total2) * 100,
                 ],
                 'success' => true,
                 $api->openorders($symbol1.$symbol2),
@@ -235,8 +243,24 @@ class AccountService
         }
     }
 
+    public function cancelOrders($symbol1, $symbol2, $side)
+    {
+        $api = $this->api();
+        $api->useServerTime();
+
+        $orders = $this->getOpenOrders($symbol1, $symbol2);
+
+        foreach ($orders[0] as $order) {
+            if ($order['side'] === $side) {
+                $api->cancel($symbol1.$symbol2, $order['orderId']);
+            }
+        }
+    }
+
     public function limitBuy($symbol1, $symbol2, $price, $portion, $lotSize): array
     {
+        $this->cancelOrders($symbol1, $symbol2, 'BUY');
+
         //eg btc to rif, want price (of rif) to be low
         $api = $this->api();
         $api->useServerTime();
@@ -245,47 +269,63 @@ class AccountService
 
         $bals = $this->balance();
 
-        $quantity = number_format(($bals[$symbol2]['available'] * ($portion / 100)) / $price, 7);
+        $s1_available = $bals[$symbol1]['available'];
+        $s2_available = $bals[$symbol2]['available'];
 
-        $quantityChopped = floor($quantity / $lotSize) * $lotSize;
+        $quantity = number_format(($s2_available * ($portion / 100)) / $price, 7);
+
+        $quantityChopped = floor(str_replace(',', '', $quantity) / $lotSize) * $lotSize;
+
+        $pairBalance = PairBalance::create([
+            's1' => $symbol1,
+            'balance_s1' => $s1_available,
+            's2' => $symbol2,
+            'balance_s2' => $s2_available,
+        ]);
 
         $order = $api->order('BUY', $pair, $quantityChopped, $price, 'LIMIT');
 
-        dd($order);
+        $pairBalance->openOrders()->create([
+            'orderId' => $order['orderId'],
+            'status' => $order['status'],
+        ]);
 
-//                public function order(string $side, string $symbol, $quantity, $price, string $type = "LIMIT", array $flags = [], bool $test = false)
-//    {
-//        $opt = [
-//            "symbol" => $symbol,
-//            "side" => $side,
-//            "type" => $type,
-//            "quantity" => $quantity,
-//            "recvWindow" => 60000,
-//        ];
-
-        return [];
+        return $order;
     }
 
     public function stopLimitSell($symbol1, $symbol2, $price, $portion, $lotSize): array
     {
+        $this->cancelOrders($symbol1, $symbol2, 'SELL');
+
         $api = $this->api();
         $api->useServerTime();
 
         $pair = $symbol1.$symbol2;
 
         $bals = $this->balance();
-        $quantity = number_format(($bals[$symbol1]['available'] * ($portion / 100)) * $price, 7);
 
+        $s1_available = $bals[$symbol1]['available'];
+        $s2_available = $bals[$symbol2]['available'];
 
-        $quantityChopped = floor($quantity / $lotSize) * $lotSize;
+        $quantity = number_format(($s2_available * ($portion / 100) / $price), 7);
 
-        // Set the type STOP_LOSS (market) or STOP_LOSS_LIMIT, and TAKE_PROFIT (market) or TAKE_PROFIT_LIMIT
+        $quantityChopped = floor(str_replace(',', '', $quantity) / $lotSize) * $lotSize;
+
+        $pairBalance = PairBalance::create([
+            's1' => $symbol1,
+            'balance_s1' => $s1_available,
+            's2' => $symbol2,
+            'balance_s2' => $s2_available,
+        ]);
 
         $order = $api->order('SELL', $pair, $quantityChopped, $price, 'LIMIT');
 
-        dd($order);
+        $pairBalance->openOrders()->create([
+            'orderId' => $order['orderId'],
+            'status' => $order['status']
+        ]);
 
-        return [];
+        return $order;
     }
 
     public function getLotSize($pair): float
@@ -295,5 +335,11 @@ class AccountService
         $filters = collect($api->exchangeInfo()['symbols'][$pair]['filters']);
 
         return floatval($filters->where('filterType', 'LOT_SIZE')->first()['stepSize']);
+    }
+
+    public function checkForFills($pair = null)
+    {
+        //checks if open orders have been filled, if so, log details of them and update their status
+        //to be run by a cron (all pairs) or by checking open orders ($pair specified)
     }
 }
