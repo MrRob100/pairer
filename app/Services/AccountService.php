@@ -213,6 +213,7 @@ class AccountService
 
     public function getOpenOrders(string $symbol1, string $symbol2): array
     {
+        $this->checkForFills([['symbol1' => $symbol1, 'symbol2' => $symbol2]]);
         $api = $this->api();
         $api->useServerTime();
 
@@ -255,6 +256,8 @@ class AccountService
         foreach ($orders[0] as $order) {
             if ($order['side'] === $side) {
                 $api->cancel($symbol1.$symbol2, $order['orderId']);
+
+                //DOES THIS CASCADE OR WHATEVER????
                 OpenOrder::where('orderId', $order['orderId'])->pairBalance->delete();
             }
         }
@@ -334,15 +337,73 @@ class AccountService
     public function getLotSize($pair): float
     {
         $api = $this->api();
-
         $filters = collect($api->exchangeInfo()['symbols'][$pair]['filters']);
 
         return floatval($filters->where('filterType', 'LOT_SIZE')->first()['stepSize']);
     }
 
-    public function checkForFills($pair = null)
+    public function checkForFills(array $pairs)
     {
-        //checks if open orders have been filled, if so, log details of them and update their status
-        //to be run by a cron (all pairs) or by checking open orders ($pair specified)
+        $api = $this->api();
+        $api->useServerTime();
+
+        foreach($pairs as $pair) {
+            $symbol1 = strtoupper($pair['symbol1']);
+            $symbol2 = strtoupper($pair['symbol2']);
+            $symbols = [$symbol1, $symbol2];
+
+            $openOrders = OpenOrder::whereHas(
+                'pairBalance',
+                function ($query) use ($symbols) {
+                    $query->where('s1', $symbols[0])->where('s2', $symbols[1]);
+                }
+            )->get();
+
+            foreach($openOrders as $openOrder) {
+                $status = $api->orderStatus($symbol1.$symbol2, $openOrder->orderId);
+//              "NEW", "FILLED", "CANCELLED"
+
+                if ($status['status'] === 'FILLED') {
+                    $price_at_trade_s1_usd = $this->getPriceAtTradeUSD($status['updateTime'], $symbol1);
+                    $price_at_trade_s2_usd = $this->getPriceAtTradeUSD($status['updateTime'], $symbol2);
+
+                    $openOrder->update(
+                        [
+                            'fill_time' => $status['updateTime'],
+//                            'status' => 'FILLED',
+                        ]
+                    );
+
+                    $pairBalance = $openOrder->pairBalance;
+
+                    $pairBalance->update(
+                        [
+                            'price_at_trade_s1' => $price_at_trade_s1_usd,
+                            'balance_s1_usd' => $price_at_trade_s1_usd * $pairBalance->balance_s1,
+                            'price_at_trade_s2' => $price_at_trade_s2_usd,
+                            'balance_s2_usd' => $price_at_trade_s2_usd * $pairBalance->balance_s2,
+                        ]
+                    );
+                }
+            }
+        }
     }
+
+    public function getPriceAtTradeUSD($fillTime, string $symbol): ?string
+    {
+        $startTime = $fillTime - 30000;
+        $fillTimeInt = intval(floor($fillTime / 1000) * 1000);
+        $response = json_decode(file_get_contents("https://www.binance.com/api/v3/klines?symbol={$symbol}USDT&interval=1m&startTime={$startTime}"), true);
+        $closest = null;
+        $price = null;
+        foreach ($response as $item) {
+            if ($closest === null || abs($fillTimeInt - $closest) > abs($item[0] - $fillTimeInt)) {
+                $closest = $item[0];
+                $price = $item[1];
+            }
+        }
+
+        return $price;
+    }
+
 }
