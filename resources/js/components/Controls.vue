@@ -3,7 +3,7 @@
         <div v-if="pure">
             <div class="d-flex justify-content-center">
                 <label class="text-light mx-1">{{ stopLimitSellLabel }}</label>
-                <label class="text-light mx-1">{{ amount1to2 }}%</label>
+                <label class="text-light mx-1">{{ amount1to2.toFixed(2) }}%</label>
             </div>
             <div class="d-flex justify-content-center">
                 <input class="form-control w-50 align-top d-inline mr-2" v-model="stopLimitSellPrice" type="number" :step="step" :placeholder="stopLimitSellLabel">
@@ -17,7 +17,7 @@
             <br>
             <div class="d-flex justify-content-center">
                 <label class="text-light mx-1">{{ limitBuyLabel }}</label>
-                <label class="text-light mx-1">{{ amount2to1 }}%</label>
+                <label class="text-light mx-1">{{ amount2to1.toFixed(2) }}%</label>
             </div>
             <div class="d-flex justify-content-center">
                 <input class="form-control w-50 align-top d-inline mr-2" v-model="limitBuyPrice" type="number" :step="step" :placeholder="limitBuyLabel">

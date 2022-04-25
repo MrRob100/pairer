@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Helpers\PairHelper;
+use App\Models\OpenOrder;
 use App\Models\Pair;
 use App\Models\PairBalance;
 use App\Services;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class AccountService
@@ -253,6 +255,7 @@ class AccountService
         foreach ($orders[0] as $order) {
             if ($order['side'] === $side) {
                 $api->cancel($symbol1.$symbol2, $order['orderId']);
+                OpenOrder::where('orderId', $order['orderId'])->pairBalance->delete();
             }
         }
     }

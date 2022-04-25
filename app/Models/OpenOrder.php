@@ -12,12 +12,11 @@ class OpenOrder extends Model
 
     protected $fillable = [
         'orderId',
-        'price_at_trade',
         'fill_time',
         'status',
     ];
 
-    public function PairBalance(): BelongsTo
+    public function pairBalance(): BelongsTo
     {
         return $this->belongsTo(PairBalance::class);
     }

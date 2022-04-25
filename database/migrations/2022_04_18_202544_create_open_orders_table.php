@@ -16,8 +16,7 @@ class CreateOpenOrdersTable extends Migration
         Schema::create('open_orders', function (Blueprint $table) {
             $table->id();
             $table->string('orderId');
-            $table->foreignId('pair_balance_id')->constrained('pair_balances');
-            $table->string('price_at_trade')->nullable();
+            $table->foreignId('pair_balance_id')->constrained('pair_balances')->onDelete('cascade');
             $table->string('fill_time')->nullable();
             $table->string('status');
             $table->timestamps();
