@@ -46,9 +46,7 @@ class PairDataService {
         foreach($pair_balances as $pair_balance) {
             for($i = 0; $i < sizeof($inputs); $i++) {
                 if ($inputs[$i]->created_at <= $pair_balance->created_at) {
-
                     $relInputs = $inputs->where('created_at', '<=', $pair_balance->created_at);
-
                     $merged = array_merge($pair_balance->toArray(), [
                         'input_symbol1' => $relInputs->sum('amount1'),
                         'input_symbol1_usd' => $relInputs->sum('amount1_usd'),

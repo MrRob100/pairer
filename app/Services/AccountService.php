@@ -257,7 +257,6 @@ class AccountService
             if ($order['side'] === $side) {
                 $api->cancel($symbol1.$symbol2, $order['orderId']);
 
-                //DOES THIS CASCADE OR WHATEVER????
                 OpenOrder::where('orderId', $order['orderId'])->pairBalance->delete();
             }
         }
@@ -370,7 +369,7 @@ class AccountService
                     $openOrder->update(
                         [
                             'fill_time' => $status['updateTime'],
-//                            'status' => 'FILLED',
+                            'status' => 'FILLED',
                         ]
                     );
 
