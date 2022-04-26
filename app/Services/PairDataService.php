@@ -19,10 +19,10 @@ class PairDataService {
             ->where('s2', $request->s2);
 
         if ($month) {
-            $query = $query->whereBetween('created_at', [$startDate, $endDate]);
+            $query = $query->whereBetween('updated_at', [$startDate, $endDate]);
         }
 
-        $pair_balances = $query->orderBy('created_at')->get();
+        $pair_balances = $query->orderBy('updated_at')->get();
 
         $inputsQuery = Input::where(
             function ($query) use ($request) {
