@@ -283,9 +283,9 @@ class AccountService
 
         $pairBalance = PairBalance::create([
             's1' => $symbol1,
-            'balance_s1' => $s1_available,
+            'balance_s1' => $s1_available + $bals[$symbol1]['onOrder'],
             's2' => $symbol2,
-            'balance_s2' => $s2_available,
+            'balance_s2' => $s2_available + $bals[$symbol2]['onOrder'],
         ]);
 
         $order = $api->order('BUY', $pair, $quantityChopped, $price, 'LIMIT');
@@ -293,6 +293,8 @@ class AccountService
         $pairBalance->openOrders()->create([
             'orderId' => $order['orderId'],
             'status' => $order['status'],
+            'pure_price_at_trade' => $price,
+            'side' => 'sell',
         ]);
 
         return $order;
@@ -318,16 +320,18 @@ class AccountService
 
         $pairBalance = PairBalance::create([
             's1' => $symbol1,
-            'balance_s1' => $s1_available,
+            'balance_s1' => $s1_available + $bals[$symbol1]['onOrder'],
             's2' => $symbol2,
-            'balance_s2' => $s2_available,
+            'balance_s2' => $s2_available + $bals[$symbol2]['onOrder'],
         ]);
 
         $order = $api->order('SELL', $pair, $quantityChopped, $price, 'LIMIT');
 
         $pairBalance->openOrders()->create([
             'orderId' => $order['orderId'],
-            'status' => $order['status']
+            'status' => $order['status'],
+            'pure_price_at_trade' => $price,
+            'side' => 'sell',
         ]);
 
         return $order;

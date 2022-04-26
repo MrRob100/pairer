@@ -19,6 +19,8 @@ class CreateOpenOrdersTable extends Migration
             $table->foreignId('pair_balance_id')->constrained('pair_balances')->onDelete('cascade');
             $table->string('fill_time')->nullable();
             $table->string('status');
+            $table->string('pure_price_at_trade');
+            $table->string('side');
             $table->timestamps();
         });
     }
