@@ -95,27 +95,27 @@ Route::post('/cancel_orders', [ManualController::class, 'cancelOrders']);
 
 Route::get('/lot_size', [ManualController::class, 'getLotSize']);
 
-Route::get('/time', function() {
-    $hereLastYear = 69;
-
-    $ninteyDaysTotalDate = Carbon::parse('2022-02-28')->addDays((90 - 69));
-
-    dump('90 days total took me to \/');
-    dump($ninteyDaysTotalDate->format('Y-m-d'));
-
-    dump('further 90 days extension will take me to \/');
-    dump($ninteyDaysTotalDate->addDays(90)->format('Y-m-d'));
-
-    $freshNintyTillDate = Carbon::parse('2022-02-28')->addDays(90);
-
-    dump('fresh 90 from second arrival takes me until \/');
-    dump($freshNintyTillDate->format('Y-m-d'));
-
-    dump('a futerh 90 from fresh 90 takes me until \/');
-    dump($freshNintyTillDate->addDays(90)->format('Y-m-d'));
-
-
-//    $ninteyDaysSecondTime =
-});
+//Route::get('/time', function() {
+//    $hereLastYear = 69;
+//
+//    $ninteyDaysTotalDate = Carbon::parse('2022-02-28')->addDays((90 - 69));
+//
+//    dump('90 days total took me to \/');
+//    dump($ninteyDaysTotalDate->format('Y-m-d'));
+//
+//    dump('further 90 days extension will take me to \/');
+//    dump($ninteyDaysTotalDate->addDays(90)->format('Y-m-d'));
+//
+//    $freshNintyTillDate = Carbon::parse('2022-02-28')->addDays(90);
+//
+//    dump('fresh 90 from second arrival takes me until \/');
+//    dump($freshNintyTillDate->format('Y-m-d'));
+//
+//    dump('a futerh 90 from fresh 90 takes me until \/');
+//    dump($freshNintyTillDate->addDays(90)->format('Y-m-d'));
+//
+//
+////    $ninteyDaysSecondTime =
+//});
 
 Auth::routes();
