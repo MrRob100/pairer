@@ -61,7 +61,9 @@
             dr: "",
             v1frozen: false,
             limitBuyPrice: null,
+            limitBuyPriceFloating: null,
             stopLimitSellPrice: null,
+            stopLimitSellPriceFloating: null,
         },
 
         data: function() {
@@ -155,10 +157,12 @@
                 }
             },
             putLines: function() {
-                if (this.limitBuyPrice && this.stopLimitSellPrice) {
+                if (this.limitBuyPriceFloating && this.stopLimitSellPriceFloating) {
                     this.limitLines = JSON.stringify({
                         'limitBuyPrice': this.limitBuyPrice,
+                        'limitBuyPriceFloating': this.limitBuyPriceFloating,
                         'stopLimitSellPrice': this.stopLimitSellPrice,
+                        'stopLimitSellPriceFloating': this.stopLimitSellPriceFloating,
                     });
                 }
             }
@@ -175,7 +179,13 @@
             limitBuyPrice: function() {
                 this.putLines();
             },
+            limitBuyPriceFloating: function() {
+                this.putLines();
+            },
             stopLimitSellPrice: function() {
+                this.putLines();
+            },
+            stopLimitSellPriceFloating: function() {
                 this.putLines();
             }
         }

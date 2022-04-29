@@ -16,7 +16,11 @@ class PairDataService {
         $endDate = Carbon::createFromDate($year, $month, 1)->addMonth();
 
         $query = PairBalance::where('s1', $request->s1)
-            ->where('s2', $request->s2);
+            ->where('s2', $request->s2)
+            ->whereNotNull('balance_s1_usd')
+            ->whereNotNull('price_at_trade_s1')
+            ->whereNotNull('balance_s2_usd')
+            ->whereNotNull('price_at_trade_s2');
 
         if ($month) {
             $query = $query->whereBetween('updated_at', [$startDate, $endDate]);

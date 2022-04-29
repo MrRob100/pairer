@@ -360,7 +360,7 @@ class AccountService
                 function ($query) use ($symbols) {
                     $query->where('s1', $symbols[0])->where('s2', $symbols[1]);
                 }
-            )->get();
+            )->orderBy('fill_time');
 
             foreach($openOrders as $openOrder) {
                 $status = $api->orderStatus($symbol1.$symbol2, $openOrder->orderId);

@@ -5192,19 +5192,38 @@
                             };
                             if(this.comp.$props.colors.wickDw) {
                                 let parsedLimits = JSON.parse(this.comp.$props.colors.wickDw);
-                                let limitBuyPriceScaled = layout.$2screen(parsedLimits.limitBuyPrice);
-                                let stopLimitSellPriceScaled = layout.$2screen(parsedLimits.stopLimitSellPrice);
 
-                                ctx.strokeStyle = "#ff2a95";
+                                if (parsedLimits.limitBuyPrice) {
+                                    let limitBuyPriceScaled = layout.$2screen(parsedLimits.limitBuyPrice);
+                                    ctx.strokeStyle = "#ff2a95";
+                                    ctx.beginPath();
+                                    ctx.moveTo(0, limitBuyPriceScaled);
+                                    ctx.lineTo(layout.width, limitBuyPriceScaled);
+                                    ctx.stroke();
+                                }
+
+                                if (parsedLimits.stopLimitSellPrice) {
+                                    let stopLimitSellPriceScaled = layout.$2screen(parsedLimits.stopLimitSellPrice);
+                                    ctx.strokeStyle = "#01ff16";
+                                    ctx.beginPath();
+                                    ctx.moveTo(0, stopLimitSellPriceScaled);
+                                    ctx.lineTo(layout.width, stopLimitSellPriceScaled);
+                                    ctx.stroke();
+                                }
+
+                                let limitBuyPriceFloatingScaled = layout.$2screen(parsedLimits.limitBuyPriceFloating);
+                                let stopLimitSellPriceFloatingScaled = layout.$2screen(parsedLimits.stopLimitSellPriceFloating);
+
+                                ctx.strokeStyle = "rgba(255,42,149,0.56)";
                                 ctx.beginPath();
-                                ctx.moveTo(0, limitBuyPriceScaled);
-                                ctx.lineTo(layout.width, limitBuyPriceScaled);
+                                ctx.moveTo(0, limitBuyPriceFloatingScaled);
+                                ctx.lineTo(layout.width, limitBuyPriceFloatingScaled);
                                 ctx.stroke();
 
-                                ctx.strokeStyle = "#01ff16";
+                                ctx.strokeStyle = "rgba(1,255,22,0.55)";
                                 ctx.beginPath();
-                                ctx.moveTo(0, stopLimitSellPriceScaled);
-                                ctx.lineTo(layout.width, stopLimitSellPriceScaled);
+                                ctx.moveTo(0, stopLimitSellPriceFloatingScaled);
+                                ctx.lineTo(layout.width, stopLimitSellPriceFloatingScaled);
                                 ctx.stroke();
                             }
                         }

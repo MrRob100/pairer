@@ -3,11 +3,11 @@
         <div v-if="pure">
             <div class="d-flex justify-content-center">
                 <label class="text-light mx-1">{{ stopLimitSellLabel }}</label>
-                <label class="text-light mx-1">{{ amount1to2.toFixed(2) }}%</label>
+                <label class="text-light mx-1">{{ amount1to2 }}%</label>
             </div>
             <div class="d-flex justify-content-center">
-                <input class="form-control w-50 align-top d-inline mr-2" v-model="stopLimitSellPrice" type="number" :step="step" :placeholder="stopLimitSellLabel">
-                <button @click="setStopLimitSell(stopLimitSellPrice)" class="btn btn-success mb-2 d-inline align-top"><i class="fas fa-check"></i></button>
+                <input class="form-control w-50 align-top d-inline mr-2" v-model="stopLimitSellPriceFloating" type="number" :step="step" :placeholder="stopLimitSellLabel">
+                <button @click="setStopLimitSell(stopLimitSellPriceFloating)" class="btn btn-success mb-2 d-inline align-top"><i class="fas fa-check"></i></button>
                 <button @click="cancelOrders('SELL')" class="ml-2 btn btn-success mb-2 d-inline align-top"><i class="fas fa-trash"></i></button>
             </div>
             <div class="d-flex justify-content-center">
@@ -17,11 +17,11 @@
             <br>
             <div class="d-flex justify-content-center">
                 <label class="text-light mx-1">{{ limitBuyLabel }}</label>
-                <label class="text-light mx-1">{{ amount2to1.toFixed(2) }}%</label>
+                <label class="text-light mx-1">{{ amount2to1 }}%</label>
             </div>
             <div class="d-flex justify-content-center">
-                <input class="form-control w-50 align-top d-inline mr-2" v-model="limitBuyPrice" type="number" :step="step" :placeholder="limitBuyLabel">
-                <button @click="setLimitBuy(limitBuyPrice)" class="btn btn-success mb-2 d-inline align-top"><i class="fas fa-check"></i></button>
+                <input class="form-control w-50 align-top d-inline mr-2" v-model="limitBuyPriceFloating" type="number" :step="step" :placeholder="limitBuyLabel">
+                <button @click="setLimitBuy(limitBuyPriceFloating)" class="btn btn-success mb-2 d-inline align-top"><i class="fas fa-check"></i></button>
                 <button @click="cancelOrders('BUY')" class="ml-2 btn btn-success mb-2 d-inline align-top"><i class="fas fa-trash"></i></button>
             </div>
             <div class="d-flex justify-content-center">
@@ -127,8 +127,10 @@ export default {
             },
             disabled: false,
             limitBuyPrice: null,
+            limitBuyPriceFloating: null,
             lotSize: null,
             stopLimitSellPrice: null,
+            stopLimitSellPriceFloating: null,
             showForm: false,
             input: {
                 symbol1: null,
@@ -232,10 +234,11 @@ export default {
                     Object.values(response.data[0]).forEach(function(order) {
                         if (order.type === 'LIMIT' && order.side === 'BUY') {
                             _this.limitBuyPrice = parseFloat(order.price);
+                            _this.limitBuyPriceFloating = parseFloat(order.price);
                             _this.amount2to1 = response.data.order_balance_percentage.symbol2;
                         }
                         if (order.type === 'LIMIT' && order.side === 'SELL') {
-                            _this.stopLimitSellPrice = parseFloat(order.price);
+                            _this.stopLimitSellPriceFloating = parseFloat(order.price);
                             _this.amount1to2 = response.data.order_balance_percentage.symbol1;
                         }
                     })
@@ -253,7 +256,8 @@ export default {
                     portion: this.amount2to1,
                     lotSize: this.lotSize,
                 }).then(function(response) {
-                    //make faded line the hard line
+                    console.log(response);
+                    this.limitBuyPrice = price;
                 });
             }
         },
@@ -276,7 +280,8 @@ export default {
                     portion: this.amount1to2,
                     lotSize: this.lotSize,
                 }).then(function(response) {
-                    //make faded line the hard line
+                    console.log(response);
+                    this.stopLimitSellPrice = price;
                 });
             }
         },
@@ -316,8 +321,10 @@ export default {
             if (this.pushLasts.length === 2) {
                 let divided = this.pushLasts[0].s1 / this.pushLasts[1].s2;
                 let order = (Math.floor(1 / divided).toString().length) + 2;
-                this.limitBuyPrice = divided.toFixed(order);
-                this.stopLimitSellPrice = divided.toFixed(order);
+                this.limitBuyPrice = null;
+                this.limitBuyPriceFloating = divided.toFixed(order);
+                this.stopLimitSellPrice = null;
+                this.stopLimitSellPriceFloating = divided.toFixed(order);
                 this.step = Math.pow(10, - order);
             }
         },
@@ -326,6 +333,12 @@ export default {
         },
         stopLimitSellPrice: function() {
             this.$emit('stopLimitSellPrice', this.stopLimitSellPrice);
+        },
+        limitBuyPriceFloating: function() {
+            this.$emit('limitBuyPriceFloating', this.limitBuyPriceFloating);
+        },
+        stopLimitSellPriceFloating: function() {
+            this.$emit('stopLimitSellPriceFloating', this.stopLimitSellPriceFloating);
         },
     }
 }

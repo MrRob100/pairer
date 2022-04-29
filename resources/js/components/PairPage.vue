@@ -66,7 +66,9 @@
             :cr="cr"
             :dr="dr"
             :stopLimitSellPrice="stopLimitSellPrice"
+            :stopLimitSellPriceFloating="stopLimitSellPriceFloating"
             :limitBuyPrice="limitBuyPrice"
+            :limitBuyPriceFloating="limitBuyPriceFloating"
             :mobile="mobile"
             @pure="setPure"
             :s="value"
@@ -86,7 +88,9 @@
                 :br="br"
                 :pr="pr"
                 @limitBuyPrice="setLimitBuyPrice"
+                @limitBuyPriceFloating="setLimitBuyPriceFloating"
                 @stopLimitSellPrice="setStopLimitSellPrice"
+                @stopLimitSellPriceFloating="setStopLimitSellPriceFloating"
                 :pure="pure"
                 :tr="tr"
                 :rr="rr"
@@ -138,7 +142,9 @@ export default {
     data: function () {
         return {
             limitBuyPrice: null,
+            limitBuyPriceFloating: null,
             stopLimitSellPrice: null,
+            stopLimitSellPriceFloating: null,
             value: "",
             symbols: {
                 oil: [
@@ -188,6 +194,12 @@ export default {
         },
         setStopLimitSellPrice: function(val) {
             this.stopLimitSellPrice = val;
+        },
+        setLimitBuyPriceFloating: function(val) {
+            this.limitBuyPriceFloating = val;
+        },
+        setStopLimitSellPriceFloating: function(val) {
+            this.stopLimitSellPriceFloating = val;
         },
         getOptions: function() {
             if (this.marketType === "oil") {
