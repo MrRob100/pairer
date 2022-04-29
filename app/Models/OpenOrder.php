@@ -14,6 +14,8 @@ class OpenOrder extends Model
         'orderId',
         'fill_time',
         'status',
+        'pure_price_at_trade',
+        'side',
     ];
 
     public function pairBalance(): BelongsTo
