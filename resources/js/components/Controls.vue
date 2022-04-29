@@ -6,6 +6,8 @@
                 <label class="text-light mx-1">{{ amount1to2 }}%</label>
             </div>
             <div class="d-flex justify-content-center">
+                <button @click="slsPlus" class="ml-2 btn btn-success mb-2 d-inline align-top"><i class="fas fa-plus"></i></button>
+                <button @click="slsMinus" class="ml-2 mr-2 btn btn-success mb-2 d-inline align-top"><i class="fas fa-minus"></i></button>
                 <input class="form-control w-50 align-top d-inline mr-2" v-model="stopLimitSellPriceFloating" type="number" :step="step" :placeholder="stopLimitSellLabel">
                 <button @click="setStopLimitSell(stopLimitSellPriceFloating)" class="btn btn-success mb-2 d-inline align-top"><i class="fas fa-check"></i></button>
                 <button @click="cancelOrders('SELL')" class="ml-2 btn btn-success mb-2 d-inline align-top"><i class="fas fa-trash"></i></button>
@@ -20,6 +22,8 @@
                 <label class="text-light mx-1">{{ amount2to1 }}%</label>
             </div>
             <div class="d-flex justify-content-center">
+                <button @click="lbPlus" class="ml-2 btn btn-success mb-2 d-inline align-top"><i class="fas fa-plus"></i></button>
+                <button @click="lbMinus" class="ml-2 mr-2 btn btn-success mb-2 d-inline align-top"><i class="fas fa-minus"></i></button>
                 <input class="form-control w-50 align-top d-inline mr-2" v-model="limitBuyPriceFloating" type="number" :step="step" :placeholder="limitBuyLabel">
                 <button @click="setLimitBuy(limitBuyPriceFloating)" class="btn btn-success mb-2 d-inline align-top"><i class="fas fa-check"></i></button>
                 <button @click="cancelOrders('BUY')" class="ml-2 btn btn-success mb-2 d-inline align-top"><i class="fas fa-trash"></i></button>
@@ -292,6 +296,18 @@ export default {
                     symbol2: this.symbol2,
                 }
             }).then(response => (this.lotSize = response.data));
+        },
+        slsPlus: function() {
+            this.stopLimitSellPriceFloating += this.step;
+        },
+        slsMinus: function() {
+            this.stopLimitSellPriceFloating -= this.step;
+        },
+        lbPlus: function() {
+            this.limitBuyPriceFloating += this.step;
+        },
+        lbMinus: function() {
+            this.limitBuyPriceFloating -= this.step;
         }
     },
 
