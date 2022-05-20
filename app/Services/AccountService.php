@@ -247,6 +247,7 @@ class AccountService
                 'plb' => $plb,
                 'psls' => $psls,
                 'success' => true,
+                $api->openorders($symbol1.$symbol2),
             ];
         } catch(\Exception $e) {
             return [
@@ -267,7 +268,7 @@ class AccountService
             if ($order['side'] === $side) {
                 $api->cancel($symbol1.$symbol2, $order['orderId']);
 
-                OpenOrder::where('orderId', $order['orderId'])->pairBalance->delete();
+                OpenOrder::where('orderId', $order['orderId'])->first()->pairBalance->delete();
             }
         }
     }
@@ -304,7 +305,7 @@ class AccountService
             'orderId' => $order['orderId'],
             'status' => $order['status'],
             'pure_price_at_trade' => $price,
-            'side' => 'sell',
+            'side' => 'buy',
         ]);
 
         return $order;
