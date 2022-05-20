@@ -203,7 +203,7 @@ class AccountService
 
     public function getOpenOrders(string $symbol1, string $symbol2): array
     {
-        $this->checkForFills([['symbol1' => $symbol1, 'symbol2' => $symbol2]]);
+        $this->checkForFills([['s1' => $symbol1, 's2' => $symbol2]]);
         $api = $this->api();
         $api->useServerTime();
 
@@ -361,8 +361,8 @@ class AccountService
         $api->useServerTime();
 
         foreach($pairs as $pair) {
-            $symbol1 = strtoupper($pair['symbol1']);
-            $symbol2 = strtoupper($pair['symbol2']);
+            $symbol1 = strtoupper($pair['s1']);
+            $symbol2 = strtoupper($pair['s2']);
             $symbols = [$symbol1, $symbol2];
 
             $openOrders = OpenOrder::whereHas(
