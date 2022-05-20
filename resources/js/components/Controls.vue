@@ -236,12 +236,18 @@ export default {
                 }
             }).then(function(response) {
                 if(response.data.success) {
-                    _this.limitBuyPrice = parseFloat(response.data.plb);
-                    _this.limitBuyPriceFloating = parseFloat(response.data.plb);
-                    _this.amount2to1 = response.data.order_balance_percentage.symbol2;
-                    _this.stopLimitSellPrice = parseFloat(response.data.psls);
-                    _this.stopLimitSellPriceFloating = parseFloat(response.data.psls);
-                    _this.amount1to2 = response.data.order_balance_percentage.symbol1;
+
+                    if (response.data.plb && response.data.plb && response.data.order_balance_percentage.symbol2) {
+                        _this.limitBuyPrice = parseFloat(response.data.plb);
+                        _this.limitBuyPriceFloating = parseFloat(response.data.plb);
+                        _this.amount2to1 = response.data.order_balance_percentage.symbol2;
+                    }
+
+                    if (response.data.psls && response.data.psls && response.data.order_balance_percentage.symbol1) {
+                        _this.stopLimitSellPrice = parseFloat(response.data.psls);
+                        _this.stopLimitSellPriceFloating = parseFloat(response.data.psls);
+                        _this.amount1to2 = response.data.order_balance_percentage.symbol1;
+                    }
                 } else {
                     console.error(response.data);
                 }
