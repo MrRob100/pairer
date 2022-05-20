@@ -9,7 +9,7 @@ class DbwindowController extends Controller
 {
     public function index() {
         return view('dbwindow')->with([
-            'pairBalances' => PairBalance::where('s1', 'RIF')->where('s3', 'BTC')->all(),
+            'pairBalances' => PairBalance::where('s1', 'RIF')->where('s2', 'BTC')->get(),
             'openOrders' => OpenOrder::all(),
         ]);
     }
