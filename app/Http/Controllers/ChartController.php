@@ -106,8 +106,11 @@ class ChartController extends Controller
 //            unlink(public_path() . "/" . $request->s2 . ".csv");
 //        }
 
-        $response1 = $this->binanceGetService->apiCall($request->s1);
-        $response2 = $this->binanceGetService->apiCall($request->s2);
+        $pureClass = app()->make(PairHelper::class);
+        $isPure = $pureClass->isPure($request->s1, $request->s2);
+
+        $response1 = $this->binanceGetService->apiCall($request->s1, !$isPure);
+        $response2 = $this->binanceGetService->apiCall($request->s2, !$isPure);
 
         $size_max = max(sizeof($response1), sizeof($response2) - 1);
         $size_min = min(sizeof($response1), sizeof($response2) - 1);
@@ -151,10 +154,8 @@ class ChartController extends Controller
         $midPrice2 = sizeof($lines) > 1 ? $lines->toArray()[1]['price_at_trade_s1'] / $lines->toArray()[1]['price_at_trade_s2'] : null;
         $midPrice3 = sizeof($lines) > 2 ? $lines->toArray()[2]['price_at_trade_s1'] / $lines->toArray()[2]['price_at_trade_s2'] : null;
 
-        $pureClass = app()->make(PairHelper::class);
-
         return [
-            'pure_pair' => $pureClass->isPure($request->s1, $request->s2),
+            'pure_pair' => $isPure,
             'first' => $this->formatBinanceResponse($response1),
             'pair' => array_reverse($pair),
             'second' => $this->formatBinanceResponse($response2),

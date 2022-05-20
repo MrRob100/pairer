@@ -201,16 +201,6 @@ class AccountService
         return $order;
     }
 
-    public function marketToBTC($from, $quantity)
-    {
-
-    }
-
-    public function marketFromBTC($to)
-    {
-
-    }
-
     public function getOpenOrders(string $symbol1, string $symbol2): array
     {
         $this->checkForFills([['symbol1' => $symbol1, 'symbol2' => $symbol2]]);
@@ -229,14 +219,34 @@ class AccountService
             'error' => 'impure pair'
         ];
 
+        $symbols = [
+            1 => $symbol1,
+            2 => $symbol2,
+        ];
+
+        $plb = OpenOrder::whereHas(
+            'pairBalance',
+            function($query) use ($symbols) {
+                $query->where(['s1' => $symbols[1], 's2' => $symbols[2]]);
+            }
+        )->where(['status' => 'NEW', 'side' => 'buy'])->first()?->pure_price_at_trade;
+
+        $psls = OpenOrder::whereHas(
+            'pairBalance',
+            function($query) use ($symbols) {
+                $query->where(['s1' => $symbols[1], 's2' => $symbols[2]]);
+            }
+        )->where(['status' => 'NEW', 'side' => 'sell'])->first()?->pure_price_at_trade;
+
         try {
             return [
                 'order_balance_percentage' => [
                     'symbol1' => $total1 == 0 ?: ($balance[$symbol1]['onOrder'] / $total1) * 100,
                     'symbol2' => $total2 == 0 ?: ($balance[$symbol2]['onOrder'] / $total2) * 100,
                 ],
+                'plb' => $plb,
+                'psls' => $psls,
                 'success' => true,
-                $api->openorders($symbol1.$symbol2),
             ];
         } catch(\Exception $e) {
             return [

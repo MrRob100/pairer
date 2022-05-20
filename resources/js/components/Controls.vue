@@ -86,6 +86,7 @@
 <script>
 export default {
     props: [
+        "canGetLimits",
         "tr",
         "pr",
         "br",
@@ -96,7 +97,7 @@ export default {
         "shaver",
         "pumpr",
         "pure",
-        "pushLasts"
+        "pushLasts",
     ],
     data: function() {
         return {
@@ -235,17 +236,12 @@ export default {
                 }
             }).then(function(response) {
                 if(response.data.success) {
-                    Object.values(response.data[0]).forEach(function(order) {
-                        if (order.type === 'LIMIT' && order.side === 'BUY') {
-                            _this.limitBuyPrice = parseFloat(order.price);
-                            _this.limitBuyPriceFloating = parseFloat(order.price);
-                            _this.amount2to1 = response.data.order_balance_percentage.symbol2;
-                        }
-                        if (order.type === 'LIMIT' && order.side === 'SELL') {
-                            _this.stopLimitSellPriceFloating = parseFloat(order.price);
-                            _this.amount1to2 = response.data.order_balance_percentage.symbol1;
-                        }
-                    })
+                    _this.limitBuyPrice = parseFloat(response.data.plb);
+                    _this.limitBuyPriceFloating = parseFloat(response.data.plb);
+                    _this.amount2to1 = response.data.order_balance_percentage.symbol2;
+                    _this.stopLimitSellPrice = parseFloat(response.data.psls);
+                    _this.stopLimitSellPriceFloating = parseFloat(response.data.psls);
+                    _this.amount1to2 = response.data.order_balance_percentage.symbol1;
                 } else {
                     console.error(response.data);
                 }
@@ -321,10 +317,12 @@ export default {
     },
 
     watch: {
+        canGetLimits: function() {
+            this.getLimitOrders();
+        },
         symbol1: function() {
             this.bal.one = "";
             this.bal.oneUSD = "";
-            this.getLimitOrders();
         },
         symbol2: function() {
             this.bal.two = "";

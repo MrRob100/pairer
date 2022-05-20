@@ -82,6 +82,7 @@
 <!--            <br>-->
 <!--            <br>-->
             <controls
+                :canGetLimits="changeToGetLimits"
                 :symbol1="v1.toUpperCase()"
                 :symbol2="v2.toUpperCase()"
                 :cr="cr"
@@ -141,6 +142,7 @@ export default {
 
     data: function () {
         return {
+            changeToGetLimits: null,
             limitBuyPrice: null,
             limitBuyPriceFloating: null,
             stopLimitSellPrice: null,
@@ -188,6 +190,7 @@ export default {
         },
         setPure: function(val) {
             this.pure = val;
+            this.changeToGetLimits = (new Date()).getTime();
         },
         setLimitBuyPrice: function(val) {
             this.limitBuyPrice = val;
