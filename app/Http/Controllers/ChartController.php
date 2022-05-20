@@ -109,8 +109,8 @@ class ChartController extends Controller
         $pureClass = app()->make(PairHelper::class);
         $isPure = $pureClass->isPure($request->s1, $request->s2);
 
-        $response1 = $this->binanceGetService->apiCall($request->s1, !$isPure);
-        $response2 = $this->binanceGetService->apiCall($request->s2, !$isPure);
+        $response1 = $this->binanceGetService->apiCall($request->s1);
+        $response2 = $this->binanceGetService->apiCall($request->s2);
 
         $size_max = max(sizeof($response1), sizeof($response2) - 1);
         $size_min = min(sizeof($response1), sizeof($response2) - 1);

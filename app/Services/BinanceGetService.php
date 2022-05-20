@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Cache;
 
 class BinanceGetService {
 
-    public function apiCall($symbol, $cache = true, $interval = "1d")
+    public function apiCall($symbol, $interval = "1d")
     {
-        if (Cache::has($symbol.$interval) && $cache) {
+        if (Cache::has($symbol.$interval)) {
             $response = Cache::get($symbol.$interval);
         } else {
             $response = array_reverse(json_decode(file_get_contents("https://www.binance.com/api/v3/klines?symbol={$symbol}USDT&interval={$interval}"), true));
