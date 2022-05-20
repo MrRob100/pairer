@@ -38,9 +38,6 @@
                     @endforeach
                     </tbody>
                 </table>
-                <div class="pag-links">
-                    {{ $pairBalances->links() }}
-                </div>
             </div>
         </div>
         <br>
@@ -78,9 +75,4 @@
             </div>
         </div>
     </div>
-    <style>
-        span {
-            display: none !important;
-        }
-    </style>
 @endsection
