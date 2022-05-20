@@ -229,14 +229,14 @@ class AccountService
             function($query) use ($symbols) {
                 $query->where(['s1' => $symbols[1], 's2' => $symbols[2]]);
             }
-        )->where(['status' => 'NEW', 'side' => 'buy'])->first()?->pure_price_at_trade;
+        )->where(['status' => 'NEW', 'side' => 'buy'])->orderBy('created_at', 'DESC')->first()?->pure_price_at_trade;
 
         $psls = OpenOrder::whereHas(
             'pairBalance',
             function($query) use ($symbols) {
                 $query->where(['s1' => $symbols[1], 's2' => $symbols[2]]);
             }
-        )->where(['status' => 'NEW', 'side' => 'sell'])->first()?->pure_price_at_trade;
+        )->where(['status' => 'NEW', 'side' => 'sell'])->orderBy('created_at', 'DESC')->first()?->pure_price_at_trade;
 
         try {
             return [
