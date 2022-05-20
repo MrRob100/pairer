@@ -370,10 +370,11 @@ class AccountService
                 function ($query) use ($symbols) {
                     $query->where('s1', $symbols[0])->where('s2', $symbols[1]);
                 }
-            )->orderBy('fill_time');
+            )->get();
 
             foreach($openOrders as $openOrder) {
                 $status = $api->orderStatus($symbol1.$symbol2, $openOrder->orderId);
+
 //              "NEW", "FILLED", "CANCELLED"
 
                 if ($status['status'] === 'FILLED') {
