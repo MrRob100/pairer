@@ -267,8 +267,10 @@ class AccountService
         foreach ($orders[0] as $order) {
             if ($order['side'] === $side) {
                 $api->cancel($symbol1.$symbol2, $order['orderId']);
-
-                OpenOrder::where('orderId', $order['orderId'])->first()->pairBalance->delete();
+                $openOrderToDelete = OpenOrder::where('orderId', $order['orderId'])->first();
+                $pairBalanceToDelete = $openOrderToDelete->pairBalance;
+                $openOrderToDelete->delete();
+                $pairBalanceToDelete->delete();
             }
         }
     }
