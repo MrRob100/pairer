@@ -106,6 +106,7 @@
                 dlref1: "",
                 lineDataPair: [],
                 limitLines: null,
+                pure: false,
             }
         },
 
@@ -118,6 +119,7 @@
                         t,
                     }
                 }).then(response => {
+                    this.pure = response.data['pure_pair'];
                     this.$emit('pure', response.data['pure_pair']);
 
                     this.tradingVue1.data.chart.data = response.data['first'];
@@ -157,7 +159,7 @@
                 }
             },
             putLines: function() {
-                if (this.limitBuyPriceFloating && this.stopLimitSellPriceFloating) {
+                if (this.limitBuyPriceFloating && this.stopLimitSellPriceFloating && this.pure) {
                     this.limitLines = JSON.stringify({
                         'limitBuyPrice': this.limitBuyPrice,
                         'limitBuyPriceFloating': this.limitBuyPriceFloating,
@@ -166,6 +168,7 @@
                     });
                 }
             }
+
         },
         watch: {
             s: function(val) {
