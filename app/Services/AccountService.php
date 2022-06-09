@@ -324,18 +324,18 @@ class AccountService
 
         $bals = $this->balance();
 
-        $s1_available = $bals[$symbol1]['available'];
-        $s2_available = $bals[$symbol2]['available'];
+        $s1_available = floatval($bals[$symbol1]['available']);
+        $s2_available = floatVal($bals[$symbol2]['available']);
 
-        $quantity = number_format(($s2_available * ($portion / 100) / $price), 7);
+        $quantity = number_format($s1_available * ($portion / 100), 7);
 
         $quantityChopped = floor(str_replace(',', '', $quantity) / $lotSize) * $lotSize;
 
         $pairBalance = PairBalance::create([
             's1' => $symbol1,
-            'balance_s1' => $s1_available + $bals[$symbol1]['onOrder'],
+            'balance_s1' => $s1_available + floatval($bals[$symbol1]['onOrder']),
             's2' => $symbol2,
-            'balance_s2' => $s2_available + $bals[$symbol2]['onOrder'],
+            'balance_s2' => $s2_available + floatval($bals[$symbol2]['onOrder']),
         ]);
 
         $order = $api->order('SELL', $pair, $quantityChopped, $price, 'LIMIT');
