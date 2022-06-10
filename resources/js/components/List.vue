@@ -71,7 +71,7 @@ export default {
                     },
                 })
                 .then(function() {
-                    _this.getSavedPairs(this.state);
+                    _this.getSavedPairs(_this.state);
                 });
         }
     },
